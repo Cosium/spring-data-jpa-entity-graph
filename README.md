@@ -1,0 +1,1 @@
+### A Spring Data JPA extension allowing full usage of JPA Entity Graphs on repositories
