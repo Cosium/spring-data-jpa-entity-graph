@@ -29,7 +29,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest{
 	@Transactional
 	@Test
 	public void given_null_eg_when_findone_then_it_should_work(){
-		Product product = productRepository.findOne(1l, null);
+		Product product = productRepository.findOne(1L, null);
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
 	}
@@ -37,7 +37,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest{
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findone_then_it_should_work(){
-		Product product = productRepository.findOne(1l, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 	}
