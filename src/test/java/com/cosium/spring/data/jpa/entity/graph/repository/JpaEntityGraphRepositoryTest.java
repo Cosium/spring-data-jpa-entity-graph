@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class JpaEntityGraphRepositoryTest extends BaseTest{
+public class JpaEntityGraphRepositoryTest extends BaseTest {
 
 	@Inject
 	private ProductRepository productRepository;
