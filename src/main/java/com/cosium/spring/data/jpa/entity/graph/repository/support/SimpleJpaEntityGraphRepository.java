@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
+import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
@@ -42,7 +44,12 @@ public class SimpleJpaEntityGraphRepository<T, ID extends Serializable>
 	@Override
 	protected Map<String, Object> getQueryHints() {
 		Map<String, Object> queryHints = super.getQueryHints();
-		queryHints.putAll(Jpa21Utils.tryGetFetchGraphHints(entityManager, JpaEntityGraphPostProcessor.getCurrentJpaEntityGraph(), domainClass));
+	 	JpaEntityGraph currentEntityGraph = JpaEntityGraphPostProcessor.getCurrentJpaEntityGraph();
+		if(currentEntityGraph == null){
+			return queryHints;
+		}
+		queryHints = new HashMap<String, Object>(queryHints);
+		queryHints.putAll(Jpa21Utils.tryGetFetchGraphHints(entityManager, currentEntityGraph, domainClass));
 		return queryHints;
 	}
 

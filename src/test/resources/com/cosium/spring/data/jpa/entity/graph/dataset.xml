@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <brand id="1" name="Brand 1"/>
+    <brand id="2" name="Brand 2"/>
+
+    <product id="1" name="Product 1" brand_id="1"/>
+    <product id="2" name="Product 2" brand_id="1"/>
+    <product id="3" name="Product 3" brand_id="2"/>
+    <product id="4" name="Product 4" brand_id="2"/>
+</dataset>

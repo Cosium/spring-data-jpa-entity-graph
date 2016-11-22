@@ -13,6 +13,12 @@
         <spring.data.jpa>1.11.0.BUILD-SNAPSHOT</spring.data.jpa>
         <eclipselink>2.6.2</eclipselink>
         <querydsl>4.1.3</querydsl>
+
+        <!--Test-->
+        <dbunit>2.5.3</dbunit>
+        <spring-test-dbunit>1.3.0</spring-test-dbunit>
+        <spring.boot>1.4.1.RELEASE</spring.boot>
+        <h2>1.4.193</h2>
     </properties>
 
     <dependencies>
@@ -41,6 +47,44 @@
             <artifactId>querydsl-jpa</artifactId>
             <version>${querydsl}</version>
             <optional>true</optional>
+        </dependency>
+
+        <!--Test-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.springtestdbunit</groupId>
+            <artifactId>spring-test-dbunit</artifactId>
+            <version>${spring-test-dbunit}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>${dbunit}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
