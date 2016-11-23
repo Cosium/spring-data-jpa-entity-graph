@@ -65,7 +65,7 @@ You can pass the entity graph to the `findByName` method:
 productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.brand");
 ```
 
-Or to the findOne method:
+Or to the `findOne` method:
 ```java
 productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand");
 ```
