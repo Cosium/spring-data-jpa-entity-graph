@@ -15,7 +15,6 @@ import org.springframework.util.StringUtils;
 
 /**
  * Captures {@link EntityGraph} on repositories method calls.
- *
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
@@ -83,13 +82,13 @@ class EntityGraphAwareRepositoryMethodPostProcessor implements RepositoryProxyPo
 				break;
 			}
 			EntityGraphBean entityGraphBean = buildEntityGraphBean(entityGraph);
-			if(entityGraphBean != null){
+			if (entityGraphBean != null) {
 				CURRENT_ENTITY_GRAPH.set(entityGraphBean);
 			}
 			try {
 				return invocation.proceed();
 			} finally {
-				if(entityGraphBean != null){
+				if (entityGraphBean != null) {
 					CURRENT_ENTITY_GRAPH.remove();
 				}
 			}
