@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Reda.Housni-Alaoui
  */
-class EntityGraphAwareRepositoryMethodPostProcessor implements RepositoryProxyPostProcessor {
+class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcessor {
 
 	private static final ThreadLocal<EntityGraphBean> CURRENT_ENTITY_GRAPH =
 			new NamedThreadLocal<EntityGraphBean>("Thread local holding the current spring data jpa repository entity graph");

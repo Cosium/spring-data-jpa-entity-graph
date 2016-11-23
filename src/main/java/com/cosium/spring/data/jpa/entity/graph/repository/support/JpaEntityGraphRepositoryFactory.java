@@ -60,7 +60,7 @@ public class JpaEntityGraphRepositoryFactory extends JpaRepositoryFactory {
 	 */
 	public JpaEntityGraphRepositoryFactory(EntityManager entityManager) {
 		super(entityManager);
-		addRepositoryProxyPostProcessor(new EntityGraphAwareRepositoryMethodPostProcessor());
+		addRepositoryProxyPostProcessor(new RepositoryMethodEntityGraphExtractor());
 	}
 
 	@Override

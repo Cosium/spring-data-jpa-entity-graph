@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 /**
- * Forces the use of {@link EntityGraphAwareRepositoryEntityManager} while targeting {@link JpaEntityGraphRepositoryFactory}.
+ * Forces the use of {@link RepositoryEntityManagerEntityGraphInjector} while targeting {@link JpaEntityGraphRepositoryFactory}.
  *
  * Created on 22/11/16.
  *
@@ -20,7 +20,7 @@ public class JpaEntityGraphRepositoryFactoryBean<R extends JpaRepository<T, I>, 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
 		/* Make sure to use the EntityGraph aware EntityManager */
-		super.setEntityManager(EntityGraphAwareRepositoryEntityManager.proxy(entityManager));
+		super.setEntityManager(RepositoryEntityManagerEntityGraphInjector.proxy(entityManager));
 	}
 
 	@Override

@@ -10,14 +10,14 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 
 /**
- * Pushes captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query hints. <br>
+ * Injects captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query hints. <br>
  * Intercepts {@link EntityManager} method calls in order to manipulate query hints map. <br>
  * One interceptor instance is built and used by one unique repository instance. <br>
  * Created on 23/11/16.
  *
  * @author Reda.Housni-Alaoui
  */
-class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
+class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
 	/**
 	 * The list of methods that can take a map of query hints as an argument
@@ -36,7 +36,7 @@ class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
 	 */
 	static EntityManager proxy(EntityManager entityManager) {
 		ProxyFactory proxyFactory = new ProxyFactory(entityManager);
-		proxyFactory.addAdvice(new EntityGraphAwareRepositoryEntityManager());
+		proxyFactory.addAdvice(new RepositoryEntityManagerEntityGraphInjector());
 		return (EntityManager) proxyFactory.getProxy();
 	}
 
@@ -54,7 +54,7 @@ class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
 	}
 
 	private Map<String, Object> getCurrentQueryHints(EntityManager entityManager) {
-		EntityGraphBean entityGraphBean = EntityGraphAwareRepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
+		EntityGraphBean entityGraphBean = RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
 		if (entityGraphBean == null) {
 			return new HashMap<String, Object>();
 		}
