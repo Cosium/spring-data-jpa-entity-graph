@@ -15,6 +15,8 @@ import org.springframework.data.repository.query.Parameters;
 import org.springframework.util.ReflectionUtils;
 
 /**
+ * This repository factory allows to build {@link EntityGraph} aware repositories.
+ *
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
@@ -26,7 +28,10 @@ public class JpaEntityGraphRepositoryFactory extends JpaRepositoryFactory {
 	}
 
 	/**
-	 * Adds EntityGraph as a special type, to be able to use on method named queries
+	 * Add {@link EntityGraph} to the special types.<br>
+	 * {@link EntityGraph} must be considered as a special type by Spring Data JPA.<br>
+	 * For this to occur, {@link EntityGraph} must be part of Spring Data JPA arrays storing special types.<br>
+	 * Once a type is marked as special, Spring Data JPA will not try to bind it to an under construction query.
 	 */
 	private static void addEntityGraphToSpecialTypes(){
 		addEntityGraphToSpecialTypes(Parameters.class, "TYPES");
@@ -55,11 +60,12 @@ public class JpaEntityGraphRepositoryFactory extends JpaRepositoryFactory {
 	 */
 	public JpaEntityGraphRepositoryFactory(EntityManager entityManager) {
 		super(entityManager);
-		addRepositoryProxyPostProcessor(new RepositoryMethodPostProcessor());
+		addRepositoryProxyPostProcessor(new EntityGraphAwareRepositoryMethodPostProcessor());
 	}
 
 	@Override
 	protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
+		// TODO Manage QueryDslJpaRepository
 		return SimpleJpaEntityGraphRepository.class;
 	}
 }

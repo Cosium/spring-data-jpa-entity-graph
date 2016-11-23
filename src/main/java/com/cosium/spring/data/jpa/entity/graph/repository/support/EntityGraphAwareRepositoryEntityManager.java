@@ -10,18 +10,32 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 
 /**
+ * Intercepts {@link EntityManager} method calls in order to manipulate query hints map. <br>
+ * One interceptor intstance is built and used by one unique repository instance.
+ *
  * Created on 23/11/16.
  *
  * @author Reda.Housni-Alaoui
  */
-class RepositoryEntityManager implements MethodInterceptor {
+class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
 
+	/**
+	 * The list of methods that can take a map of query hints as an argument
+	 */
 	private static final List<String> FIND_METHODS = Collections.singletonList("find");
+	/**
+	 * The list of methods that can return a {@link Query} object. {@link Query} can then be populated with query hints.
+	 */
 	private static final List<String> CREATE_QUERY_METHODS = Arrays.asList("createQuery", "createNamedQuery");
 
+	/**
+	 * Builds a proxy on entity manager which is aware of methods that can make use of query hints.
+	 * @param entityManager The entity manager to proxy
+	 * @return The proxied entity manager
+	 */
 	static EntityManager proxy(EntityManager entityManager) {
 		ProxyFactory proxyFactory = new ProxyFactory(entityManager);
-		proxyFactory.addAdvice(new RepositoryEntityManager());
+		proxyFactory.addAdvice(new EntityGraphAwareRepositoryEntityManager());
 		return (EntityManager) proxyFactory.getProxy();
 	}
 
@@ -38,8 +52,13 @@ class RepositoryEntityManager implements MethodInterceptor {
 		return result;
 	}
 
+	/**
+	 * Push the current entity graph to the created query
+	 * @param invocation The method invocation
+	 * @param query The query to populate
+	 */
 	private void addEntityGraph(MethodInvocation invocation, Query query){
-		EntityGraphBean entityGraphBean = RepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
+		EntityGraphBean entityGraphBean = EntityGraphAwareRepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
 		if (entityGraphBean == null) {
 			return;
 		}
@@ -53,6 +72,10 @@ class RepositoryEntityManager implements MethodInterceptor {
 		}
 	}
 
+	/**
+	 * Push the current entity graph to the find method query hints.
+	 * @param invocation The invocation of the find method
+	 */
 	private void addEntityGraph(MethodInvocation invocation) {
 		Map<String, Object> queryProperties = null;
 		int index = 0;
@@ -67,7 +90,7 @@ class RepositoryEntityManager implements MethodInterceptor {
 			return;
 		}
 
-		EntityGraphBean entityGraphBean = RepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
+		EntityGraphBean entityGraphBean = EntityGraphAwareRepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
 		if (entityGraphBean == null) {
 			return;
 		}
