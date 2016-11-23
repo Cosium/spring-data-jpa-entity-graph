@@ -44,6 +44,14 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 
 	@Transactional
 	@Test
+	public void given_empty_eg_when_findone_then_then_brand_should_not_be_loaded(){
+		Product product = productRepository.findOne(1L, EntityGraphUtils.empty());
+		assertThat(product).isNotNull();
+		assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
+	}
+
+	@Transactional
+	@Test
 	public void given_brand_eg_when_findone_then_brand_should_be_loaded(){
 		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
 		assertThat(product).isNotNull();

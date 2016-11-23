@@ -10,12 +10,12 @@ import java.util.List;
 public interface EntityGraph {
 
 	/**
-	 * @return The type of the entity graph. Can't be null.
+	 * @return The type of the entity graph. May be null.
 	 */
 	EntityGraphType getEntityGraphType();
 
 	/**
-	 * @return The name to use to retrieve the EntityGraph. May be null or empty
+	 * @return The name to use to retrieve the EntityGraph. May be null.
 	 */
 	String getEntityGraphName();
 
