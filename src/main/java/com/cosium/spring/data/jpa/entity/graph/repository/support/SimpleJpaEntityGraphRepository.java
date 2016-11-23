@@ -20,6 +20,8 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 /**
+ * A {@link SimpleJpaRepository} that supports {@link EntityGraph} passed through method arguments.
+ *
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
