@@ -25,7 +25,7 @@ This library gives the ability to pass EntityGraph on any Spring Data JPA reposi
         ...
     }
     ```
-3. Make sure your repositories extend `JpaEntityGraphRepository`
+3. Make sure your repositories extend `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
 
 ### Usage
 
