@@ -1,9 +1,12 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import org.aopalliance.intercept.ConstructorInterceptor;
+import org.aopalliance.intercept.ConstructorInvocation;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
