@@ -20,17 +20,17 @@ public abstract class EntityGraphSpecification<T> implements Specification<T>, E
 	}
 
 	@Override
-	public String getName() {
+	public String getEntityGraphName() {
 		return entityGraphName;
 	}
 
 	@Override
-	public EntityGraphType getType() {
+	public EntityGraphType getEntityGraphType() {
 		return EntityGraphType.FETCH;
 	}
 
 	@Override
-	public List<String> getAttributePaths() {
+	public List<String> getEntityGraphAttributePaths() {
 		return null;
 	}
 }

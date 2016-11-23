@@ -46,10 +46,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 				return null;
 			}
 
-			Assert.notNull(entityGraph.getType());
+			Assert.notNull(entityGraph.getEntityGraphType());
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
-			switch (entityGraph.getType()) {
+			switch (entityGraph.getEntityGraphType()) {
 				case FETCH:
 					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 					break;
@@ -60,9 +60,9 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					throw new RuntimeException("Unknown entity graph type");
 			}
 
-			List<String> attributePaths = entityGraph.getAttributePaths();
+			List<String> attributePaths = entityGraph.getEntityGraphAttributePaths();
 			JpaEntityGraph jpaEntityGraph = new JpaEntityGraph(
-					StringUtils.hasText(entityGraph.getName()) ? entityGraph.getName() : domainClass.getName() + "-_-_-_-_-_-",
+					StringUtils.hasText(entityGraph.getEntityGraphName()) ? entityGraph.getEntityGraphName() : domainClass.getName() + "-_-_-_-_-_-",
 					type,
 					attributePaths != null ? attributePaths.toArray(new String[attributePaths.size()]) : null
 			);

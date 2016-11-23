@@ -12,15 +12,15 @@ public interface EntityGraph {
 	/**
 	 * @return The type of the entity graph. Can't be null.
 	 */
-	EntityGraphType getType();
+	EntityGraphType getEntityGraphType();
 
 	/**
 	 * @return The name to use to retrieve the EntityGraph. May be null or empty
 	 */
-	String getName();
+	String getEntityGraphName();
 
 	/**
 	 * @return The attribute paths. May be null.
 	 */
-	List<String> getAttributePaths();
+	List<String> getEntityGraphAttributePaths();
 }
