@@ -8,6 +8,9 @@ import javax.persistence.*;
  * @author Reda.Housni-Alaoui
  */
 @NamedEntityGraphs(value = {
+		@NamedEntityGraph(name = "Product.default", attributeNodes = {
+				@NamedAttributeNode("maker")
+		}),
 		@NamedEntityGraph(name = Product.PRODUCT_BRAND_EG, attributeNodes = {
 			@NamedAttributeNode("brand")
 		})
@@ -26,6 +29,9 @@ public class Product {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Brand brand;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Maker maker;
 
 	public long getId() {
 		return id;
@@ -49,5 +55,13 @@ public class Product {
 
 	public void setBrand(Brand brand) {
 		this.brand = brand;
+	}
+
+	public Maker getMaker() {
+		return maker;
+	}
+
+	public void setMaker(Maker maker) {
+		this.maker = maker;
 	}
 }

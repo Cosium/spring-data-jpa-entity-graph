@@ -21,7 +21,6 @@ import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -94,6 +93,14 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		for(Product product: productPage.getContent()){
 			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 		}
+	}
+
+	@Transactional
+	@Test
+	public void given_default_eg_when_findone_without_eg_then_supplier_should_be_loaded(){
+		Product product = productRepository.findOne(1L);
+		assertThat(product).isNotNull();
+		assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
 	}
 
 }
