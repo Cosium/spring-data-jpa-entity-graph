@@ -19,7 +19,7 @@ public abstract class AbstractEntityGraph implements EntityGraph{
 	}
 
 	@Override
-	public EntityGraphType getType() {
+	public EntityGraphType getEntityGraphType() {
 		return type;
 	}
 

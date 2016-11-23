@@ -25,12 +25,12 @@ public class NamedEntityGraph extends AbstractEntityGraph {
 	}
 
 	@Override
-	public String getName() {
+	public String getEntityGraphName() {
 		return name;
 	}
 
 	@Override
-	public final List<String> getAttributePaths() {
+	public final List<String> getEntityGraphAttributePaths() {
 		return null;
 	}
 

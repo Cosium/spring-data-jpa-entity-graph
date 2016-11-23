@@ -22,12 +22,12 @@ public class DynamicEntityGraph extends AbstractEntityGraph {
 	}
 
 	@Override
-	public List<String> getAttributePaths() {
+	public List<String> getEntityGraphAttributePaths() {
 		return attributePaths;
 	}
 
 	@Override
-	public final String getName() {
+	public final String getEntityGraphName() {
 		return null;
 	}
 }
