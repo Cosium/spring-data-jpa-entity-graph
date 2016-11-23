@@ -2,6 +2,7 @@
 
 Today, Spring Data JPA supports EntityGraph exlusively through annotations.  
 Thus, for a method, the choice of EntityGraph must be made before compilation.  
+
 This library gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
 
 ### Quick start in 2 steps
