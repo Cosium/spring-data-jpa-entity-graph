@@ -10,6 +10,7 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.support.RepositoryProxyPostProcessor;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -45,6 +46,8 @@ class EntityGraphAwareRepositoryMethodPostProcessor implements RepositoryProxyPo
 			if (entityGraph == null) {
 				return null;
 			}
+
+			Assert.notNull(entityGraph.getType());
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
 			switch (entityGraph.getType()) {

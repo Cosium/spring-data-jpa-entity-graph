@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
@@ -32,6 +33,26 @@ public class SimpleJpaEntityGraphRepository<T, ID extends Serializable>
 
 	public SimpleJpaEntityGraphRepository(Class<T> domainClass, EntityManager em) {
 		super(domainClass, em);
+	}
+
+	@Override
+	public T findOne(Specification<T> spec, EntityGraph entityGraph) {
+		return findOne(spec);
+	}
+
+	@Override
+	public List<T> findAll(Specification<T> spec, EntityGraph entityGraph) {
+		return findAll(spec);
+	}
+
+	@Override
+	public Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraph entityGraph) {
+		return findAll(spec, pageable);
+	}
+
+	@Override
+	public List<T> findAll(Specification<T> spec, Sort sort, EntityGraph entityGraph) {
+		return findAll(spec, sort);
 	}
 
 	@Override
