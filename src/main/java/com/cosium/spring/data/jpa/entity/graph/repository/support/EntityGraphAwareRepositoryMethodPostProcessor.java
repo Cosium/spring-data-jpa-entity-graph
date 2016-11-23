@@ -82,12 +82,16 @@ class EntityGraphAwareRepositoryMethodPostProcessor implements RepositoryProxyPo
 				entityGraph = (EntityGraph) argument;
 				break;
 			}
-
-			CURRENT_ENTITY_GRAPH.set(buildEntityGraphBean(entityGraph));
+			EntityGraphBean entityGraphBean = buildEntityGraphBean(entityGraph);
+			if(entityGraphBean != null){
+				CURRENT_ENTITY_GRAPH.set(entityGraphBean);
+			}
 			try {
 				return invocation.proceed();
 			} finally {
-				CURRENT_ENTITY_GRAPH.remove();
+				if(entityGraphBean != null){
+					CURRENT_ENTITY_GRAPH.remove();
+				}
 			}
 		}
 	}
