@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
@@ -42,7 +43,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		}
 
 		private EntityGraphBean buildEntityGraphBean(EntityGraph entityGraph) {
-			if (entityGraph == null) {
+			if(EntityGraphUtils.isEmpty(entityGraph)){
 				return null;
 			}
 

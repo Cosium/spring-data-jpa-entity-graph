@@ -9,22 +9,22 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractEntityGraph implements EntityGraph{
 
-	private EntityGraphType type = EntityGraphType.FETCH;
+	private EntityGraphType entityGraphType = EntityGraphType.FETCH;
 
 	public AbstractEntityGraph(){}
 
-	public AbstractEntityGraph(EntityGraphType type){
-		Assert.notNull(type);
-		this.type = type;
+	public AbstractEntityGraph(EntityGraphType entityGraphType){
+		Assert.notNull(entityGraphType);
+		this.entityGraphType = entityGraphType;
 	}
 
 	@Override
 	public EntityGraphType getEntityGraphType() {
-		return type;
+		return entityGraphType;
 	}
 
-	public void setType(EntityGraphType type) {
-		Assert.notNull(type);
-		this.type = type;
+	public void setEntityGraphType(EntityGraphType entityGraphType) {
+		Assert.notNull(entityGraphType);
+		this.entityGraphType = entityGraphType;
 	}
 }
