@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphRepository;
+import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphSpecificationExecutor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
  */
 public class SimpleJpaEntityGraphRepository<T, ID extends Serializable>
 		extends SimpleJpaRepository<T, ID>
-		implements JpaEntityGraphRepository<T, ID> {
+		implements JpaEntityGraphRepository<T, ID>, JpaEntityGraphSpecificationExecutor<T> {
 
 	public SimpleJpaEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
