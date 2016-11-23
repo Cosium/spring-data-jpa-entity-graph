@@ -11,10 +11,8 @@ import org.springframework.data.jpa.repository.query.Jpa21Utils;
 
 /**
  * Pushes captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query hints. <br>
- *
  * Intercepts {@link EntityManager} method calls in order to manipulate query hints map. <br>
  * One interceptor instance is built and used by one unique repository instance. <br>
- *
  * Created on 23/11/16.
  *
  * @author Reda.Housni-Alaoui
@@ -32,6 +30,7 @@ class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
 
 	/**
 	 * Builds a proxy on entity manager which is aware of methods that can make use of query hints.
+	 *
 	 * @param entityManager The entity manager to proxy
 	 * @return The proxied entity manager
 	 */
@@ -48,34 +47,40 @@ class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
 			addEntityGraph(invocation);
 		}
 		Object result = invocation.proceed();
-		if(CREATE_QUERY_METHODS.contains(methodName)){
+		if (CREATE_QUERY_METHODS.contains(methodName)) {
 			addEntityGraph(invocation, (Query) result);
 		}
 		return result;
 	}
 
-	/**
-	 * Push the current entity graph to the created query
-	 * @param invocation The method invocation
-	 * @param query The query to populate
-	 */
-	private void addEntityGraph(MethodInvocation invocation, Query query){
+	private Map<String, Object> getCurrentQueryHints(EntityManager entityManager) {
 		EntityGraphBean entityGraphBean = EntityGraphAwareRepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
 		if (entityGraphBean == null) {
-			return;
+			return new HashMap<String, Object>();
 		}
-		Map<String, Object> hints = Jpa21Utils.tryGetFetchGraphHints(
-				(EntityManager) invocation.getThis(),
+		return Jpa21Utils.tryGetFetchGraphHints(
+				entityManager,
 				entityGraphBean.getJpaEntityGraph(),
 				entityGraphBean.getDomainClass()
 		);
-		for(Map.Entry<String, Object> hint: hints.entrySet()){
+	}
+
+	/**
+	 * Push the current entity graph to the created query
+	 *
+	 * @param invocation The method invocation
+	 * @param query The query to populate
+	 */
+	private void addEntityGraph(MethodInvocation invocation, Query query) {
+		Map<String, Object> hints = getCurrentQueryHints((EntityManager) invocation.getThis());
+		for (Map.Entry<String, Object> hint : hints.entrySet()) {
 			query.setHint(hint.getKey(), hint.getValue());
 		}
 	}
 
 	/**
 	 * Push the current entity graph to the find method query hints.
+	 *
 	 * @param invocation The invocation of the find method
 	 */
 	private void addEntityGraph(MethodInvocation invocation) {
@@ -92,21 +97,8 @@ class EntityGraphAwareRepositoryEntityManager implements MethodInterceptor {
 			return;
 		}
 
-		EntityGraphBean entityGraphBean = EntityGraphAwareRepositoryMethodPostProcessor.getCurrentJpaEntityGraph();
-		if (entityGraphBean == null) {
-			return;
-		}
-
 		queryProperties = new HashMap<String, Object>(queryProperties);
-
-		queryProperties.putAll(
-				Jpa21Utils.tryGetFetchGraphHints(
-						(EntityManager) invocation.getThis(),
-						entityGraphBean.getJpaEntityGraph(),
-						entityGraphBean.getDomainClass()
-				)
-		);
-
+		queryProperties.putAll(getCurrentQueryHints((EntityManager) invocation.getThis()));
 		invocation.getArguments()[index] = queryProperties;
 	}
 }
