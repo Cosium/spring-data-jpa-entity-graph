@@ -43,27 +43,22 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
+		EntityGraphBean entityGraphBean = RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
 		String methodName = invocation.getMethod().getName();
-		if (FIND_METHODS.contains(methodName)) {
-			addEntityGraphToFindMethodQueryHints(invocation);
+		if (entityGraphBean != null && FIND_METHODS.contains(methodName)) {
+			addEntityGraphToFindMethodQueryHints(entityGraphBean, invocation);
 		}
+
 		Object result = invocation.proceed();
-		if (CREATE_QUERY_METHODS.contains(methodName)) {
-			addEntityGraphToCreatedQuery(invocation, (Query) result);
+
+		if (entityGraphBean != null && CREATE_QUERY_METHODS.contains(methodName)) {
+			addEntityGraphToCreatedQuery(entityGraphBean, invocation, (Query) result);
 		}
 		return result;
 	}
 
-	private EntityGraphBean getCurrentEntitGraph() {
-		EntityGraphBean entityGraphBean = RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
+	private Map<String, Object> getQueryHints(EntityManager entityManager, EntityGraphBean entityGraphBean) {
 		if (entityGraphBean == null) {
-			return null;
-		}
-		return entityGraphBean;
-	}
-
-	private Map<String, Object> getQueryHints(EntityManager entityManager, EntityGraphBean entityGraphBean){
-		if(entityGraphBean == null){
 			return new HashMap<String, Object>();
 		}
 		return Jpa21Utils.tryGetFetchGraphHints(
@@ -79,28 +74,23 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 	 * @param invocation The method invocation
 	 * @param query The query to populate
 	 */
-	private void addEntityGraphToCreatedQuery(MethodInvocation invocation, Query query) {
-		EntityGraphBean currentEntityGraph = getCurrentEntitGraph();
-		if(currentEntityGraph == null){
-			return;
-		}
-
+	private void addEntityGraphToCreatedQuery(EntityGraphBean entityGraphBean, MethodInvocation invocation, Query query) {
 		Class<?> resultType = null;
-		for(Object argument: invocation.getArguments()){
-			if(argument instanceof Class){
+		for (Object argument : invocation.getArguments()) {
+			if (argument instanceof Class) {
 				resultType = (Class<?>) argument;
 				break;
-			} else if(argument instanceof CriteriaQuery){
+			} else if (argument instanceof CriteriaQuery) {
 				resultType = ((CriteriaQuery) argument).getResultType();
 				break;
 			}
 		}
 
-		if(resultType != null && !resultType.equals(currentEntityGraph.getDomainClass())){
+		if (resultType != null && !resultType.equals(entityGraphBean.getDomainClass())) {
 			return;
 		}
 
-		Map<String, Object> hints = getQueryHints((EntityManager) invocation.getThis(), currentEntityGraph);
+		Map<String, Object> hints = getQueryHints((EntityManager) invocation.getThis(), entityGraphBean);
 		for (Map.Entry<String, Object> hint : hints.entrySet()) {
 			query.setHint(hint.getKey(), hint.getValue());
 		}
@@ -111,12 +101,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 	 *
 	 * @param invocation The invocation of the find method
 	 */
-	private void addEntityGraphToFindMethodQueryHints(MethodInvocation invocation) {
-		EntityGraphBean currentEntityGraph = getCurrentEntitGraph();
-		if(currentEntityGraph == null){
-			return;
-		}
-
+	private void addEntityGraphToFindMethodQueryHints(EntityGraphBean entityGraphBean, MethodInvocation invocation) {
 		Map<String, Object> queryProperties = null;
 		int index = 0;
 		for (Object argument : invocation.getArguments()) {
@@ -131,7 +116,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 		}
 
 		queryProperties = new HashMap<String, Object>(queryProperties);
-		queryProperties.putAll(getQueryHints((EntityManager) invocation.getThis(), currentEntityGraph));
+		queryProperties.putAll(getQueryHints((EntityManager) invocation.getThis(), entityGraphBean));
 		invocation.getArguments()[index] = queryProperties;
 	}
 }
