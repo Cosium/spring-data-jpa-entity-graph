@@ -145,7 +145,7 @@
                             <goal>test-process</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/generated-test-sources/java</outputDirectory>
+                            <outputDirectory>target/generated-test-sources/test-annotations</outputDirectory>
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>

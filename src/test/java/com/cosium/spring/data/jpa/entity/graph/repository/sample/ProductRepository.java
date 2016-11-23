@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphQueryDslPredicateExecutor;
 import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphSpecificationExecutor;
 
@@ -11,7 +12,10 @@ import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphSpecific
  *
  * @author Reda.Housni-Alaoui
  */
-public interface ProductRepository extends JpaEntityGraphRepository<Product, Long>, JpaEntityGraphSpecificationExecutor<Product> {
+public interface ProductRepository
+		extends JpaEntityGraphRepository<Product, Long>,
+		JpaEntityGraphSpecificationExecutor<Product>,
+		JpaEntityGraphQueryDslPredicateExecutor<Product> {
 
 	List<Product> findByName(String name, EntityGraph entityGraph);
 
