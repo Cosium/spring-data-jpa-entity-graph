@@ -29,7 +29,7 @@ public class DataRepositoryConfiguration {
 
 ### Usage
 
-Let's consider the following entities and repositories:
+Let's consider the following entities :
 ```java
 @Entity
 public class Brand {
@@ -55,18 +55,20 @@ public class Product {
     //...
 }	
 ```
+
+Your repository must extend JpaEntityGraphRepository :
 ```java
 public interface ProductRepository extends JpaEntityGraphRepository<Product, Long> {
     List<Product> findByName(String name, EntityGraph entityGraph);
 }
 ```
 
-You can pass the entity graph to the `findByName` method:
+You can pass the entity graph to the `findByName` method :
 ```java
 productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.brand");
 ```
 
-Or to the `findOne` method:
+Or to the `findOne` method :
 ```java
 productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand");
 ```
