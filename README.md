@@ -5,9 +5,9 @@ Thus, for a method, the choice of EntityGraph must be made before compilation.
 
 This library gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
 
-### Quick start in 2 steps
+### Quick start in 3 steps
 
-Add the dependency :
+1. Add the dependency :
 
 ```xml
 <dependency>
@@ -17,7 +17,7 @@ Add the dependency :
 </dependency>
 ```
 
-In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
+2. In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
 
 ```java
 @Configuration
@@ -27,9 +27,11 @@ public class DataRepositoryConfiguration {
 }
 ```
 
+3. Make sure your repositories extend `JpaEntityGraphRepository`
+
 ### Usage
 
-Let's consider the following entities :
+Let's consider the following entities and repository :
 ```java
 @Entity
 public class Brand {
@@ -55,8 +57,6 @@ public class Product {
     //...
 }	
 ```
-
-Your repository must extend JpaEntityGraphRepository :
 ```java
 public interface ProductRepository extends JpaEntityGraphRepository<Product, Long> {
     List<Product> findByName(String name, EntityGraph entityGraph);
@@ -72,5 +72,7 @@ Or to the `findOne` method :
 ```java
 productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand");
 ```
+
+Or any method you like.
 
 You can also pass a dynamically built EntityGraph by using DynamicEntityGraph implementation.
