@@ -2,9 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphRepository;
@@ -14,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.query.Jpa21Utils;
-import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 

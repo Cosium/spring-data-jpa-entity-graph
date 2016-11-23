@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.core.RepositoryMetadata;
