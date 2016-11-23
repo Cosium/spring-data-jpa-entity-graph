@@ -26,31 +26,12 @@ public class SimpleJpaEntityGraphRepository<T, ID extends Serializable>
 		extends SimpleJpaRepository<T, ID>
 		implements JpaEntityGraphRepository<T, ID> {
 
-	private final EntityManager entityManager;
-	private final Class<T> domainClass;
-
 	public SimpleJpaEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
-		this.entityManager = entityManager;
-		this.domainClass = entityInformation.getJavaType();
 	}
 
 	public SimpleJpaEntityGraphRepository(Class<T> domainClass, EntityManager em) {
 		super(domainClass, em);
-		this.entityManager = em;
-		this.domainClass = domainClass;
-	}
-
-	@Override
-	protected Map<String, Object> getQueryHints() {
-		Map<String, Object> queryHints = super.getQueryHints();
-	 	JpaEntityGraph currentEntityGraph = JpaEntityGraphPostProcessor.getCurrentJpaEntityGraph();
-		if(currentEntityGraph == null){
-			return queryHints;
-		}
-		queryHints = new HashMap<String, Object>(queryHints);
-		queryHints.putAll(Jpa21Utils.tryGetFetchGraphHints(entityManager, currentEntityGraph, domainClass));
-		return queryHints;
 	}
 
 	@Override

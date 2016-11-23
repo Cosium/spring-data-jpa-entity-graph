@@ -17,29 +17,35 @@ import org.springframework.util.StringUtils;
  *
  * @author Reda.Housni-Alaoui
  */
-class JpaEntityGraphPostProcessor implements RepositoryProxyPostProcessor {
+class RepositoryMethodPostProcessor implements RepositoryProxyPostProcessor {
 
-	private static final ThreadLocal<JpaEntityGraph> CURRENT_ENTITY_GRAPH = new NamedThreadLocal<JpaEntityGraph>("Thread local holding the current spring data jpa repository entity graph");
+	private static final ThreadLocal<EntityGraphBean> CURRENT_ENTITY_GRAPH =
+			new NamedThreadLocal<EntityGraphBean>("Thread local holding the current spring data jpa repository entity graph");
 
 	@Override
 	public void postProcess(ProxyFactory factory, RepositoryInformation repositoryInformation) {
-		factory.addAdvice(JpaEntityGraphMethodInterceptor.INSTANCE);
+		factory.addAdvice(new JpaEntityGraphMethodInterceptor(repositoryInformation.getDomainType()));
 	}
 
-	static JpaEntityGraph getCurrentJpaEntityGraph(){
+	static EntityGraphBean getCurrentJpaEntityGraph() {
 		return CURRENT_ENTITY_GRAPH.get();
 	}
 
-	private enum JpaEntityGraphMethodInterceptor implements MethodInterceptor{
-		INSTANCE;
+	private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
 
-		private static JpaEntityGraph convert(EntityGraph entityGraph){
-			if(entityGraph == null){
+		private final Class<?> domainClass;
+
+		JpaEntityGraphMethodInterceptor(Class<?> domainClass){
+			this.domainClass = domainClass;
+		}
+
+		private EntityGraphBean convert(EntityGraph entityGraph) {
+			if (entityGraph == null) {
 				return null;
 			}
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
-			switch (entityGraph.getType()){
+			switch (entityGraph.getType()) {
 				case FETCH:
 					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 					break;
@@ -51,19 +57,20 @@ class JpaEntityGraphPostProcessor implements RepositoryProxyPostProcessor {
 			}
 
 			List<String> attributePaths = entityGraph.getAttributePaths();
-			return new JpaEntityGraph(
-					StringUtils.hasText(entityGraph.getName())? entityGraph.getName(): "_-_-_-_-_",
+			JpaEntityGraph jpaEntityGraph = new JpaEntityGraph(
+					StringUtils.hasText(entityGraph.getName()) ? entityGraph.getName() : "_-_-_-_-_",
 					type,
-					attributePaths != null? attributePaths.toArray(new String[attributePaths.size()]) : null
+					attributePaths != null ? attributePaths.toArray(new String[attributePaths.size()]) : null
 			);
+			return new EntityGraphBean(jpaEntityGraph, domainClass);
 		}
 
 		@Override
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			Object[] arguments = invocation.getArguments();
 			EntityGraph entityGraph = null;
-			for(Object argument: arguments){
-				if(!(argument instanceof EntityGraph)){
+			for (Object argument : arguments) {
+				if (!(argument instanceof EntityGraph)) {
 					continue;
 				}
 				entityGraph = (EntityGraph) argument;
@@ -71,7 +78,7 @@ class JpaEntityGraphPostProcessor implements RepositoryProxyPostProcessor {
 			}
 
 			CURRENT_ENTITY_GRAPH.set(convert(entityGraph));
-			try{
+			try {
 				return invocation.proceed();
 			} finally {
 				CURRENT_ENTITY_GRAPH.remove();

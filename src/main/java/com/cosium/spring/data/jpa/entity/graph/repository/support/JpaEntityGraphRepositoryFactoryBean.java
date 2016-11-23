@@ -16,6 +16,11 @@ public class JpaEntityGraphRepositoryFactoryBean<R extends JpaRepository<T, I>, 
 	extends JpaRepositoryFactoryBean<R, T, I>{
 
 	@Override
+	public void setEntityManager(EntityManager entityManager) {
+		super.setEntityManager(RepositoryEntityManager.proxy(entityManager));
+	}
+
+	@Override
 	protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
 		return new JpaEntityGraphRepositoryFactory(entityManager);
 	}
