@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.*;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -44,18 +45,25 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		String methodName = invocation.getMethod().getName();
 		if (FIND_METHODS.contains(methodName)) {
-			addEntityGraph(invocation);
+			addEntityGraphToFindMethodQueryHints(invocation);
 		}
 		Object result = invocation.proceed();
 		if (CREATE_QUERY_METHODS.contains(methodName)) {
-			addEntityGraph(invocation, (Query) result);
+			addEntityGraphToCreatedQuery(invocation, (Query) result);
 		}
 		return result;
 	}
 
-	private Map<String, Object> getCurrentQueryHints(EntityManager entityManager) {
+	private EntityGraphBean getCurrentEntitGraph() {
 		EntityGraphBean entityGraphBean = RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
 		if (entityGraphBean == null) {
+			return null;
+		}
+		return entityGraphBean;
+	}
+
+	private Map<String, Object> getQueryHints(EntityManager entityManager, EntityGraphBean entityGraphBean){
+		if(entityGraphBean == null){
 			return new HashMap<String, Object>();
 		}
 		return Jpa21Utils.tryGetFetchGraphHints(
@@ -71,8 +79,28 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 	 * @param invocation The method invocation
 	 * @param query The query to populate
 	 */
-	private void addEntityGraph(MethodInvocation invocation, Query query) {
-		Map<String, Object> hints = getCurrentQueryHints((EntityManager) invocation.getThis());
+	private void addEntityGraphToCreatedQuery(MethodInvocation invocation, Query query) {
+		EntityGraphBean currentEntityGraph = getCurrentEntitGraph();
+		if(currentEntityGraph == null){
+			return;
+		}
+
+		Class<?> resultType = null;
+		for(Object argument: invocation.getArguments()){
+			if(argument instanceof Class){
+				resultType = (Class<?>) argument;
+				break;
+			} else if(argument instanceof CriteriaQuery){
+				resultType = ((CriteriaQuery) argument).getResultType();
+				break;
+			}
+		}
+
+		if(resultType != null && !resultType.equals(currentEntityGraph.getDomainClass())){
+			return;
+		}
+
+		Map<String, Object> hints = getQueryHints((EntityManager) invocation.getThis(), currentEntityGraph);
 		for (Map.Entry<String, Object> hint : hints.entrySet()) {
 			query.setHint(hint.getKey(), hint.getValue());
 		}
@@ -83,7 +111,12 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 	 *
 	 * @param invocation The invocation of the find method
 	 */
-	private void addEntityGraph(MethodInvocation invocation) {
+	private void addEntityGraphToFindMethodQueryHints(MethodInvocation invocation) {
+		EntityGraphBean currentEntityGraph = getCurrentEntitGraph();
+		if(currentEntityGraph == null){
+			return;
+		}
+
 		Map<String, Object> queryProperties = null;
 		int index = 0;
 		for (Object argument : invocation.getArguments()) {
@@ -98,7 +131,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 		}
 
 		queryProperties = new HashMap<String, Object>(queryProperties);
-		queryProperties.putAll(getCurrentQueryHints((EntityManager) invocation.getThis()));
+		queryProperties.putAll(getQueryHints((EntityManager) invocation.getThis(), currentEntityGraph));
 		invocation.getArguments()[index] = queryProperties;
 	}
 }
