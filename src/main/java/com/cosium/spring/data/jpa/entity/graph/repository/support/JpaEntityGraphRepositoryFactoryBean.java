@@ -19,7 +19,7 @@ public class JpaEntityGraphRepositoryFactoryBean<R extends JpaRepository<T, I>, 
 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
-		/* Make sure to use the EntityGraph aware EntityManager */
+		/* Make sure to use the EntityManager able to inject captured EntityGraphs */
 		super.setEntityManager(RepositoryEntityManagerEntityGraphInjector.proxy(entityManager));
 	}
 
