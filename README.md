@@ -8,7 +8,6 @@ This library gives the ability to pass EntityGraph on any Spring Data JPA reposi
 ### Quick start in 3 steps
 
 1. Add the dependency :
-
 ```xml
 <dependency>
     <groupId>com.cosium.spring.data</groupId>
@@ -16,9 +15,7 @@ This library gives the ability to pass EntityGraph on any Spring Data JPA reposi
     <version>1.11.00-SNAPSHOT</version>
 </dependency>
 ```
-
 2. In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
-
 ```java
 @Configuration
 @EnableJpaRepositories(repositoryFactoryBeanClass = JpaEntityGraphRepositoryFactoryBean.class)
@@ -26,7 +23,6 @@ public class DataRepositoryConfiguration {
     ...
 }
 ```
-
 3. Make sure your repositories extend `JpaEntityGraphRepository`
 
 ### Usage
