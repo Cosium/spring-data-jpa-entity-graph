@@ -19,6 +19,8 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.hibernate.Hibernate;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +66,32 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		List<Product> products = productRepository.findByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
 		assertThat(products).hasSize(1);
 		for(Product product: products){
+			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+		}
+	}
+
+	@Transactional
+	@Test
+	public void given_brand_eg_when_findAll_paginated_then_brand_should_be_loaded(){
+		Page<Product> productPage = productRepository.findAll(new PageRequest(0, 10), EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		assertThat(productPage.getContent()).isNotEmpty();
+		for(Product product: productPage.getContent()){
+			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+		}
+	}
+
+	@Transactional
+	@Test
+	public void given_brand_eg_when_findAll_paginated_with_spec_then_brand_should_be_loaded(){
+		Page<Product> productPage = productRepository.findAll(new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
+			@Override
+			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				return null;
+			}
+		}, new PageRequest(0, 10));
+
+		assertThat(productPage.getContent()).isNotEmpty();
+		for(Product product: productPage.getContent()){
 			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 		}
 	}
