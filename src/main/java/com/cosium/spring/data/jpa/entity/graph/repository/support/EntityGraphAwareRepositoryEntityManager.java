@@ -10,8 +10,10 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
 
 /**
+ * Pushes captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query hints. <br>
+ *
  * Intercepts {@link EntityManager} method calls in order to manipulate query hints map. <br>
- * One interceptor intstance is built and used by one unique repository instance.
+ * One interceptor instance is built and used by one unique repository instance. <br>
  *
  * Created on 23/11/16.
  *

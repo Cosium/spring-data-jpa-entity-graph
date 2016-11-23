@@ -13,6 +13,8 @@ import org.springframework.data.repository.core.support.RepositoryProxyPostProce
 import org.springframework.util.StringUtils;
 
 /**
+ * Captures {@link EntityGraph} on repositories method calls.
+ *
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
