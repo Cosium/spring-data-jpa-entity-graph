@@ -5,7 +5,7 @@ Thus, for a method, the choice of EntityGraph must be made before compilation.
 
 This library gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
 
-### Quick start in 3 steps
+### Quick start
 
 1. Add the dependency :
     
@@ -27,7 +27,7 @@ This library gives the ability to pass EntityGraph on any Spring Data JPA reposi
     ```
 3. Make sure your repositories extend `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
 
-### Usage
+### Basic Usage
 
 Let's consider the following entities and repository :
 ```java
@@ -63,14 +63,42 @@ public interface ProductRepository extends JpaEntityGraphRepository<Product, Lon
 
 You can pass the entity graph to the `findByName` method :
 ```java
-productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.brand");
+productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.brand"));
 ```
 
 Or to the `findOne` method :
 ```java
-productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand");
+productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand"));
 ```
 
 Or any method you like.
 
 You can also pass a dynamically built EntityGraph by using DynamicEntityGraph implementation.
+
+### Default EntityGraph
+
+For an Entity, you can define its default EntityGraph.  
+And Entity default EntityGraph will be used each time the Entity repository method is called without EntityGraph.  
+
+A default EntityGraph name must end with `.default`. 
+
+```java
+@NamedEntityGraphs(value = {
+    @NamedEntityGraph(name = "Product.default", attributeNodes = {
+        @NamedAttributeNode("brand")
+    })
+})
+@Entity
+public class Product {
+    @Id
+    private long id = 0;
+    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Brand brand;
+    //...
+}	
+```
+```java
+// This call will make use of "Product.default" EntityGraph.
+productRepository.findOne(1L);
+```
