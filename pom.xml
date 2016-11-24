@@ -150,7 +150,7 @@
                     <pushChanges>false</pushChanges>
                     <localCheckout>true</localCheckout>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
+                    <useReleaseProfile>true</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                 </configuration>
@@ -171,36 +171,38 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
-    <organization>
-        <name>Cosium</name>
-        <url>http://www.cosium.com</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>reda-alaoui</id>
-            <name>Réda Housni Alaoui</name>
-            <email>reda.housnialaoui@cosium.com</email>
-            <url>https://github.com/reda-alaoui</url>
-        </developer>
-    </developers>
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <distributionManagement>
         <snapshotRepository>
@@ -219,6 +221,20 @@
         <url>https://github.com/Cosium/spring-data-jpa-entity-graph</url>
       <tag>HEAD</tag>
   </scm>
+
+    <organization>
+        <name>Cosium</name>
+        <url>http://www.cosium.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>reda-alaoui</id>
+            <name>Réda Housni Alaoui</name>
+            <email>reda.housnialaoui@cosium.com</email>
+            <url>https://github.com/reda-alaoui</url>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
