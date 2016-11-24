@@ -27,6 +27,8 @@ public class Product {
 
 	private String name;
 
+	private String barcode;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Brand brand;
 
@@ -63,5 +65,13 @@ public class Product {
 
 	public void setMaker(Maker maker) {
 		this.maker = maker;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
 	}
 }

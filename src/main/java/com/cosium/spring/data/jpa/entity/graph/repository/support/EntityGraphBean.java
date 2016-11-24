@@ -13,13 +13,15 @@ import org.springframework.util.Assert;
 class EntityGraphBean {
 	private final JpaEntityGraph jpaEntityGraph;
 	private final Class<?> domainClass;
+	private final boolean optional;
 
-	public EntityGraphBean(JpaEntityGraph jpaEntityGraph, Class<?> domainClass) {
+	public EntityGraphBean(JpaEntityGraph jpaEntityGraph, Class<?> domainClass, boolean optional) {
 		Assert.notNull(jpaEntityGraph);
 		Assert.notNull(domainClass);
 
 		this.jpaEntityGraph = jpaEntityGraph;
 		this.domainClass = domainClass;
+		this.optional = optional;
 	}
 
 	/**
@@ -34,5 +36,12 @@ class EntityGraphBean {
 	 */
 	public Class<?> getDomainClass() {
 		return domainClass;
+	}
+
+	/**
+	 * @return True if this entity graph is not mandatory
+	 */
+	public boolean isOptional() {
+		return optional;
 	}
 }

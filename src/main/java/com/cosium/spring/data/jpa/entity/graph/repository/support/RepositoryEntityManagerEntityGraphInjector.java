@@ -7,8 +7,9 @@ import java.util.*;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.data.jpa.repository.query.Jpa21Utils;
 
 /**
  * Injects captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query hints. <br>
@@ -20,6 +21,8 @@ import org.springframework.data.jpa.repository.query.Jpa21Utils;
  */
 class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
+	private static final Logger LOG = LoggerFactory.getLogger(RepositoryEntityManagerEntityGraphInjector.class);
+
 	/**
 	 * The list of methods that can take a map of query hints as an argument
 	 */
@@ -28,6 +31,9 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 	 * The list of methods that can return a {@link Query} object. {@link Query} can then be populated with query hints.
 	 */
 	private static final List<String> CREATE_QUERY_METHODS = Arrays.asList("createQuery", "createNamedQuery");
+
+	private RepositoryEntityManagerEntityGraphInjector() {
+	}
 
 	/**
 	 * Builds a proxy on entity manager which is aware of methods that can make use of query hints.
@@ -43,37 +49,24 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		EntityGraphBean entityGraph = RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
+		EntityGraphBean entityGraphCandidate = RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
 		String methodName = invocation.getMethod().getName();
-		boolean hasEntityGraph = entityGraph != null;
-		if (hasEntityGraph && FIND_METHODS.contains(methodName)) {
-			addEntityGraphToFindMethodQueryHints(entityGraph, invocation);
+		boolean hasEntityGraphCandidate = entityGraphCandidate != null;
+		if (hasEntityGraphCandidate && FIND_METHODS.contains(methodName)) {
+			addEntityGraphToFindMethodQueryHints(entityGraphCandidate, invocation);
 		}
 
 		Object result = invocation.proceed();
 
-		if (hasEntityGraph && CREATE_QUERY_METHODS.contains(methodName)) {
-			addEntityGraphToCreatedQuery(entityGraph, invocation, (Query) result);
+		if (hasEntityGraphCandidate
+				&& CREATE_QUERY_METHODS.contains(methodName)
+				&& isQueryCreationEligible(entityGraphCandidate, invocation)) {
+			result = RepositoryQueryEntityGraphInjector.proxy((Query) result, (EntityManager) invocation.getThis(), entityGraphCandidate);
 		}
 		return result;
 	}
 
-	private Map<String, Object> getQueryHints(EntityManager entityManager, EntityGraphBean entityGraph) {
-		return Jpa21Utils.tryGetFetchGraphHints(
-				entityManager,
-				entityGraph.getJpaEntityGraph(),
-				entityGraph.getDomainClass()
-		);
-	}
-
-	/**
-	 * Push the current entity graph to the created query
-	 *
-	 * @param entityGraph The EntityGraph to set
-	 * @param invocation The method invocation
-	 * @param query The query to populate
-	 */
-	private void addEntityGraphToCreatedQuery(EntityGraphBean entityGraph, MethodInvocation invocation, Query query) {
+	private boolean isQueryCreationEligible(EntityGraphBean entityGraphCandidate, MethodInvocation invocation) {
 		Class<?> resultType = null;
 		for (Object argument : invocation.getArguments()) {
 			if (argument instanceof Class) {
@@ -84,24 +77,18 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 				break;
 			}
 		}
-
-		if (resultType != null && !resultType.equals(entityGraph.getDomainClass())) {
-			return;
-		}
-
-		Map<String, Object> hints = getQueryHints((EntityManager) invocation.getThis(), entityGraph);
-		for (Map.Entry<String, Object> hint : hints.entrySet()) {
-			query.setHint(hint.getKey(), hint.getValue());
-		}
+		return resultType == null || resultType.equals(entityGraphCandidate.getDomainClass());
 	}
 
 	/**
 	 * Push the current entity graph to the find method query hints.
 	 *
-	 * @param entityGraph The EntityGraph to set
+	 * @param entityGraphCandidate The EntityGraph to set
 	 * @param invocation The invocation of the find method
 	 */
-	private void addEntityGraphToFindMethodQueryHints(EntityGraphBean entityGraph, MethodInvocation invocation) {
+	private void addEntityGraphToFindMethodQueryHints(EntityGraphBean entityGraphCandidate, MethodInvocation invocation) {
+		LOG.trace("Trying to push the EntityGraph candidate to the query hints find method");
+
 		Map<String, Object> queryProperties = null;
 		int index = 0;
 		for (Object argument : invocation.getArguments()) {
@@ -112,11 +99,17 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 			index++;
 		}
 		if (queryProperties == null) {
+			LOG.trace("No query hints passed to the find method.");
+			return;
+		}
+		if (entityGraphCandidate.isOptional() && QueryHintsUtils.containsEntityGraph(queryProperties)) {
+			LOG.trace("The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
 			return;
 		}
 
 		queryProperties = new HashMap<String, Object>(queryProperties);
-		queryProperties.putAll(getQueryHints((EntityManager) invocation.getThis(), entityGraph));
+		QueryHintsUtils.removeEntityGraphs(queryProperties);
+		queryProperties.putAll(QueryHintsUtils.buildQueryHints((EntityManager) invocation.getThis(), entityGraphCandidate));
 		invocation.getArguments()[index] = queryProperties;
 	}
 }

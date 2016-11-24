@@ -103,4 +103,12 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
 	}
 
+	@Transactional
+	@Test
+	public void given_default_eg_when_findByBarcode_with_eg_annotation_on_brand_eg_then_brand_should_be_loaded(){
+		Product product = productRepository.findByBarcode("1111");
+		assertThat(product).isNotNull();
+		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+	}
+
 }
