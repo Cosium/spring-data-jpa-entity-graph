@@ -5,9 +5,18 @@ Thus, for a method, the choice of EntityGraph must be made before compilation.
 
 This library gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
 
+### Spring Data JPA Compatibility
+
+This library follows the Spring Data JPA versionning semantic.
+
+spring-data-jpa-entity-graph | spring-data-jpa
+---------------------------- | ---------------
+1.11.x | 1.11.y
+1.10.x | 1.10.y
+
 ### Quick start
 
-1. Add the dependency :
+1. In addition to spring-data-jpa, add the library dependency :
     
     ```xml
     <dependency>
