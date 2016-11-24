@@ -4,6 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Spring Data JPA EntityGraph</name>
+    <description>A Spring Data JPA extension allowing full usage of JPA EntityGraph on repositories</description>
+    <url>https://github.com/Cosium/spring-data-jpa-entity-graph</url>
+
     <groupId>com.cosium.spring.data</groupId>
     <artifactId>spring-data-jpa-entity-graph</artifactId>
     <version>1.11.00-SNAPSHOT</version>
