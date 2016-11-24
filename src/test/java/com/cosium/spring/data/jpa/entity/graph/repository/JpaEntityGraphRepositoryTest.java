@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.BrandRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.EntityGraphSpecification;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
@@ -34,6 +35,8 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 
 	@Inject
 	private ProductRepository productRepository;
+	@Inject
+	private BrandRepository brandRepository;
 
 	@Transactional
 	@Test
@@ -121,6 +124,12 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Test
 	public void given_products_when_findAllRaw_then_it_should_work(){
 		productRepository.findAllRaw();
+	}
+
+	@Transactional
+	@Test
+	public void given_entity_without_default_eg_when_findall_then_it_should_work(){
+		brandRepository.findAll();
 	}
 
 }
