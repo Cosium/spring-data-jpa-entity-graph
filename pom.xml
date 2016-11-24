@@ -215,4 +215,10 @@
         </repository>
     </distributionManagement>
 
+    <scm>
+        <connection>scm:git:https://github.com/Cosium/spring-data-jpa-entity-graph</connection>
+        <developerConnection>scm:git:https://github.com/Cosium/spring-data-jpa-entity-graph</developerConnection>
+        <url>https://github.com/Cosium/spring-data-jpa-entity-graph</url>
+    </scm>
+
 </project>
