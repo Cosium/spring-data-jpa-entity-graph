@@ -215,4 +215,12 @@
         <url>https://github.com/Cosium/spring-data-jpa-entity-graph</url>
     </scm>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
 </project>
