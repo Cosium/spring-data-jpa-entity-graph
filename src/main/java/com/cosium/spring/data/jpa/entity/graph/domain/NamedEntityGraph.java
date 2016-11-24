@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.domain;
 
 import java.util.List;
 
+import com.google.common.base.MoreObjects;
 import org.springframework.util.Assert;
 
 /**
@@ -34,4 +35,10 @@ public class NamedEntityGraph extends AbstractEntityGraph {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("name", name)
+				.toString();
+	}
 }

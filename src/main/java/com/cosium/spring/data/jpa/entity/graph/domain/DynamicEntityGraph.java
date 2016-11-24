@@ -3,6 +3,8 @@ package com.cosium.spring.data.jpa.entity.graph.domain;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created on 22/11/16.
  *
@@ -29,5 +31,13 @@ public class DynamicEntityGraph extends AbstractEntityGraph {
 	@Override
 	public final String getEntityGraphName() {
 		return null;
+	}
+
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("attributePaths", attributePaths)
+				.toString();
 	}
 }

@@ -117,4 +117,10 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		productRepository.countByName("Product 1");
 	}
 
+	@Transactional
+	@Test
+	public void given_products_when_findAllRaw_then_it_should_work(){
+		productRepository.findAllRaw();
+	}
+
 }

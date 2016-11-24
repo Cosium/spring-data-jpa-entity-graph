@@ -1,5 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
+import com.google.common.base.MoreObjects;
 import org.springframework.util.Assert;
 
 /**
@@ -26,5 +27,13 @@ public abstract class AbstractEntityGraph implements EntityGraph{
 	public void setEntityGraphType(EntityGraphType entityGraphType) {
 		Assert.notNull(entityGraphType);
 		this.entityGraphType = entityGraphType;
+	}
+
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("entityGraphType", entityGraphType)
+				.toString();
 	}
 }

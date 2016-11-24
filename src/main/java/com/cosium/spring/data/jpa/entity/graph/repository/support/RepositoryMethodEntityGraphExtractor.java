@@ -8,7 +8,9 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.aop.framework.ReflectiveMethodInvocation;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.support.RepositoryProxyPostProcessor;
@@ -57,8 +59,8 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 	private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
 
 		private static final String DEFAULT_ENTITYGRAPH_NAME_SUFFIX = ".default";
-		private final Class domainClass;
-		private final EntityGraphBean defaultEntityGraph;
+		private final Class<?> domainClass;
+		private final EntityGraph defaultEntityGraph;
 
 		JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class domainClass) {
 			this.domainClass = domainClass;
@@ -69,18 +71,18 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		 * @param entityManager
 		 * @return The default entity graph if it exists. Null otherwise.
 		 */
-		private EntityGraphBean findDefaultEntityGraph(EntityManager entityManager){
-			EntityGraphBean entityGraphBean = null;
-			List<javax.persistence.EntityGraph<?>> entityGraphs = entityManager.getEntityGraphs(domainClass);
+		private EntityGraph findDefaultEntityGraph(EntityManager entityManager) {
+			EntityGraph defaultEntityGraph = null;
+			List<javax.persistence.EntityGraph<?>> entityGraphs = (List<javax.persistence.EntityGraph<?>>) entityManager.getEntityGraphs(domainClass);
 			for (javax.persistence.EntityGraph entityGraph : entityGraphs) {
 				if (entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
-					if(entityGraphBean != null){
-						throw new RuntimeException("Multiple default entity graphs detected : " + entityGraph.getName() + " and " + entityGraphBean.getJpaEntityGraph().getName());
+					if (defaultEntityGraph != null) {
+						throw new RuntimeException("Multiple default entity graphs detected : " + entityGraph.getName() + " and " + defaultEntityGraph.getEntityGraphName());
 					}
-					entityGraphBean = buildEntityGraphBean(EntityGraphUtils.fromName(entityGraph.getName()), true);
+					defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName());
 				}
 			}
-			return entityGraphBean;
+			return defaultEntityGraph;
 		}
 
 		@Override
@@ -94,20 +96,35 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 				entityGraph = (EntityGraph) argument;
 				break;
 			}
-			EntityGraphBean entityGraphBean = isEmpty(entityGraph)? defaultEntityGraph : buildEntityGraphBean(entityGraph, false);
-			if (entityGraphBean != null) {
-				CURRENT_ENTITY_GRAPH.set(entityGraphBean);
+
+			boolean emptyEntityGraph = isEmpty(entityGraph);
+
+			Class<?> implementationClass;
+			if (invocation instanceof ReflectiveMethodInvocation) {
+				implementationClass = ((ReflectiveMethodInvocation) invocation).getProxy().getClass();
+			} else {
+				implementationClass = invocation.getThis().getClass();
+			}
+
+			EntityGraphBean entityGraphCandidate = buildEntityGraphCandidate(
+					emptyEntityGraph ? defaultEntityGraph : entityGraph,
+					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass),
+					emptyEntityGraph
+			);
+
+			if (entityGraphCandidate != null) {
+				CURRENT_ENTITY_GRAPH.set(entityGraphCandidate);
 			}
 			try {
 				return invocation.proceed();
 			} finally {
-				if (entityGraphBean != null) {
+				if (entityGraphCandidate != null) {
 					CURRENT_ENTITY_GRAPH.remove();
 				}
 			}
 		}
 
-		private EntityGraphBean buildEntityGraphBean(EntityGraph entityGraph, boolean optional) {
+		private EntityGraphBean buildEntityGraphCandidate(EntityGraph entityGraph, ResolvableType returnType, boolean optional) {
 			Assert.notNull(entityGraph.getEntityGraphType());
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
@@ -129,8 +146,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					attributePaths != null ? attributePaths.toArray(new String[attributePaths.size()]) : null
 			);
 
-			return new EntityGraphBean(jpaEntityGraph, domainClass, optional);
+			return new EntityGraphBean(jpaEntityGraph, domainClass, returnType, optional);
 		}
-
 	}
 }
