@@ -125,6 +125,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		}
 
 		private EntityGraphBean buildEntityGraphCandidate(EntityGraph entityGraph, ResolvableType returnType, boolean optional) {
+			if(entityGraph == null){
+				return null;
+			}
+
 			Assert.notNull(entityGraph.getEntityGraphType());
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
