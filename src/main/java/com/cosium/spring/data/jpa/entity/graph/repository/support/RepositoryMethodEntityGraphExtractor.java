@@ -41,6 +41,19 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		return CURRENT_ENTITY_GRAPH.get();
 	}
 
+	/**
+	 * @param entityGraph
+	 * @return True if the provided EntityGraph is empty
+	 */
+	private static boolean isEmpty(EntityGraph entityGraph) {
+		return entityGraph == null ||
+				(
+						entityGraph.getEntityGraphAttributePaths() == null
+								&& entityGraph.getEntityGraphName() == null
+								&& entityGraph.getEntityGraphType() == null
+				);
+	}
+
 	private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
 
 		private static final String DEFAULT_ENTITYGRAPH_NAME_SUFFIX = ".default";
@@ -64,7 +77,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					if(entityGraphBean != null){
 						throw new RuntimeException("Multiple default entity graphs detected : " + entityGraph.getName() + " and " + entityGraphBean.getJpaEntityGraph().getName());
 					}
-					entityGraphBean = buildEntityGraphBean(EntityGraphUtils.fromName(entityGraph.getName()));
+					entityGraphBean = buildEntityGraphBean(EntityGraphUtils.fromName(entityGraph.getName()), true);
 				}
 			}
 			return entityGraphBean;
@@ -81,7 +94,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 				entityGraph = (EntityGraph) argument;
 				break;
 			}
-			EntityGraphBean entityGraphBean = buildEntityGraphBean(entityGraph);
+			EntityGraphBean entityGraphBean = isEmpty(entityGraph)? defaultEntityGraph : buildEntityGraphBean(entityGraph, false);
 			if (entityGraphBean != null) {
 				CURRENT_ENTITY_GRAPH.set(entityGraphBean);
 			}
@@ -94,11 +107,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			}
 		}
 
-		private EntityGraphBean buildEntityGraphBean(EntityGraph entityGraph) {
-			if (EntityGraphUtils.isEmpty(entityGraph)) {
-				return defaultEntityGraph;
-			}
-
+		private EntityGraphBean buildEntityGraphBean(EntityGraph entityGraph, boolean optional) {
 			Assert.notNull(entityGraph.getEntityGraphType());
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
@@ -120,7 +129,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					attributePaths != null ? attributePaths.toArray(new String[attributePaths.size()]) : null
 			);
 
-			return new EntityGraphBean(jpaEntityGraph, domainClass);
+			return new EntityGraphBean(jpaEntityGraph, domainClass, optional);
 		}
 
 	}

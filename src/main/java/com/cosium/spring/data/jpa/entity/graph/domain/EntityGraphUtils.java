@@ -12,19 +12,6 @@ public class EntityGraphUtils {
 	private static final EntityGraph EMPTY_ENTITY_GRAPH = new EmptyEntityGraph();
 
 	/**
-	 * @param entityGraph
-	 * @return True if the provided EntityGraph is empty
-	 */
-	public static boolean isEmpty(EntityGraph entityGraph) {
-		return entityGraph == null ||
-				(
-						entityGraph.getEntityGraphAttributePaths() == null
-								&& entityGraph.getEntityGraphName() == null
-								&& entityGraph.getEntityGraphType() == null
-				);
-	}
-
-	/**
 	 * @return An empty EntityGraph
 	 */
 	public static EntityGraph empty() {
