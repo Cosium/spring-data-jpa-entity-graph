@@ -80,6 +80,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 		return resultType == null || resultType.equals(entityGraphCandidate.getDomainClass());
 	}
 
+
 	/**
 	 * Push the current entity graph to the find method query hints.
 	 *
