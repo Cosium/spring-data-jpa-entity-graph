@@ -17,7 +17,8 @@ class QueryHintsUtils {
 	 * @return True if the QueryHints already hold an EntityGraph
 	 */
 	static boolean containsEntityGraph(Map<String, Object> queryHints){
-		return queryHints.containsKey(EntityGraph.EntityGraphType.FETCH.getKey())
+		return queryHints == null
+				|| queryHints.containsKey(EntityGraph.EntityGraphType.FETCH.getKey())
 				|| queryHints.containsKey(EntityGraph.EntityGraphType.LOAD.getKey());
 	}
 

@@ -111,4 +111,10 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 	}
 
+	@Transactional
+	@Test
+	public void given_products_when_countproductsbyname_then_it_should_work(){
+		productRepository.countByName("Product 1");
+	}
+
 }

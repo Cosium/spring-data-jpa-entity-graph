@@ -21,4 +21,6 @@ public interface ProductRepository
 
 	@org.springframework.data.jpa.repository.EntityGraph(value = Product.PRODUCT_BRAND_EG)
 	Product findByBarcode(String barcode);
+
+	long countByName(String name);
 }
