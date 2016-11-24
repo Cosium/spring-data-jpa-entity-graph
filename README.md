@@ -22,7 +22,7 @@ spring-data-jpa-entity-graph | spring-data-jpa
     <dependency>
         <groupId>com.cosium.spring.data</groupId>
         <artifactId>spring-data-jpa-entity-graph</artifactId>
-        <version>1.10.05</version>
+        <version>1.10.06</version>
     </dependency>
     ```
 2. In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
