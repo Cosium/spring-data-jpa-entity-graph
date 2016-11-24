@@ -57,13 +57,17 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		 * @return The default entity graph if it exists. Null otherwise.
 		 */
 		private EntityGraphBean findDefaultEntityGraph(EntityManager entityManager){
+			EntityGraphBean entityGraphBean = null;
 			List<javax.persistence.EntityGraph<?>> entityGraphs = entityManager.getEntityGraphs(domainClass);
 			for (javax.persistence.EntityGraph entityGraph : entityGraphs) {
 				if (entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
-					return buildEntityGraphBean(EntityGraphUtils.fromName(entityGraph.getName()));
+					if(entityGraphBean != null){
+						throw new RuntimeException("Multiple default entity graphs detected : " + entityGraph.getName() + " and " + entityGraphBean.getJpaEntityGraph().getName());
+					}
+					entityGraphBean = buildEntityGraphBean(EntityGraphUtils.fromName(entityGraph.getName()));
 				}
 			}
-			return null;
+			return entityGraphBean;
 		}
 
 		@Override
