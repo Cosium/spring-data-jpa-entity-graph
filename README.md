@@ -1,11 +1,16 @@
-### Why?
+# Spring Data JPA EntityGraph
 
-Today, Spring Data JPA supports EntityGraph exlusively through annotations.  
+Today, [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) supports EntityGraph exlusively through annotations.  
 Thus, for a method, the choice of EntityGraph must be made before compilation.  
 
-This library gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
+This extension gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
 
-### Spring Data JPA Compatibility
+Example:
+```java
+productRepository.findByName("foo", EntityGraphUtils.fromName("Product.brand"));
+```
+
+## Compatibility
 
 This library follows the Spring Data JPA versionning semantic.
 
@@ -14,7 +19,7 @@ spring-data-jpa-entity-graph | spring-data-jpa
 1.11.x | 1.11.y
 1.10.x | 1.10.y
 
-### Quick start
+## Quick start
 
 1. In addition to spring-data-jpa, add the library dependency :
     
@@ -36,7 +41,7 @@ spring-data-jpa-entity-graph | spring-data-jpa
     ```
 3. Make sure your repositories extend `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
 
-### Basic Usage
+## Basic Usage
 
 Let's consider the following entities and repository :
 ```java
@@ -84,7 +89,7 @@ Or any method you like.
 
 You can also pass a dynamically built EntityGraph by using DynamicEntityGraph implementation.
 
-### Default EntityGraph
+## Default EntityGraph
 
 For an Entity, you can define its default EntityGraph.  
 An Entity default EntityGraph will be used each time the Entity repository method is called without EntityGraph.  
