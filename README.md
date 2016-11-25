@@ -77,17 +77,19 @@ public interface ProductRepository extends JpaEntityGraphRepository<Product, Lon
 
 You can pass the entity graph to the `findByName` method :
 ```java
+// This will apply 'Product.brand' named EntityGraph to findByName
 productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.brand"));
 ```
 
 Or to the `findOne` method :
 ```java
+// This will apply 'Product.brand' named EntityGraph to findOne
 productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand"));
 ```
 
 Or any method you like.
 
-You can also pass a dynamically built EntityGraph by using DynamicEntityGraph implementation.
+You can also pass a dynamically built EntityGraph by using `DynamicEntityGraph` implementation.
 
 ## Default EntityGraph
 
