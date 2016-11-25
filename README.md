@@ -87,7 +87,7 @@ You can also pass a dynamically built EntityGraph by using DynamicEntityGraph im
 ### Default EntityGraph
 
 For an Entity, you can define its default EntityGraph.  
-And Entity default EntityGraph will be used each time the Entity repository method is called without EntityGraph.  
+An Entity default EntityGraph will be used each time the Entity repository method is called without EntityGraph.  
 
 A default EntityGraph name must end with `.default`. 
 
