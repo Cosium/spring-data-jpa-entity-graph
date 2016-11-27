@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleDefaultEntityGraphException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
@@ -77,7 +78,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			for (javax.persistence.EntityGraph entityGraph : entityGraphs) {
 				if (entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
 					if (defaultEntityGraph != null) {
-						throw new RuntimeException("Multiple default entity graphs detected : " + entityGraph.getName() + " and " + defaultEntityGraph.getEntityGraphName());
+						throw new MultipleDefaultEntityGraphException(entityGraph.getName(), defaultEntityGraph.getEntityGraphName());
 					}
 					defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName());
 				}
@@ -140,7 +141,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.LOAD;
 					break;
 				default:
-					throw new RuntimeException("Unknown entity graph type");
+					throw new RuntimeException("Unexpected entity graph type '" + entityGraph.getEntityGraphType() + "'");
 			}
 
 			List<String> attributePaths = entityGraph.getEntityGraphAttributePaths();

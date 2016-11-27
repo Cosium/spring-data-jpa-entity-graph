@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
 				LOG.trace("Cannot apply EntityGraph {}", entityGraphCandidate);
 				return;
 			} else {
-				throw new RuntimeException("Cannot apply EntityGraph " + entityGraphCandidate);
+				throw new InapplicableEntityGraphException("Cannot apply EntityGraph " + entityGraphCandidate + " to the the current query");
 			}
 		}
 
