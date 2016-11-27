@@ -5,9 +5,12 @@ import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleDefaultEntityGraphException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.framework.ReflectiveMethodInvocation;
 import org.springframework.core.NamedThreadLocal;
@@ -25,6 +28,8 @@ import org.springframework.util.StringUtils;
  * @author Reda.Housni-Alaoui
  */
 class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcessor {
+
+	private static final Logger LOG = LoggerFactory.getLogger(RepositoryMethodEntityGraphExtractor.class);
 
 	private static final ThreadLocal<EntityGraphBean> CURRENT_ENTITY_GRAPH =
 			new NamedThreadLocal<EntityGraphBean>("Thread local holding the current spring data jpa repository entity graph");
@@ -112,6 +117,15 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass),
 					emptyEntityGraph
 			);
+
+			if (entityGraphCandidate != null && !entityGraphCandidate.isValid()) {
+				if (entityGraphCandidate.isOptional()) {
+					LOG.trace("Cannot apply EntityGraph {}", entityGraphCandidate);
+					entityGraphCandidate = null;
+				} else {
+					throw new InapplicableEntityGraphException("Cannot apply EntityGraph " + entityGraphCandidate + " to the the current query");
+				}
+			}
 
 			if (entityGraphCandidate != null) {
 				CURRENT_ENTITY_GRAPH.set(entityGraphCandidate);

@@ -54,14 +54,6 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
 			LOG.trace("The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
 			return;
 		}
-		if (!entityGraphCandidate.isValid()) {
-			if (entityGraphCandidate.isOptional()) {
-				LOG.trace("Cannot apply EntityGraph {}", entityGraphCandidate);
-				return;
-			} else {
-				throw new InapplicableEntityGraphException("Cannot apply EntityGraph " + entityGraphCandidate + " to the the current query");
-			}
-		}
 
 		QueryHintsUtils.removeEntityGraphs(query.getHints());
 		Map<String, Object> hints = QueryHintsUtils.buildQueryHints(entityManager, entityGraphCandidate);

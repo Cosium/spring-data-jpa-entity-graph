@@ -1,8 +1,10 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import javax.inject.Inject;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -12,10 +14,8 @@ import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.BrandRepository;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.EntityGraphSpecification;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
+import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.*;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.hibernate.Hibernate;
@@ -117,19 +117,31 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_products_when_countproductsbyname_then_it_should_work(){
-		productRepository.countByName("Product 1");
+		assertThat(productRepository.countByName("Product 1")).isEqualTo(1);
 	}
 
 	@Transactional
 	@Test
 	public void given_products_when_findAllRaw_then_it_should_work(){
-		productRepository.findAllRaw();
+		assertThat(productRepository.findAllRaw()).isNotEmpty();
 	}
 
 	@Transactional
 	@Test
 	public void given_entity_without_default_eg_when_findall_then_it_should_work(){
-		brandRepository.findAll();
+		assertThat(brandRepository.findAll()).isNotEmpty();
 	}
 
+	@Transactional
+	@Test(expected = InapplicableEntityGraphException.class)
+	public void given_products_and_ProductName_projection_when_findProductNameByName_with_eg_then_it_should_fail(){
+		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+	}
+
+	@Transactional
+	@Test
+	public void given_products_and_ProductName_projection_when_findProductNameByName_without_eg_then_it_should_work(){
+		ProductName productName = productRepository.findProductNameByName("Product 1", EntityGraphUtils.empty());
+		assertThat(productName).isNotNull();
+	}
 }

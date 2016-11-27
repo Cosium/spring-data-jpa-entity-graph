@@ -20,6 +20,8 @@ public interface ProductRepository
 
 	List<Product> findByName(String name, EntityGraph entityGraph);
 
+	ProductName findProductNameByName(String name, EntityGraph entityGraph);
+
 	@org.springframework.data.jpa.repository.EntityGraph(value = Product.PRODUCT_BRAND_EG)
 	Product findByBarcode(String barcode);
 
