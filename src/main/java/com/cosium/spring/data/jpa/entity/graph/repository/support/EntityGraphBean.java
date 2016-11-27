@@ -15,18 +15,32 @@ class EntityGraphBean {
 
 	private final JpaEntityGraph jpaEntityGraph;
 	private final Class<?> domainClass;
-	private final ResolvableType returnType;
+	private final ResolvableType repositoryMethodReturnType;
 	private final boolean optional;
+	private final boolean valid;
 
-	public EntityGraphBean(JpaEntityGraph jpaEntityGraph, Class<?> domainClass, ResolvableType returnType, boolean optional) {
+	public EntityGraphBean(JpaEntityGraph jpaEntityGraph, Class<?> domainClass, ResolvableType repositoryMethodReturnType, boolean optional) {
 		Assert.notNull(jpaEntityGraph);
 		Assert.notNull(domainClass);
-		Assert.notNull(returnType);
+		Assert.notNull(repositoryMethodReturnType);
 
 		this.jpaEntityGraph = jpaEntityGraph;
 		this.domainClass = domainClass;
-		this.returnType = returnType;
+		this.repositoryMethodReturnType = repositoryMethodReturnType;
 		this.optional = optional;
+		this.valid = computeValidity();
+	}
+
+	private boolean computeValidity(){
+		if (domainClass.isAssignableFrom(repositoryMethodReturnType.resolve())) {
+			return true;
+		}
+		for (Class genericType : repositoryMethodReturnType.resolveGenerics()) {
+			if (domainClass.isAssignableFrom(genericType)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -54,15 +68,7 @@ class EntityGraphBean {
 	 * @return True if this EntityGraph seems valid
 	 */
 	public boolean isValid() {
-		if (domainClass.isAssignableFrom(returnType.resolve())) {
-			return true;
-		}
-		for (Class genericType : returnType.resolveGenerics()) {
-			if (domainClass.isAssignableFrom(genericType)) {
-				return true;
-			}
-		}
-		return false;
+		return valid;
 	}
 
 	@Override
@@ -70,7 +76,7 @@ class EntityGraphBean {
 		return MoreObjects.toStringHelper(this)
 				.add("jpaEntityGraph", jpaEntityGraph)
 				.add("domainClass", domainClass)
-				.add("returnType", returnType)
+				.add("repositoryMethodReturnType", repositoryMethodReturnType)
 				.add("optional", optional)
 				.toString();
 	}
