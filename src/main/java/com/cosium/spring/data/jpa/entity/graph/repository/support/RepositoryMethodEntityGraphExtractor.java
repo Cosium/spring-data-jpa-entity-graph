@@ -7,6 +7,7 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleDefaultEntityGraphException;
+import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -94,16 +95,20 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		@Override
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			Object[] arguments = invocation.getArguments();
-			EntityGraph entityGraph = null;
+			EntityGraph providedEntityGraph = null;
 			for (Object argument : arguments) {
 				if (!(argument instanceof EntityGraph)) {
 					continue;
 				}
-				entityGraph = (EntityGraph) argument;
-				break;
+				EntityGraph newEntityGraph = (EntityGraph) argument;
+				if (providedEntityGraph != null) {
+					throw new MultipleEntityGraphException("Duplicate EntityGraphs detected. '"
+							+ providedEntityGraph + "' and '" + newEntityGraph + "' were passed to method " + invocation.getMethod());
+				}
+				providedEntityGraph = newEntityGraph;
 			}
 
-			boolean emptyEntityGraph = isEmpty(entityGraph);
+			boolean emptyEntityGraph = isEmpty(providedEntityGraph);
 
 			Class<?> implementationClass;
 			if (invocation instanceof ReflectiveMethodInvocation) {
@@ -113,7 +118,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			}
 
 			EntityGraphBean entityGraphCandidate = buildEntityGraphCandidate(
-					emptyEntityGraph ? defaultEntityGraph : entityGraph,
+					emptyEntityGraph ? defaultEntityGraph : providedEntityGraph,
 					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass),
 					emptyEntityGraph
 			);
@@ -140,7 +145,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		}
 
 		private EntityGraphBean buildEntityGraphCandidate(EntityGraph entityGraph, ResolvableType returnType, boolean optional) {
-			if(entityGraph == null){
+			if (entityGraph == null) {
 				return null;
 			}
 

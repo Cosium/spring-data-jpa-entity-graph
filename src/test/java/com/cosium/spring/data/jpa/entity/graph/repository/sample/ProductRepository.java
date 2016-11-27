@@ -29,4 +29,6 @@ public interface ProductRepository
 
 	@Query("select p.name from Product p")
 	List<Object[]> findAllRaw();
+
+
 }

@@ -1,0 +1,37 @@
+package com.cosium.spring.data.jpa.entity.graph.repository.sample;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import org.springframework.data.jpa.domain.Specification;
+
+/**
+ * Created on 27/11/16.
+ *
+ * @author Reda.Housni-Alaoui
+ */
+public abstract class EmptyEntityGraphSpecification<T> implements Specification<T>, EntityGraph {
+
+	private final EntityGraph entityGraph = EntityGraphUtils.empty();
+
+	@Override
+	public EntityGraphType getEntityGraphType() {
+		return entityGraph.getEntityGraphType();
+	}
+
+	@Override
+	public String getEntityGraphName() {
+		return entityGraph.getEntityGraphName();
+	}
+
+	@Override
+	public List<String> getEntityGraphAttributePaths() {
+		return entityGraph.getEntityGraphAttributePaths();
+	}
+}
