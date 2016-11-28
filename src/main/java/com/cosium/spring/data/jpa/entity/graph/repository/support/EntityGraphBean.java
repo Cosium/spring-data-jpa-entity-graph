@@ -17,9 +17,10 @@ class EntityGraphBean {
 	private final Class<?> domainClass;
 	private final ResolvableType repositoryMethodReturnType;
 	private final boolean optional;
+	private final boolean primary;
 	private final boolean valid;
 
-	public EntityGraphBean(JpaEntityGraph jpaEntityGraph, Class<?> domainClass, ResolvableType repositoryMethodReturnType, boolean optional) {
+	public EntityGraphBean(JpaEntityGraph jpaEntityGraph, Class<?> domainClass, ResolvableType repositoryMethodReturnType, boolean optional, boolean primary) {
 		Assert.notNull(jpaEntityGraph);
 		Assert.notNull(domainClass);
 		Assert.notNull(repositoryMethodReturnType);
@@ -28,6 +29,7 @@ class EntityGraphBean {
 		this.domainClass = domainClass;
 		this.repositoryMethodReturnType = repositoryMethodReturnType;
 		this.optional = optional;
+		this.primary = primary;
 		this.valid = computeValidity();
 	}
 
@@ -70,6 +72,13 @@ class EntityGraphBean {
 	 */
 	public boolean isValid() {
 		return valid;
+	}
+
+	/**
+	 * @return True if this EntityGraph is a primary one. Default EntityGraph is an example of non primary EntityGraph.
+	 */
+	public boolean isPrimary() {
+		return primary;
 	}
 
 	@Override

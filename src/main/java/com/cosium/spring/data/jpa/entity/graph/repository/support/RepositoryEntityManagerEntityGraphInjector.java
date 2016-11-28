@@ -103,7 +103,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 			LOG.trace("No query hints passed to the find method.");
 			return;
 		}
-		if (entityGraphCandidate.isOptional() && QueryHintsUtils.containsEntityGraph(queryProperties)) {
+		if (!entityGraphCandidate.isPrimary() && QueryHintsUtils.containsEntityGraph(queryProperties)) {
 			LOG.trace("The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
 			return;
 		}

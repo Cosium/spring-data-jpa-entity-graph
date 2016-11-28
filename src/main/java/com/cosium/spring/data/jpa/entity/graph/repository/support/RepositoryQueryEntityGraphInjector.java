@@ -50,7 +50,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
 	}
 
 	private void addEntityGraphToQuery(Query query) {
-		if (entityGraphCandidate.isOptional() && QueryHintsUtils.containsEntityGraph(query.getHints())) {
+		if (!entityGraphCandidate.isPrimary() && QueryHintsUtils.containsEntityGraph(query.getHints())) {
 			LOG.trace("The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
 			return;
 		}

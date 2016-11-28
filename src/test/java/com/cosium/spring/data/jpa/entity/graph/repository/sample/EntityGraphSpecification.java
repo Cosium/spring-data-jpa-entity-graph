@@ -14,9 +14,15 @@ import org.springframework.data.jpa.domain.Specification;
 public abstract class EntityGraphSpecification<T> implements Specification<T>, EntityGraph {
 
 	private final String entityGraphName;
+	private final boolean optional;
+
+	public EntityGraphSpecification(String entityGraphName, boolean optional) {
+		this.entityGraphName = entityGraphName;
+		this.optional = optional;
+	}
 
 	public EntityGraphSpecification(String entityGraphName) {
-		this.entityGraphName = entityGraphName;
+		this(entityGraphName, false);
 	}
 
 	@Override
@@ -36,6 +42,6 @@ public abstract class EntityGraphSpecification<T> implements Specification<T>, E
 
 	@Override
 	public boolean isOptional() {
-		return false;
+		return optional;
 	}
 }

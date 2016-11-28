@@ -86,7 +86,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					if (defaultEntityGraph != null) {
 						throw new MultipleDefaultEntityGraphException(entityGraph.getName(), defaultEntityGraph.getEntityGraphName());
 					}
-					defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName());
+					defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName(), true);
 				}
 			}
 			return defaultEntityGraph;
@@ -108,8 +108,6 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 				providedEntityGraph = newEntityGraph;
 			}
 
-			boolean emptyEntityGraph = isEmpty(providedEntityGraph);
-
 			Class<?> implementationClass;
 			if (invocation instanceof ReflectiveMethodInvocation) {
 				implementationClass = ((ReflectiveMethodInvocation) invocation).getProxy().getClass();
@@ -118,9 +116,8 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			}
 
 			EntityGraphBean entityGraphCandidate = buildEntityGraphCandidate(
-					emptyEntityGraph ? defaultEntityGraph : providedEntityGraph,
-					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass),
-					emptyEntityGraph || providedEntityGraph.isOptional()
+					providedEntityGraph,
+					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass)
 			);
 
 			if (entityGraphCandidate != null && !entityGraphCandidate.isValid()) {
@@ -144,15 +141,20 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			}
 		}
 
-		private EntityGraphBean buildEntityGraphCandidate(EntityGraph entityGraph, ResolvableType returnType, boolean optional) {
-			if (entityGraph == null) {
+		private EntityGraphBean buildEntityGraphCandidate(EntityGraph providedEntityGraph, ResolvableType returnType) {
+			boolean isPrimary = true;
+			if (isEmpty(providedEntityGraph)) {
+				providedEntityGraph = defaultEntityGraph;
+				isPrimary = false;
+			}
+			if (providedEntityGraph == null) {
 				return null;
 			}
 
-			Assert.notNull(entityGraph.getEntityGraphType());
+			Assert.notNull(providedEntityGraph.getEntityGraphType());
 
 			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
-			switch (entityGraph.getEntityGraphType()) {
+			switch (providedEntityGraph.getEntityGraphType()) {
 				case FETCH:
 					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 					break;
@@ -160,17 +162,17 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.LOAD;
 					break;
 				default:
-					throw new RuntimeException("Unexpected entity graph type '" + entityGraph.getEntityGraphType() + "'");
+					throw new RuntimeException("Unexpected entity graph type '" + providedEntityGraph.getEntityGraphType() + "'");
 			}
 
-			List<String> attributePaths = entityGraph.getEntityGraphAttributePaths();
+			List<String> attributePaths = providedEntityGraph.getEntityGraphAttributePaths();
 			JpaEntityGraph jpaEntityGraph = new JpaEntityGraph(
-					StringUtils.hasText(entityGraph.getEntityGraphName()) ? entityGraph.getEntityGraphName() : domainClass.getName() + "-_-_-_-_-_-",
+					StringUtils.hasText(providedEntityGraph.getEntityGraphName()) ? providedEntityGraph.getEntityGraphName() : domainClass.getName() + "-_-_-_-_-_-",
 					type,
 					attributePaths != null ? attributePaths.toArray(new String[attributePaths.size()]) : null
 			);
 
-			return new EntityGraphBean(jpaEntityGraph, domainClass, returnType, optional);
+			return new EntityGraphBean(jpaEntityGraph, domainClass, returnType, providedEntityGraph.isOptional(), isPrimary);
 		}
 	}
 }
