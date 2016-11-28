@@ -120,7 +120,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			EntityGraphBean entityGraphCandidate = buildEntityGraphCandidate(
 					emptyEntityGraph ? defaultEntityGraph : providedEntityGraph,
 					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass),
-					emptyEntityGraph
+					emptyEntityGraph || providedEntityGraph.isOptional()
 			);
 
 			if (entityGraphCandidate != null && !entityGraphCandidate.isValid()) {

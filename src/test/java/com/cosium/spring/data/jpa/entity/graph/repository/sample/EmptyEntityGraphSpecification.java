@@ -1,9 +1,5 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
@@ -33,5 +29,10 @@ public abstract class EmptyEntityGraphSpecification<T> implements Specification<
 	@Override
 	public List<String> getEntityGraphAttributePaths() {
 		return entityGraph.getEntityGraphAttributePaths();
+	}
+
+	@Override
+	public boolean isOptional() {
+		return false;
 	}
 }

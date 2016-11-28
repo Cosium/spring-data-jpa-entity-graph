@@ -20,10 +20,22 @@ public class EntityGraphUtils {
 
 	/**
 	 * @param name The name of the targeted EntityGraph
-	 * @return A EntityGraph referenced by name
+	 * @return An EntityGraph referenced by name
 	 */
 	public static EntityGraph fromName(String name) {
 		return new NamedEntityGraph(name);
+	}
+
+	/**
+	 *
+	 * @param name The name of the targeted EntityGraph
+	 * @param optional Is the EntityGraph usage optional?
+	 * @return An EntityGraph referenced by name
+	 */
+	public static EntityGraph fromName(String name, boolean optional){
+		NamedEntityGraph namedEntityGraph = new NamedEntityGraph(name);
+		namedEntityGraph.setOptional(optional);
+		return namedEntityGraph;
 	}
 
 	private static final class EmptyEntityGraph implements EntityGraph {
@@ -41,6 +53,11 @@ public class EntityGraphUtils {
 		@Override
 		public List<String> getEntityGraphAttributePaths() {
 			return null;
+		}
+
+		@Override
+		public boolean isOptional() {
+			return false;
 		}
 	}
 }

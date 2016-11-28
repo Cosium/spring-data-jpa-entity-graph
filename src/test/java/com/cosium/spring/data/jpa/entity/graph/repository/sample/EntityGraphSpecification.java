@@ -33,4 +33,9 @@ public abstract class EntityGraphSpecification<T> implements Specification<T>, E
 	public List<String> getEntityGraphAttributePaths() {
 		return null;
 	}
+
+	@Override
+	public boolean isOptional() {
+		return false;
+	}
 }
