@@ -10,13 +10,20 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractEntityGraph implements EntityGraph{
 
-	private EntityGraphType entityGraphType = EntityGraphType.FETCH;
+	protected static final EntityGraphType DEFAULT_ENTITY_GRAPH_TYPE = EntityGraphType.FETCH;
+	private EntityGraphType entityGraphType = DEFAULT_ENTITY_GRAPH_TYPE;
+	private boolean optional;
 
 	public AbstractEntityGraph(){}
 
 	public AbstractEntityGraph(EntityGraphType entityGraphType){
+		this(entityGraphType, false);
+	}
+
+	public AbstractEntityGraph(EntityGraphType entityGraphType, boolean optional){
 		Assert.notNull(entityGraphType);
 		this.entityGraphType = entityGraphType;
+		this.optional = optional;
 	}
 
 	@Override
@@ -29,11 +36,26 @@ public abstract class AbstractEntityGraph implements EntityGraph{
 		this.entityGraphType = entityGraphType;
 	}
 
+	/**
+	 * False by default
+	 * @return True if the EntityGraph is optional.<br>
+	 * Passing an optional EntityGraph to an unsupported method will not trigger {@link com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException}.
+	 */
+	@Override
+	public boolean isOptional() {
+		return optional;
+	}
+
+	public void setOptional(boolean optional) {
+		this.optional = optional;
+	}
 
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("entityGraphType", entityGraphType)
+				.add("optional", optional)
 				.toString();
 	}
+
 }

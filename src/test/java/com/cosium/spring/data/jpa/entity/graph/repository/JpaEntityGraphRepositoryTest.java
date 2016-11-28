@@ -135,8 +135,14 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 
 	@Transactional
 	@Test(expected = InapplicableEntityGraphException.class)
-	public void given_products_and_ProductName_projection_when_findProductNameByName_with_eg_then_it_should_fail(){
+	public void given_products_and_ProductName_projection_when_findProductNameByName_with_mandatory_eg_then_it_should_fail(){
 		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+	}
+
+	@Transactional
+	@Test
+	public void given_products_and_ProductName_projection_when_findProductNameByName_with_optional_eg_then_it_should_not_fail(){
+		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG, true));
 	}
 
 	@Transactional

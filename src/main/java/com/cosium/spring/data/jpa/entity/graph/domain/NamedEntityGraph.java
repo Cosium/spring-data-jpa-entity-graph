@@ -14,15 +14,18 @@ public class NamedEntityGraph extends AbstractEntityGraph {
 
 	private final String name;
 
-	public NamedEntityGraph(EntityGraphType type, String name) {
-		super(type);
+	public NamedEntityGraph(EntityGraphType type, boolean optional, String name) {
+		super(type, optional);
 		Assert.hasLength(name);
 		this.name = name;
 	}
 
+	public NamedEntityGraph(EntityGraphType type, String name) {
+		this(type, false, name);
+	}
+
 	public NamedEntityGraph(String name){
-		Assert.hasLength(name);
-		this.name = name;
+		this(DEFAULT_ENTITY_GRAPH_TYPE, name);
 	}
 
 	@Override

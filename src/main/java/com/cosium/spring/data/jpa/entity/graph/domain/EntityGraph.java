@@ -23,4 +23,10 @@ public interface EntityGraph {
 	 * @return The attribute paths. May be null.
 	 */
 	List<String> getEntityGraphAttributePaths();
+
+	/**
+	 * @return True if the EntityGraph is optional.<br>
+	 * Passing an optional EntityGraph to an unsupported method will not trigger {@link com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException}.
+	 */
+	boolean isOptional();
 }
