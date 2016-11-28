@@ -31,8 +31,9 @@ class EntityGraphBean {
 		this.valid = computeValidity();
 	}
 
-	private boolean computeValidity(){
-		if (domainClass.isAssignableFrom(repositoryMethodReturnType.resolve())) {
+	private boolean computeValidity() {
+		Class<?> resolvedReturnType = repositoryMethodReturnType.resolve();
+		if (Void.TYPE.equals(resolvedReturnType) || domainClass.isAssignableFrom(resolvedReturnType)) {
 			return true;
 		}
 		for (Class genericType : repositoryMethodReturnType.resolveGenerics()) {

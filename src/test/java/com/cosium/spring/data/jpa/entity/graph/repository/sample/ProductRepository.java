@@ -16,7 +16,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository
 		extends JpaEntityGraphRepository<Product, Long>,
 		JpaEntityGraphSpecificationExecutor<Product>,
-		JpaEntityGraphQueryDslPredicateExecutor<Product> {
+		JpaEntityGraphQueryDslPredicateExecutor<Product>,
+		ProductRepositoryCustom {
 
 	List<Product> findByName(String name, EntityGraph entityGraph);
 
@@ -29,6 +30,4 @@ public interface ProductRepository
 
 	@Query("select p.name from Product p")
 	List<Object[]> findAllRaw();
-
-
 }
