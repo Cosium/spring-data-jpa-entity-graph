@@ -3,8 +3,6 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import static org.assertj.core.api.Assertions.*;
 
 import javax.inject.Inject;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -15,7 +13,6 @@ import java.util.List;
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
-import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.*;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
@@ -59,6 +56,14 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Test
 	public void given_brand_eg_when_findone_then_brand_should_be_loaded(){
 		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		assertThat(product).isNotNull();
+		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+	}
+
+	@Transactional
+	@Test
+	public void given_optional_brand_eg_when_findone_then_brand_should_be_loaded(){
+		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG, true));
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 	}
@@ -152,47 +157,4 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		assertThat(productName).isNotNull();
 	}
 
-	@Transactional
-	@Test(expected = MultipleEntityGraphException.class)
-	public void given_products_when_findAllBySpec_with_two_non_empty_egs_then_it_should_fail(){
-		productRepository.findAll(new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
-			@Override
-			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return null;
-			}
-		}, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
-	}
-
-	@Transactional
-	@Test(expected = MultipleEntityGraphException.class)
-	public void given_products_when_findAllBySpec_with_an_empty_eg_and_a_non_empty_one_then_it_should_fail(){
-		productRepository.findAll(new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
-			@Override
-			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return null;
-			}
-		}, EntityGraphUtils.empty());
-	}
-
-	@Transactional
-	@Test(expected = MultipleEntityGraphException.class)
-	public void given_products_when_findAllBySpec_with_two_empty_eg_then_it_should_fail(){
-		productRepository.findAll(new EmptyEntityGraphSpecification<Product>() {
-			@Override
-			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return null;
-			}
-		}, EntityGraphUtils.empty());
-	}
-
-	@Transactional
-	@Test(expected = MultipleEntityGraphException.class)
-	public void given_products_when_findAllBySpec_with_a_non_empty_eg_and_an_empty_one_then_it_should_fail(){
-		productRepository.findAll(new EmptyEntityGraphSpecification<Product>() {
-			@Override
-			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return null;
-			}
-		}, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
-	}
 }
