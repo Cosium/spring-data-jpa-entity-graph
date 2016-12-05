@@ -28,13 +28,13 @@ public class QueryDslJpaEntityGraphRepository<T, ID extends Serializable>
 
 	public QueryDslJpaEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
-		this.queryDslJpaRepositoryDelegate = new QueryDslJpaRepository<T, ID>((JpaEntityInformation<T, ID>) entityInformation, entityManager);
+		this.queryDslJpaRepositoryDelegate = new EntityGraphAwareQueryDslJpaRepository<T, ID>((JpaEntityInformation<T, ID>) entityInformation, entityManager);
 	}
 
 	public QueryDslJpaEntityGraphRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager,
 											EntityPathResolver resolver) {
 		super(entityInformation, entityManager);
-		this.queryDslJpaRepositoryDelegate = new QueryDslJpaRepository<T, ID>(entityInformation, entityManager, resolver);
+		this.queryDslJpaRepositoryDelegate = new EntityGraphAwareQueryDslJpaRepository<T, ID>(entityInformation, entityManager, resolver);
 	}
 
 	@Override
