@@ -8,17 +8,18 @@ import javax.persistence.*;
  * @author Reda.Housni-Alaoui
  */
 @NamedEntityGraphs(value = {
-		@NamedEntityGraph(name = "Product.default", attributeNodes = {
+		@NamedEntityGraph(name = Product.DEFAULT_EG, attributeNodes = {
 				@NamedAttributeNode("maker")
 		}),
-		@NamedEntityGraph(name = Product.PRODUCT_BRAND_EG, attributeNodes = {
+		@NamedEntityGraph(name = Product.BRAND_EG, attributeNodes = {
 			@NamedAttributeNode("brand")
 		})
 })
 @Entity
 public class Product {
 
-	public static final String PRODUCT_BRAND_EG = "Product.brand";
+	public static final String DEFAULT_EG = "Product.default";
+	public static final String BRAND_EG = "Product.brand";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

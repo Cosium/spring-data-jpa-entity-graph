@@ -7,8 +7,13 @@ import javax.persistence.*;
  *
  * @author Reda.Housni-Alaoui
  */
+@NamedEntityGraphs(value = {
+		@NamedEntityGraph(name = Brand.EMPTY_EG, attributeNodes = {})
+})
 @Entity
 public class Brand {
+
+	public static final String EMPTY_EG = "Brand.empty";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -42,7 +42,7 @@ public class JpaEntityGraphQueryDslPredicateExecutorTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findone_then_brand_should_be_loaded(){
-		Product product = productRepository.findOne(QProduct.product.name.eq("Product 1"), EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		Product product = productRepository.findOne(QProduct.product.name.eq("Product 1"), EntityGraphUtils.fromName(Product.BRAND_EG));
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 	}
@@ -50,7 +50,7 @@ public class JpaEntityGraphQueryDslPredicateExecutorTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findpage_then_brand_should_be_loaded(){
-		Page<Product> productPage = productRepository.findAll((Predicate) null, new PageRequest(0, 10),EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		Page<Product> productPage = productRepository.findAll((Predicate) null, new PageRequest(0, 10),EntityGraphUtils.fromName(Product.BRAND_EG));
 		assertThat(productPage.getContent()).isNotEmpty();
 		for(Product product: productPage.getContent()){
 			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();

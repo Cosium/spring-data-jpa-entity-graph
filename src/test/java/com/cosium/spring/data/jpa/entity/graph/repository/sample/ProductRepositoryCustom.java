@@ -1,5 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
+import java.util.List;
+
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 
 /**
@@ -10,5 +12,7 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 public interface ProductRepositoryCustom {
 
 	void customMethod(EntityGraph entityGraph);
+
+	List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph);
 
 }
