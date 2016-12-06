@@ -55,7 +55,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findone_then_brand_should_be_loaded(){
-		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.BRAND_EG));
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 	}
@@ -63,7 +63,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_optional_brand_eg_when_findone_then_brand_should_be_loaded(){
-		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG, true));
+		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.BRAND_EG, true));
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
 	}
@@ -71,7 +71,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findByName_then_brand_should_be_loaded(){
-		List<Product> products = productRepository.findByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		List<Product> products = productRepository.findByName("Product 1", EntityGraphUtils.fromName(Product.BRAND_EG));
 		assertThat(products).hasSize(1);
 		for(Product product: products){
 			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
@@ -81,7 +81,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findAll_paginated_then_brand_should_be_loaded(){
-		Page<Product> productPage = productRepository.findAll(new PageRequest(0, 10), EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		Page<Product> productPage = productRepository.findAll(new PageRequest(0, 10), EntityGraphUtils.fromName(Product.BRAND_EG));
 		assertThat(productPage.getContent()).isNotEmpty();
 		for(Product product: productPage.getContent()){
 			assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
@@ -91,7 +91,7 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findAll_paginated_with_spec_then_brand_should_be_loaded(){
-		Page<Product> productPage = productRepository.findAll(new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
+		Page<Product> productPage = productRepository.findAll(new EntityGraphSpecification<Product>(Product.BRAND_EG) {
 			@Override
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return null;
@@ -141,13 +141,13 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 	@Transactional
 	@Test(expected = InapplicableEntityGraphException.class)
 	public void given_products_and_ProductName_projection_when_findProductNameByName_with_mandatory_eg_then_it_should_fail(){
-		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.BRAND_EG));
 	}
 
 	@Transactional
 	@Test
 	public void given_products_and_ProductName_projection_when_findProductNameByName_with_optional_eg_then_it_should_not_fail(){
-		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG, true));
+		productRepository.findProductNameByName("Product 1", EntityGraphUtils.fromName(Product.BRAND_EG, true));
 	}
 
 	@Transactional

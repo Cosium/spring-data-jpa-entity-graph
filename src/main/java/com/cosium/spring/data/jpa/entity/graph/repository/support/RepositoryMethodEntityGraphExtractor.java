@@ -32,8 +32,8 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 
 	private static final Logger LOG = LoggerFactory.getLogger(RepositoryMethodEntityGraphExtractor.class);
 
-	private static final ThreadLocal<EntityGraphBean> CURRENT_ENTITY_GRAPH =
-			new NamedThreadLocal<EntityGraphBean>("Thread local holding the current spring data jpa repository entity graph");
+	private static final ThreadLocal<JpaEntityGraphMethodInterceptor> CURRENT_REPOSITORY =
+			new NamedThreadLocal<JpaEntityGraphMethodInterceptor>("Thread local holding the current repository");
 
 	private final EntityManager entityManager;
 
@@ -47,7 +47,11 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 	}
 
 	static EntityGraphBean getCurrentJpaEntityGraph() {
-		return CURRENT_ENTITY_GRAPH.get();
+		JpaEntityGraphMethodInterceptor currentRepository = CURRENT_REPOSITORY.get();
+		if (currentRepository == null) {
+			return null;
+		}
+		return currentRepository.getCurrentJpaEntityGraph();
 	}
 
 	/**
@@ -68,6 +72,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 		private static final String DEFAULT_ENTITYGRAPH_NAME_SUFFIX = ".default";
 		private final Class<?> domainClass;
 		private final EntityGraph defaultEntityGraph;
+		private final ThreadLocal<EntityGraphBean> currentEntityGraph = new NamedThreadLocal<EntityGraphBean>("Thread local holding the current spring data jpa repository entity graph");
 
 		JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class domainClass) {
 			this.domainClass = domainClass;
@@ -92,8 +97,22 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 			return defaultEntityGraph;
 		}
 
+		EntityGraphBean getCurrentJpaEntityGraph() {
+			return currentEntityGraph.get();
+		}
+
 		@Override
 		public Object invoke(MethodInvocation invocation) throws Throwable {
+			JpaEntityGraphMethodInterceptor oldRepo = CURRENT_REPOSITORY.get();
+			CURRENT_REPOSITORY.set(this);
+			try {
+				return doInvoke(invocation);
+			} finally {
+				CURRENT_REPOSITORY.set(oldRepo);
+			}
+		}
+
+		private Object doInvoke(MethodInvocation invocation) throws Throwable {
 			Object[] arguments = invocation.getArguments();
 			EntityGraph providedEntityGraph = null;
 			for (Object argument : arguments) {
@@ -129,14 +148,16 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 				}
 			}
 
-			if (entityGraphCandidate != null) {
-				CURRENT_ENTITY_GRAPH.set(entityGraphCandidate);
+			EntityGraphBean oldEntityGraphCandidate = currentEntityGraph.get();
+			boolean newEntityGraphCandidatePreValidated = entityGraphCandidate != null && (oldEntityGraphCandidate == null || !oldEntityGraphCandidate.isPrimary());
+			if (newEntityGraphCandidatePreValidated) {
+				currentEntityGraph.set(entityGraphCandidate);
 			}
 			try {
 				return invocation.proceed();
 			} finally {
-				if (entityGraphCandidate != null) {
-					CURRENT_ENTITY_GRAPH.remove();
+				if (newEntityGraphCandidatePreValidated) {
+					currentEntityGraph.set(oldEntityGraphCandidate);
 				}
 			}
 		}

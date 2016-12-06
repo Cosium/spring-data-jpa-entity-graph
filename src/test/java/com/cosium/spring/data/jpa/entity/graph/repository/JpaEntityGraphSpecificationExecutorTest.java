@@ -38,7 +38,7 @@ public class JpaEntityGraphSpecificationExecutorTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findbyspecification_implementing_eg_then_brand_should_be_loaded() {
-		List<Product> products = productRepository.findAll((Specification<Product>) new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
+		List<Product> products = productRepository.findAll((Specification<Product>) new EntityGraphSpecification<Product>(Product.BRAND_EG) {
 			@Override
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return cb.equal(root.get("name"), "Product 2");
@@ -53,7 +53,7 @@ public class JpaEntityGraphSpecificationExecutorTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_brand_optional_eg_when_findbyspecification_implementing_eg_then_brand_should_be_loaded() {
-		List<Product> products = productRepository.findAll((Specification<Product>) new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG, true) {
+		List<Product> products = productRepository.findAll((Specification<Product>) new EntityGraphSpecification<Product>(Product.BRAND_EG, true) {
 			@Override
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return cb.equal(root.get("name"), "Product 2");
@@ -68,18 +68,18 @@ public class JpaEntityGraphSpecificationExecutorTest extends BaseTest {
 	@Transactional
 	@Test(expected = MultipleEntityGraphException.class)
 	public void given_products_when_findAllBySpec_with_two_non_empty_egs_then_it_should_fail() {
-		productRepository.findAll(new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
+		productRepository.findAll(new EntityGraphSpecification<Product>(Product.BRAND_EG) {
 			@Override
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return null;
 			}
-		}, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		}, EntityGraphUtils.fromName(Product.BRAND_EG));
 	}
 
 	@Transactional
 	@Test(expected = MultipleEntityGraphException.class)
 	public void given_products_when_findAllBySpec_with_an_empty_eg_and_a_non_empty_one_then_it_should_fail() {
-		productRepository.findAll(new EntityGraphSpecification<Product>(Product.PRODUCT_BRAND_EG) {
+		productRepository.findAll(new EntityGraphSpecification<Product>(Product.BRAND_EG) {
 			@Override
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return null;
@@ -106,6 +106,6 @@ public class JpaEntityGraphSpecificationExecutorTest extends BaseTest {
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return null;
 			}
-		}, EntityGraphUtils.fromName(Product.PRODUCT_BRAND_EG));
+		}, EntityGraphUtils.fromName(Product.BRAND_EG));
 	}
 }
