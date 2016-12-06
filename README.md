@@ -1,3 +1,6 @@
+[![Travis branch](https://img.shields.io/travis/Cosium/spring-data-jpa-entity-graph/master.svg)](https://travis-ci.org/Cosium/spring-data-jpa-entity-graph)
+[![Maven Central](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph.svg)]()
+
 # Spring Data JPA EntityGraph
 
 Today, [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) supports EntityGraph exlusively through annotations.  
