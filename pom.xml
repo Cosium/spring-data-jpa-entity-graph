@@ -8,7 +8,7 @@
 
     <groupId>com.cosium.spring.data</groupId>
     <artifactId>spring-data-jpa-entity-graph</artifactId>
-    <version>1.10.13</version>
+    <version>1.10.14-SNAPSHOT</version>
 
     <properties>
         <source.level>1.6</source.level>
@@ -223,7 +223,7 @@
         <connection>scm:git:https://github.com/Cosium/spring-data-jpa-entity-graph</connection>
         <developerConnection>scm:git:https://github.com/Cosium/spring-data-jpa-entity-graph</developerConnection>
         <url>https://github.com/Cosium/spring-data-jpa-entity-graph</url>
-      <tag>spring-data-jpa-entity-graph-1.10.13</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <organization>
