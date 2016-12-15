@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
+import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 /**
@@ -14,8 +15,17 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
  *
  * @author Reda.Housni-Alaoui
  */
-public class JpaEntityGraphRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable>
+public class JpaEntityGraphRepositoryFactoryBean<R extends Repository<T, I>, T, I extends Serializable>
 	extends JpaRepositoryFactoryBean<R, T, I>{
+
+	/**
+	 * Creates a new {@link JpaRepositoryFactoryBean} for the given repository interface.
+	 *
+	 * @param repositoryInterface must not be {@literal null}.
+	 */
+	public JpaEntityGraphRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
+		super(repositoryInterface);
+	}
 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
