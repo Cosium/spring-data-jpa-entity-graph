@@ -93,7 +93,18 @@ productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand"));
 
 Or any method you like.
 
-You can also pass a dynamically built EntityGraph by using `DynamicEntityGraph` implementation.
+You can also pass a dynamically built EntityGraph by using `DynamicEntityGraph`, it's also accessible through a helper method:
+
+```java
+productRepository.findOne(1L, EntityGraphUtils.fromAttributePaths("brand", "maker"));
+```
+
+This is similar to [Spring's ad-hoc attribute paths](http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-property-expressions),
+and equivalent to writing this in your repository's interface:
+```java
+@EntityGraph(attributePaths = { "brand", "maker" })
+Product findOne(Long id);
+```
 
 ## Default EntityGraph
 
