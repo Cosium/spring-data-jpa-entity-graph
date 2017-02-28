@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.*;
@@ -66,6 +67,25 @@ public class JpaEntityGraphRepositoryTest extends BaseTest {
 		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.BRAND_EG, true));
 		assertThat(product).isNotNull();
 		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+	}
+
+	@Transactional
+	@Test
+	public void given_brand_in_attribute_paths_eg_when_findone_then_brand_should_be_loaded() {
+		Product product = productRepository.findOne(1L, EntityGraphUtils.fromAttributePaths(Product.BRAND_PROP_NAME));
+		assertThat(product).isNotNull();
+		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+	}
+
+	@Transactional
+	@Test
+	public void given_brand_and_maker_in_attribute_paths_eg_when_findone_then_brand_and_maker_should_be_loaded() {
+		EntityGraph entityGraph = EntityGraphUtils.fromAttributePaths(Product.BRAND_PROP_NAME, Product.MAKER_PROP_NAME);
+		Product product = productRepository.findOne(1L, entityGraph);
+
+		assertThat(product).isNotNull();
+		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+		assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
 	}
 
 	@Transactional

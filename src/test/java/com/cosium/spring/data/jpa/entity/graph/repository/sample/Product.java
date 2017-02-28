@@ -21,6 +21,9 @@ public class Product {
 	public static final String DEFAULT_EG = "Product.default";
 	public static final String BRAND_EG = "Product.brand";
 
+	public static final String BRAND_PROP_NAME = "brand";
+	public static final String MAKER_PROP_NAME = "maker";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Access(value = AccessType.PROPERTY)
