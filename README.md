@@ -21,7 +21,7 @@ This library follows the Spring Data JPA versionning semantic.
 spring-data-jpa branches | spring-data-jpa-entity-graph.version
 ---------------------------- | ---------------
 1.12.x | Not released yet
-1.11.x | 1.11.0
+1.11.x | 1.11.00
 1.10.x | 1.10.14
 
 Example: if you were using `spring-data-jpa 1.10.13` in your project, you would need to select any `spring-data-jpa-entity-graph 1.10.x`. Thus `spring-data-jpa-entity-graph 1.10.14` would be eligible.
