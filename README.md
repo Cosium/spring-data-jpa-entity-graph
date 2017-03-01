@@ -14,27 +14,30 @@ Example:
 productRepository.findByName("foo", EntityGraphUtils.fromName("Product.brand"));
 ```
 
-## Compatibility
+## Compatibility between spring-data-jpa and spring-data-jpa-entity-graph
 
 This library follows the Spring Data JPA versionning semantic.
 
-spring-data-jpa-entity-graph | spring-data-jpa
+spring-data-jpa branches | spring-data-jpa-entity-graph.version
 ---------------------------- | ---------------
-1.11.x | 1.11.y
-1.10.x | 1.10.y
+1.12.x | Not released yet
+1.11.x | 1.11.0
+1.10.x | 1.10.14
+
+Example: if you were using `spring-data-jpa 1.10.13` in your project, you would need to select any `spring-data-jpa-entity-graph 1.10.x`. Thus `spring-data-jpa-entity-graph 1.10.14` would be eligible.
 
 ## Quick start
-
-1. In addition to spring-data-jpa, add the library dependency :
+1. Select the `spring-data-jpa-entity-graph.version` from the above compatibility table
+2. In addition to `spring-data-jpa`, add the library dependency :
     
     ```xml
     <dependency>
         <groupId>com.cosium.spring.data</groupId>
         <artifactId>spring-data-jpa-entity-graph</artifactId>
-        <version>1.10.14</version>
+        <version>${spring-data-jpa-entity-graph.version}</version>
     </dependency>
     ```
-2. In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
+3. In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
     
     ```java
     @Configuration
@@ -43,7 +46,7 @@ spring-data-jpa-entity-graph | spring-data-jpa
         ...
     }
     ```
-3. Make sure your repositories extend `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
+4. Make sure your repositories extend `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
 
 ## Basic Usage
 
