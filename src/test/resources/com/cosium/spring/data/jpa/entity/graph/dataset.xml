@@ -3,7 +3,9 @@
     <brand id="1" name="Brand 1"/>
     <brand id="2" name="Brand 2"/>
 
-    <maker id="1" name="Maker 1"/>
+    <country id="1" name="Morocco"/>
+
+    <maker id="1" name="Maker 1" country_id="1"/>
 
     <product id="1" name="Product 1" brand_id="1" maker_id="1" barcode="1111"/>
     <product id="2" name="Product 2" brand_id="1" maker_id="1" barcode="2222"/>
