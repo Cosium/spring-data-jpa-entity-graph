@@ -49,9 +49,7 @@ Example: if you were using `spring-data-jpa 1.10.13` in your project, you would 
     ```
 4. Make sure your repositories extend the Spring Data usual ones or the extension provided repositories: `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`.
 
-
 ## Basic Usage
-
 Let's consider the following entities and repository :
 ```java
 @Entity
