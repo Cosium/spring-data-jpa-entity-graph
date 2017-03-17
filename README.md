@@ -44,10 +44,10 @@ Example: if you were using `spring-data-jpa 1.10.13` in your project, you would 
     @Configuration
     @EnableJpaRepositories(repositoryFactoryBeanClass = JpaEntityGraphRepositoryFactoryBean.class)
     public class DataRepositoryConfiguration {
-        ...
+        //...
     }
     ```
-4. Make sure your repositories extend `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
+4. Make sure your repositories extend the Spring Data usual ones or the extension provided repositories: `JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`.
 
 ## Basic Usage
 

@@ -3,17 +3,12 @@ package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 import javax.persistence.*;
 
 /**
- * Created on 24/11/16.
+ * Created on 17/03/17.
  *
  * @author Reda.Housni-Alaoui
  */
-@NamedEntityGraphs({
-		@NamedEntityGraph(name = Maker.COUNTRY_EG, attributeNodes = {@NamedAttributeNode("country")})
-})
 @Entity
-public class Maker {
-
-	public static final String COUNTRY_EG = "Marker.country";
+public class Country {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +16,6 @@ public class Maker {
 	private long id = 0;
 
 	private String name;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false)
-	private Country country;
 
 	public long getId() {
 		return id;
@@ -42,11 +33,4 @@ public class Maker {
 		this.name = name;
 	}
 
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
 }
