@@ -1,9 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
@@ -23,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class JpaEntityGraphCustomRepositoryTest extends BaseTest {
+public class EntityGraphCustomJpaRepositoryTest extends BaseTest {
 
 	@Inject
 	private ProductRepository productRepository;

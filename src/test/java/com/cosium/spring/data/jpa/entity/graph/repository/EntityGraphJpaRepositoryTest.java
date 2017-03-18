@@ -7,7 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
@@ -30,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class JpaEntityGraphRepositoryTest extends BaseTest {
+public class EntityGraphJpaRepositoryTest extends BaseTest {
 
 	@Inject
 	private ProductRepository productRepository;

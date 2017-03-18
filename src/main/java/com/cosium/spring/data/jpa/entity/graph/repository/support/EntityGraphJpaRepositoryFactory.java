@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import static org.springframework.data.querydsl.QueryDslUtils.QUERY_DSL_PRESENT;
+import static org.springframework.data.querydsl.QueryDslUtils.*;
 
 import javax.persistence.EntityManager;
 import java.lang.reflect.Field;
@@ -22,7 +22,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Reda.Housni-Alaoui
  */
-public class JpaEntityGraphRepositoryFactory extends JpaRepositoryFactory {
+class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
 
 	static {
 		addEntityGraphToSpecialTypes();
@@ -59,7 +59,7 @@ public class JpaEntityGraphRepositoryFactory extends JpaRepositoryFactory {
 	 *
 	 * @param entityManager must not be {@literal null}
 	 */
-	public JpaEntityGraphRepositoryFactory(EntityManager entityManager) {
+	public EntityGraphJpaRepositoryFactory(EntityManager entityManager) {
 		super(entityManager);
 		addRepositoryProxyPostProcessor(new RepositoryMethodEntityGraphExtractor(entityManager));
 	}
@@ -67,9 +67,9 @@ public class JpaEntityGraphRepositoryFactory extends JpaRepositoryFactory {
 	@Override
 	protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
 		if (isQueryDslExecutor(metadata.getRepositoryInterface())) {
-			return QueryDslJpaEntityGraphRepository.class;
+			return QueryDslEntityGraphRepository.class;
 		} else {
-			return SimpleJpaEntityGraphRepository.class;
+			return EntityGraphSimpleJpaRepository.class;
 		}
 	}
 

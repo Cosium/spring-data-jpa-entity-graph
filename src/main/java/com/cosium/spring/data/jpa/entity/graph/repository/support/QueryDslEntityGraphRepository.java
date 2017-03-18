@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import java.io.Serializable;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphQueryDslPredicateExecutor;
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQueryDslPredicateExecutor;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
@@ -21,18 +21,18 @@ import org.springframework.data.querydsl.EntityPathResolver;
  *
  * @author Reda.Housni-Alaoui
  */
-public class QueryDslJpaEntityGraphRepository<T, ID extends Serializable>
-	extends SimpleJpaEntityGraphRepository<T, ID> implements JpaEntityGraphQueryDslPredicateExecutor<T> {
+class QueryDslEntityGraphRepository<T, ID extends Serializable>
+	extends EntityGraphSimpleJpaRepository<T, ID> implements EntityGraphQueryDslPredicateExecutor<T> {
 
 	private QueryDslJpaRepository<T, ID> queryDslJpaRepositoryDelegate;
 
-	public QueryDslJpaEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+	public QueryDslEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
 		this.queryDslJpaRepositoryDelegate = new EntityGraphAwareQueryDslJpaRepository<T, ID>((JpaEntityInformation<T, ID>) entityInformation, entityManager);
 	}
 
-	public QueryDslJpaEntityGraphRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager,
-											EntityPathResolver resolver) {
+	public QueryDslEntityGraphRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager,
+										 EntityPathResolver resolver) {
 		super(entityInformation, entityManager);
 		this.queryDslJpaRepositoryDelegate = new EntityGraphAwareQueryDslJpaRepository<T, ID>(entityInformation, entityManager, resolver);
 	}

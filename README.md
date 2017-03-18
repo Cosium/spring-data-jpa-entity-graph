@@ -38,17 +38,22 @@ Example: if you were using `spring-data-jpa 1.10.13` in your project, you would 
         <version>${spring-data-jpa-entity-graph.version}</version>
     </dependency>
     ```
-3. In your Spring configuration, set the repository factory bean class to `JpaEntityGraphRepositoryFactoryBean` :
+3. In your Spring configuration, set the repository factory bean class to `EntityGraphJpaRepositoryFactoryBean` :
     
     ```java
     @Configuration
-    @EnableJpaRepositories(repositoryFactoryBeanClass = JpaEntityGraphRepositoryFactoryBean.class)
+    @EnableJpaRepositories(repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
     public class DataRepositoryConfiguration {
         //...
     }
     ```
-4. Make sure your repositories extend the Spring Data usual ones or the extension provided repositories: 
-`JpaEntityGraphRepository`, `JpaEntityGraphSpecificationExecutor` and/or `JpaEntityGraphQueryDslPredicateExecutor`
+4. Make sure your repositories extend the Spring Data standard ones or the library provided repositories: 
+- `EntityGraphJpaRepository` which is equivalent to standard `JpaRepository`
+- `EntityGraphJpaSpecificationExecutor` which is equivalent to standard `JpaSpecificationExecutor`
+- `EntityGraphQueryDslPredicateExecutor` which is equivalent to standard `QueryDslPredicateExecutor`
+- `EntityGraphCrudRepository` which is equivalent to standard `CrudRepository`
+- `EntityGraphPagingAndSortingRepository` which is equivalent to standard `PagingAndSortingRepository`
+- `EntityGraphQueryByExampleExecutor` which is equivalent to standard `QueryByExampleExecutor`
 
 ## Basic Usage
 
@@ -79,7 +84,7 @@ public class Product {
 }	
 ```
 ```java
-public interface ProductRepository extends JpaEntityGraphRepository<Product, Long> {
+public interface ProductRepository extends EntityGraphJpaRepository<Product, Long> {
     List<Product> findByName(String name, EntityGraph entityGraph);
 }
 ```

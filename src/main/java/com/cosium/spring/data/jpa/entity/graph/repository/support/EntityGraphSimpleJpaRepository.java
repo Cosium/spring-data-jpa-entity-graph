@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphRepository;
-import com.cosium.spring.data.jpa.entity.graph.repository.JpaEntityGraphSpecificationExecutor;
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,15 +22,15 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
  *
  * @author Reda.Housni-Alaoui
  */
-public class SimpleJpaEntityGraphRepository<T, ID extends Serializable>
+class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 		extends SimpleJpaRepository<T, ID>
-		implements JpaEntityGraphRepository<T, ID>, JpaEntityGraphSpecificationExecutor<T> {
+		implements EntityGraphJpaRepository<T, ID>, EntityGraphJpaSpecificationExecutor<T> {
 
-	public SimpleJpaEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+	public EntityGraphSimpleJpaRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
 	}
 
-	public SimpleJpaEntityGraphRepository(Class<T> domainClass, EntityManager em) {
+	public EntityGraphSimpleJpaRepository(Class<T> domainClass, EntityManager em) {
 		super(domainClass, em);
 	}
 
