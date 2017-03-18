@@ -19,7 +19,7 @@ productRepository.findByName("foo", EntityGraphUtils.fromName("Product.brand"));
 
 This library follows the Spring Data JPA versionning semantic.
 
-spring-data-jpa branches | spring-data-jpa-entity-graph.version | Documentation
+spring-data-jpa branches | Latest spring-data-jpa-entity-graph version | Documentation
 ---------------------------- | --------------- | -----------------
 1.12.x | Not released yet | [1.12.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/master/doc/MAIN.md)
 1.11.x | 1.11.01 | [1.11.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/1.11.x/doc/MAIN.md)
