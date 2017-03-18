@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class BasicRepositoryTest extends BaseTest {
+public class RepositoryTest extends BaseTest {
 
 	@Inject
 	private MakerRepository makerRepository;

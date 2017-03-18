@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class JpaEntityGraphSpecificationExecutorTest extends BaseTest {
+public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
 	@Inject
 	private ProductRepository productRepository;
