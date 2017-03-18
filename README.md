@@ -15,15 +15,15 @@ Example:
 productRepository.findByName("foo", EntityGraphUtils.fromName("Product.brand"));
 ```
 
-## Compatibility between spring-data-jpa and spring-data-jpa-entity-graph
+## How to select the correct version
 
 This library follows the Spring Data JPA versionning semantic.
 
-spring-data-jpa branches | spring-data-jpa-entity-graph.version
----------------------------- | ---------------
-1.12.x | Not released yet
-1.11.x | 1.11.01
-1.10.x | 1.10.14
+spring-data-jpa branches | spring-data-jpa-entity-graph.version | Documentation
+---------------------------- | --------------- | -----------------
+1.12.x | Not released yet | [1.12.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/master/README.md)
+1.11.x | 1.11.01 | Current one
+1.10.x | 1.10.14 | [1.10.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/1.10.x/README.md)
 
 Example: if you were using `spring-data-jpa 1.10.13` in your project, you would need to select any `spring-data-jpa-entity-graph 1.10.x`. Thus `spring-data-jpa-entity-graph 1.10.14` would be eligible.
 
