@@ -29,4 +29,4 @@ Example: if you were using `spring-data-jpa 1.10.13` in your project, you would 
 
 ## Genesis
 
-This project was created following the discussion in Spring Data Tracker issue [DATAJPA-749](https://jira.spring.io/browse/DATAJPA-749) .
+This project was created following the discussion in Spring Data Tracker issue [DATAJPA-749 - Context enabled JPA 2.1 @EntityGraph](https://jira.spring.io/browse/DATAJPA-749) .
