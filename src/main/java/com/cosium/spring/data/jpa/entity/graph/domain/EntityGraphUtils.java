@@ -3,7 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.domain;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
+import org.springframework.util.Assert;
 
 /**
  * Created on 22/11/16.
