@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
@@ -31,9 +32,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 	@Override
 	public List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph) {
-		Brand brand = brandRepository.findOne(1L, EntityGraphUtils.fromName(Brand.EMPTY_EG));
+		Optional<Brand> brand = brandRepository.findById(1L, EntityGraphUtils.fromName(Brand.EMPTY_EG));
 		entityManager.flush();
 		entityManager.clear();
-		return productRepository.findByBrand(brand);
+		return productRepository.findByBrand(brand.orElseThrow(() -> new RuntimeException("Brand not found")));
 	}
 }

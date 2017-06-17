@@ -6,16 +6,16 @@ import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 /**
- * Created on 23/11/16.
+ * Created on 17/06/17.
  *
  * @author Reda.Housni-Alaoui
  */
 @NoRepositoryBean
-public interface EntityGraphQueryDslPredicateExecutor<T> extends QueryDslPredicateExecutor<T> {
+public interface EntityGraphQuerydslPredicateExecutor<T> extends QuerydslPredicateExecutor<T> {
 
 	/**
 	 * Returns a single entity matching the given {@link Predicate} or {@literal null} if none was found.

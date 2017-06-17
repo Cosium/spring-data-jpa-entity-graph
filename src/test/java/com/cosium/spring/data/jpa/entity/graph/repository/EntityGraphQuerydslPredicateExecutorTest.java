@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class EntityGraphQueryDslPredicateExecutorTest extends BaseTest {
+public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
 	@Inject
 	private ProductRepository productRepository;

@@ -20,21 +20,13 @@ public interface EntityGraphPagingAndSortingRepository<T, ID extends Serializabl
 		extends PagingAndSortingRepository<T, ID>, EntityGraphCrudRepository<T, ID> {
 
 	/**
-	 * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
-	 *
-	 * @param pageable
-	 * @param entityGraph can be {@literal null}.
-	 * @return a page of entities
+	 * @see PagingAndSortingRepository#findAll(Pageable)
 	 */
 	Page<T> findAll(Pageable pageable, EntityGraph entityGraph);
 
 	/**
-	 * Returns all entities sorted by the given options.
-	 *
-	 * @param sort
-	 * @param entityGraph can be {@literal null}.
-	 * @return all entities sorted by the given options
+	 * @see PagingAndSortingRepository#findAll(Sort)
 	 */
-	List<T> findAll(Sort sort, EntityGraph entityGraph);
+	Iterable<T> findAll(Sort sort, EntityGraph entityGraph);
 
 }

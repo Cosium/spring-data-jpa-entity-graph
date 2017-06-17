@@ -12,7 +12,7 @@ This extension gives the ability to pass EntityGraph on any Spring Data JPA repo
 
 Example:
 ```java
-productRepository.findByName("foo", EntityGraphUtils.fromName("Product.brand"));
+productRepository.findByLabel("foo", EntityGraphUtils.fromName("Product.brand"));
 ```
 
 ## Documentation
@@ -21,7 +21,7 @@ This library follows the Spring Data JPA versionning semantic.
 
 spring-data-jpa branches | Latest spring-data-jpa-entity-graph version | Documentation
 ---------------------------- | --------------- | -----------------
-1.12.x | Not released yet | [1.12.x documentation](doc/MAIN.md)
+2.0.x | Not released yet | [2.0.x documentation](doc/MAIN.md)
 1.11.x | 1.11.02 | [1.11.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/1.11.x/doc/MAIN.md)
 1.10.x | 1.10.15 | [1.10.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/1.10.x/doc/MAIN.md)
 

@@ -5,7 +5,7 @@ import java.util.List;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
-import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQueryDslPredicateExecutor;
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 /**
@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository
 		extends EntityGraphJpaRepository<Product, Long>,
 		EntityGraphJpaSpecificationExecutor<Product>,
-		EntityGraphQueryDslPredicateExecutor<Product>,
+		EntityGraphQuerydslPredicateExecutor<Product>,
 		ProductRepositoryCustom {
 
 	List<Product> findByName(String name, EntityGraph entityGraph);

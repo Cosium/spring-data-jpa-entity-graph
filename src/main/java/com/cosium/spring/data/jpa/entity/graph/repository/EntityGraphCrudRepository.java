@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
@@ -16,29 +17,17 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface EntityGraphCrudRepository<T, ID extends Serializable> extends CrudRepository<T, ID>{
 
 	/**
-	 * Retrieves an entity by its id.
-	 *
-	 * @param id must not be {@literal null}.
-	 * @param entityGraph can be {@literal null}.
-	 * @return the entity with the given id or {@literal null} if none found
-	 * @throws IllegalArgumentException if {@code id} is {@literal null}
+	 * @see CrudRepository#findById(Object)
 	 */
-	T findOne(ID id, EntityGraph entityGraph);
+	Optional<T> findById(ID id, EntityGraph entityGraph);
 
 	/**
-	 * Returns all instances of the type with the given IDs.
-	 *
-	 * @param ids
-	 * @param entityGraph can be {@literal null}.
-	 * @return
+	 * @see CrudRepository#findAllById(Iterable)
 	 */
-	List<T> findAll(Iterable<ID> ids, EntityGraph entityGraph);
+	Iterable<T> findAllById(Iterable<ID> ids, EntityGraph entityGraph);
 
 	/**
-	 * Returns all instances of the type.
-	 *
-	 * @param entityGraph can be {@literal null}.
-	 * @return all entities
+	 * @see CrudRepository#findAll()
 	 */
-	List<T> findAll(EntityGraph entityGraph);
+	Iterable<T> findAll(EntityGraph entityGraph);
 }

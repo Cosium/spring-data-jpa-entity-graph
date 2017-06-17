@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
@@ -35,7 +36,7 @@ class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 	}
 
 	@Override
-	public T findOne(Specification<T> spec, EntityGraph entityGraph) {
+	public Optional<T> findOne(Specification<T> spec, EntityGraph entityGraph) {
 		return findOne(spec);
 	}
 
@@ -60,13 +61,13 @@ class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 	}
 
 	@Override
-	public <S extends T> S findOne(Example<S> example, EntityGraph entityGraph) {
+	public <S extends T> Optional<S> findOne(Example<S> example, EntityGraph entityGraph) {
 		return findOne(example);
 	}
 
 	@Override
-	public T findOne(ID id, EntityGraph entityGraph) {
-		return findOne(id);
+	public Optional<T> findById(ID id, EntityGraph entityGraph) {
+		return findById(id);
 	}
 
 	@Override
@@ -85,17 +86,17 @@ class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 	}
 
 	@Override
-	public List<T> findAll(Iterable<ID> ids, EntityGraph entityGraph) {
-		return findAll(ids);
+	public List<T> findAllById(Iterable<ID> ids, EntityGraph entityGraph) {
+		return findAllById(ids);
 	}
 
 	@Override
-	public List<T> findAll(Sort sort, EntityGraph entityGraph) {
+	public Iterable<T> findAll(Sort sort, EntityGraph entityGraph) {
 		return findAll(sort);
 	}
 
 	@Override
-	public List<T> findAll(EntityGraph entityGraph) {
+	public Iterable<T> findAll(EntityGraph entityGraph) {
 		return findAll();
 	}
 }

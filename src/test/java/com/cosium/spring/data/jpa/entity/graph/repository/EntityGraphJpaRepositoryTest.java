@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
@@ -39,52 +40,52 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_null_eg_when_findone_then_then_brand_should_not_be_loaded(){
-		Product product = productRepository.findOne(1L, null);
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
+		Optional<Product> product = productRepository.findById(1L, null);
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
 	}
 
 	@Transactional
 	@Test
 	public void given_empty_eg_when_findone_then_then_brand_should_not_be_loaded(){
-		Product product = productRepository.findOne(1L, EntityGraphUtils.empty());
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
+		Optional<Product> product = productRepository.findById(1L, EntityGraphUtils.empty());
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
 	}
 
 	@Transactional
 	@Test
 	public void given_brand_eg_when_findone_then_brand_should_be_loaded(){
-		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.BRAND_EG));
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+		Optional<Product> product = productRepository.findById(1L, EntityGraphUtils.fromName(Product.BRAND_EG));
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
 	}
 
 	@Transactional
 	@Test
 	public void given_optional_brand_eg_when_findone_then_brand_should_be_loaded(){
-		Product product = productRepository.findOne(1L, EntityGraphUtils.fromName(Product.BRAND_EG, true));
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+		Optional<Product> product = productRepository.findById(1L, EntityGraphUtils.fromName(Product.BRAND_EG, true));
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
 	}
 
 	@Transactional
 	@Test
 	public void given_brand_in_attribute_paths_eg_when_findone_then_brand_should_be_loaded() {
-		Product product = productRepository.findOne(1L, EntityGraphUtils.fromAttributePaths(Product.BRAND_PROP_NAME));
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+		Optional<Product> product = productRepository.findById(1L, EntityGraphUtils.fromAttributePaths(Product.BRAND_PROP_NAME));
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
 	}
 
 	@Transactional
 	@Test
 	public void given_brand_and_maker_in_attribute_paths_eg_when_findone_then_brand_and_maker_should_be_loaded() {
 		EntityGraph entityGraph = EntityGraphUtils.fromAttributePaths(Product.BRAND_PROP_NAME, Product.MAKER_PROP_NAME);
-		Product product = productRepository.findOne(1L, entityGraph);
+		Optional<Product> product = productRepository.findById(1L, entityGraph);
 
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
-		assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
+		assertThat(Hibernate.isInitialized(product.get().getMaker())).isTrue();
 	}
 
 	@Transactional
@@ -126,9 +127,9 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
 	@Transactional
 	@Test
 	public void given_default_eg_when_findone_without_eg_then_supplier_should_be_loaded(){
-		Product product = productRepository.findOne(1L);
-		assertThat(product).isNotNull();
-		assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+		Optional<Product> product = productRepository.findById(1L);
+		assertThat(product).isNotEmpty();
+		assertThat(Hibernate.isInitialized(product.get().getMaker())).isTrue();
 	}
 
 	@Transactional

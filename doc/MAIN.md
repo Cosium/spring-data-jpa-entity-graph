@@ -5,7 +5,7 @@
     <dependency>
         <groupId>com.cosium.spring.data</groupId>
         <artifactId>spring-data-jpa-entity-graph</artifactId>
-        <version>1.12.00-SNAPSHOT</version>
+        <version>2.0.0-SNAPSHOT</version>
     </dependency>
     ```
 2. In your Spring configuration, set the repository factory bean class to `EntityGraphJpaRepositoryFactoryBean` :
@@ -20,7 +20,7 @@
 3. Make sure your repositories extend the Spring Data standard ones or the library provided repositories: 
 - `EntityGraphJpaRepository` which is equivalent to standard `JpaRepository`
 - `EntityGraphJpaSpecificationExecutor` which is equivalent to standard `JpaSpecificationExecutor`
-- `EntityGraphQueryDslPredicateExecutor` which is equivalent to standard `QueryDslPredicateExecutor`
+- `EntityGraphQuerydslPredicateExecutor` which is equivalent to standard `QuerydslPredicateExecutor`
 - `EntityGraphCrudRepository` which is equivalent to standard `CrudRepository`
 - `EntityGraphPagingAndSortingRepository` which is equivalent to standard `PagingAndSortingRepository`
 - `EntityGraphQueryByExampleExecutor` which is equivalent to standard `QueryByExampleExecutor`
@@ -68,7 +68,7 @@ productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.bra
 Or to the `findOne` method :
 ```java
 // This will apply 'Product.brand' named EntityGraph to findOne
-productRepository.findOne(1L, EntityGraphUtils.fromName("Product.brand"));
+productRepository.findById(1L, EntityGraphUtils.fromName("Product.brand"));
 ```
 
 Or any method you like.
@@ -76,14 +76,14 @@ Or any method you like.
 You can also pass a dynamically built EntityGraph by using `DynamicEntityGraph`, it's also accessible through a helper method:
 
 ```java
-productRepository.findOne(1L, EntityGraphUtils.fromAttributePaths("brand", "maker"));
+productRepository.findById(1L, EntityGraphUtils.fromAttributePaths("brand", "maker"));
 ```
 
 This is similar to [Spring's ad-hoc attribute paths](http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-property-expressions),
 and equivalent to writing this in your repository's interface:
 ```java
 @EntityGraph(attributePaths = { "brand", "maker" })
-Product findOne(Long id);
+Product findById(Long id);
 ```
 
 ## Default EntityGraph
@@ -111,5 +111,5 @@ public class Product {
 ```
 ```java
 // This call will make use of "Product.default" EntityGraph.
-productRepository.findOne(1L);
+productRepository.findById(1L);
 ```
