@@ -5,15 +5,27 @@
 
 # Spring Data JPA EntityGraph
 
-Today, [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) supports EntityGraph exclusively through annotations.  
-Thus, for a method, the choice of EntityGraph must be made before compilation.  
+## Life without spring-data-jpa-entity-graph
 
-This extension gives the ability to pass EntityGraph on any Spring Data JPA repository method as an argument, making the EntityGraph choice fully dynamic.
+[Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) only supports EntityGraph through annotations.  
+Thus, for a repository method, you must select at most one EntityGraph before compilation.  
+This prevents you from choosing the best EntityGraph considering the runtime context :broken_heart:
+
+## Life with spring-data-jpa-entity-graph
+
+Thanks to [spring-data-jpa-entity-graph](https://github.com/Cosium/spring-data-jpa-entity-graph), you can choose EntityGraph at runtime!  
+This choice is elegantly made by passing EntityGraph, as an argument, to any Spring Data JPA repository method :heart_eyes:
 
 Example:
 ```java
+// This will apply 'Product.brand' named EntityGraph to findByLabel
 productRepository.findByLabel("foo", EntityGraphUtils.fromName("Product.brand"));
+
+// This will apply 'Product.supplier' named EntityGraph to findByLabel
+productRepository.findByLabel("foo", EntityGraphUtils.fromName("Product.supplier"));
 ```
+
+Now run to the documentation !
 
 ## Documentation
 
