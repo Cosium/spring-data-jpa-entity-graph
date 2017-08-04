@@ -22,7 +22,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Reda.Housni-Alaoui
  */
-class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
+public class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
 
 	static {
 		addEntityGraphToSpecialTypes();
@@ -67,7 +67,7 @@ class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
 	@Override
 	protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
 		if (isQueryDslExecutor(metadata.getRepositoryInterface())) {
-			return QuerydslEntityGraphRepository.class;
+			return EntityGraphQuerydslRepository.class;
 		} else {
 			return EntityGraphSimpleJpaRepository.class;
 		}

@@ -23,7 +23,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
  *
  * @author Reda.Housni-Alaoui
  */
-class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
+public class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 		extends SimpleJpaRepository<T, ID>
 		implements EntityGraphJpaRepository<T, ID>, EntityGraphJpaSpecificationExecutor<T> {
 
@@ -31,8 +31,8 @@ class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 		super(entityInformation, entityManager);
 	}
 
-	public EntityGraphSimpleJpaRepository(Class<T> domainClass, EntityManager em) {
-		super(domainClass, em);
+	public EntityGraphSimpleJpaRepository(Class<T> domainClass, EntityManager entityManager) {
+		super(domainClass, entityManager);
 	}
 
 	@Override

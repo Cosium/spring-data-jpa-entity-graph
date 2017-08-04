@@ -21,20 +21,20 @@ import org.springframework.data.querydsl.EntityPathResolver;
  *
  * @author Reda.Housni-Alaoui
  */
-class QuerydslEntityGraphRepository<T, ID extends Serializable>
+public class EntityGraphQuerydslRepository<T, ID extends Serializable>
 		extends EntityGraphSimpleJpaRepository<T, ID> implements EntityGraphQuerydslPredicateExecutor<T> {
 
-	private QuerydslJpaRepository<T, ID> querydslJpaRepositoryDelegate;
+	private final QuerydslJpaRepository<T, ID> querydslJpaRepositoryDelegate;
 
-	public QuerydslEntityGraphRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+	public EntityGraphQuerydslRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
-		this.querydslJpaRepositoryDelegate = new EntityGraphAwareQuerydslJpaRepository<T, ID>((JpaEntityInformation<T, ID>) entityInformation, entityManager);
+		this.querydslJpaRepositoryDelegate = new EntityGraphAwareQuerydslJpaRepository<>((JpaEntityInformation<T, ID>) entityInformation, entityManager);
 	}
 
-	public QuerydslEntityGraphRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager,
+	public EntityGraphQuerydslRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager,
 										 EntityPathResolver resolver) {
 		super(entityInformation, entityManager);
-		this.querydslJpaRepositoryDelegate = new EntityGraphAwareQuerydslJpaRepository<T, ID>(entityInformation, entityManager, resolver);
+		this.querydslJpaRepositoryDelegate = new EntityGraphAwareQuerydslJpaRepository<>(entityInformation, entityManager, resolver);
 	}
 
 	@Override
