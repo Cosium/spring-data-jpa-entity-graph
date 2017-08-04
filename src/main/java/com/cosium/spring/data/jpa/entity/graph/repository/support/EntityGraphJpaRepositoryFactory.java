@@ -22,7 +22,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Reda.Housni-Alaoui
  */
-class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
+public class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
 
 	static {
 		addEntityGraphToSpecialTypes();

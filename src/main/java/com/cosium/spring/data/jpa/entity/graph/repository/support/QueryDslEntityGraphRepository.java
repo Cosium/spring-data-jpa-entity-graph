@@ -21,7 +21,7 @@ import org.springframework.data.querydsl.EntityPathResolver;
  *
  * @author Reda.Housni-Alaoui
  */
-class QueryDslEntityGraphRepository<T, ID extends Serializable>
+public class QueryDslEntityGraphRepository<T, ID extends Serializable>
 	extends EntityGraphSimpleJpaRepository<T, ID> implements EntityGraphQueryDslPredicateExecutor<T> {
 
 	private QueryDslJpaRepository<T, ID> queryDslJpaRepositoryDelegate;

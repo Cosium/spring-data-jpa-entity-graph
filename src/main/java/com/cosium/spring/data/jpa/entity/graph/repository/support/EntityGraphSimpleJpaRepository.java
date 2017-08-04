@@ -22,7 +22,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
  *
  * @author Reda.Housni-Alaoui
  */
-class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
+public class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
 		extends SimpleJpaRepository<T, ID>
 		implements EntityGraphJpaRepository<T, ID>, EntityGraphJpaSpecificationExecutor<T> {
 
