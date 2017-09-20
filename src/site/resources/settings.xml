@@ -17,6 +17,11 @@
                     <name>spring-snapshot-local</name>
                     <url>https://repo.spring.io/libs-snapshot-local</url>
                 </repository>
+                <repository>
+                    <id>spring-milestone-local</id>
+                    <name>spring-milestone-local</name>
+                    <url>https://repo.spring.io/libs-milestone-local</url>
+                </repository>
             </repositories>
         </profile>
     </profiles>
