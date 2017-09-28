@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import java.util.Optional;
+
 /**
  * Created on 17/06/17.
  *
@@ -26,7 +28,7 @@ public interface EntityGraphQuerydslPredicateExecutor<T> extends QuerydslPredica
 	 * @throws org.springframework.dao.IncorrectResultSizeDataAccessException if the predicate yields more than one
 	 *           result.
 	 */
-	T findOne(Predicate predicate, EntityGraph entityGraph);
+	Optional<T> findOne(Predicate predicate, EntityGraph entityGraph);
 
 	/**
 	 * Returns all entities matching the given {@link Predicate}. In case no match could be found an empty

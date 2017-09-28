@@ -38,8 +38,8 @@ public class EntityGraphQuerydslRepository<T, ID extends Serializable>
 	}
 
 	@Override
-	public T findOne(Predicate predicate, EntityGraph entityGraph) {
-		return querydslJpaRepositoryDelegate.findOne(predicate).orElse(null);
+	public Optional<T> findOne(Predicate predicate, EntityGraph entityGraph) {
+		return querydslJpaRepositoryDelegate.findOne(predicate);
 	}
 
 	@Override
