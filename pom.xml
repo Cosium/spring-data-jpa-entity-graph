@@ -25,7 +25,7 @@
         <assertj>3.8.0</assertj>
 
         <!-- Plugins -->
-        <maven-git-code-format.version>1.5</maven-git-code-format.version>
+        <maven-git-code-format.version>1.6</maven-git-code-format.version>
     </properties>
 
     <dependencies>
