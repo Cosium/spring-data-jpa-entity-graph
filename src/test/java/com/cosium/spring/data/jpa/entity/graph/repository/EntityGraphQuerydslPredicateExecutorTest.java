@@ -30,37 +30,40 @@ import static org.assertj.core.api.Assertions.fail;
 @DatabaseTearDown
 public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
-    @Inject
-    private ProductRepository productRepository;
+  @Inject private ProductRepository productRepository;
 
-    @Transactional
-    @Test
-    public void given_null_eg_when_findone_then_brand_should_not_be_loaded() {
-        Optional<Product> product = productRepository.findOne(QProduct.product.name.eq("Product 1"), (EntityGraph) null);
-        if (!product.isPresent()) {
-            fail("Product must be present");
-        }
-        assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
+  @Transactional
+  @Test
+  public void given_null_eg_when_findone_then_brand_should_not_be_loaded() {
+    Optional<Product> product =
+        productRepository.findOne(QProduct.product.name.eq("Product 1"), (EntityGraph) null);
+    if (!product.isPresent()) {
+      fail("Product must be present");
     }
+    assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
+  }
 
-    @Transactional
-    @Test
-    public void given_brand_eg_when_findone_then_brand_should_be_loaded() {
-        Optional<Product> product = productRepository.findOne(QProduct.product.name.eq("Product 1"), EntityGraphUtils.fromName(Product.BRAND_EG));
-        if (!product.isPresent()) {
-            fail("Product must be present");
-        }
-        assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
+  @Transactional
+  @Test
+  public void given_brand_eg_when_findone_then_brand_should_be_loaded() {
+    Optional<Product> product =
+        productRepository.findOne(
+            QProduct.product.name.eq("Product 1"), EntityGraphUtils.fromName(Product.BRAND_EG));
+    if (!product.isPresent()) {
+      fail("Product must be present");
     }
+    assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
+  }
 
-    @Transactional
-    @Test
-    public void given_brand_eg_when_findpage_then_brand_should_be_loaded() {
-        Page<Product> productPage = productRepository.findAll((Predicate) null, new PageRequest(0, 10), EntityGraphUtils.fromName(Product.BRAND_EG));
-        assertThat(productPage.getContent()).isNotEmpty();
-        for (Product product : productPage.getContent()) {
-            assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
-        }
+  @Transactional
+  @Test
+  public void given_brand_eg_when_findpage_then_brand_should_be_loaded() {
+    Page<Product> productPage =
+        productRepository.findAll(
+            (Predicate) null, new PageRequest(0, 10), EntityGraphUtils.fromName(Product.BRAND_EG));
+    assertThat(productPage.getContent()).isNotEmpty();
+    for (Product product : productPage.getContent()) {
+      assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
     }
-
+  }
 }

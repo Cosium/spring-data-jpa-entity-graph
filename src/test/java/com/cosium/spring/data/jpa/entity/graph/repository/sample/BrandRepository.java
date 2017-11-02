@@ -7,6 +7,4 @@ import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaReposito
  *
  * @author Reda.Housni-Alaoui
  */
-public interface BrandRepository extends EntityGraphJpaRepository<Brand, Long> {
-
-}
+public interface BrandRepository extends EntityGraphJpaRepository<Brand, Long> {}

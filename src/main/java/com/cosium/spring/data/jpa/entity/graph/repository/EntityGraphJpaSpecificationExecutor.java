@@ -1,8 +1,5 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +7,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created on 23/11/16.
@@ -19,24 +19,15 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface EntityGraphJpaSpecificationExecutor<T> extends JpaSpecificationExecutor<T> {
 
-	/**
-	 * @see JpaSpecificationExecutor#findOne(Specification)
-	 */
-	Optional<T> findOne(Specification<T> spec, EntityGraph entityGraph);
+  /** @see JpaSpecificationExecutor#findOne(Specification) */
+  Optional<T> findOne(Specification<T> spec, EntityGraph entityGraph);
 
-	/**
-	 * @see JpaSpecificationExecutor#findAll(Specification)
-	 */
-	List<T> findAll(Specification<T> spec, EntityGraph entityGraph);
+  /** @see JpaSpecificationExecutor#findAll(Specification) */
+  List<T> findAll(Specification<T> spec, EntityGraph entityGraph);
 
-	/**
-	 * @see JpaSpecificationExecutor#findAll(Specification, Pageable)
-	 */
-	Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraph entityGraph);
+  /** @see JpaSpecificationExecutor#findAll(Specification, Pageable) */
+  Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraph entityGraph);
 
-	/**
-	 * @see JpaSpecificationExecutor#findAll(Specification, Sort)
-	 */
-	List<T> findAll(Specification<T> spec, Sort sort, EntityGraph entityGraph);
-
+  /** @see JpaSpecificationExecutor#findAll(Specification, Sort) */
+  List<T> findAll(Specification<T> spec, Sort sort, EntityGraph entityGraph);
 }

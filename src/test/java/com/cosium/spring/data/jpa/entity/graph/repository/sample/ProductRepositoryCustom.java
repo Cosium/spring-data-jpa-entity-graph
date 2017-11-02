@@ -1,8 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
-import java.util.List;
-
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+
+import java.util.List;
 
 /**
  * Created on 28/11/16.
@@ -11,8 +11,7 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
  */
 public interface ProductRepositoryCustom {
 
-	void customMethod(EntityGraph entityGraph);
+  void customMethod(EntityGraph entityGraph);
 
-	List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph);
-
+  List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph);
 }

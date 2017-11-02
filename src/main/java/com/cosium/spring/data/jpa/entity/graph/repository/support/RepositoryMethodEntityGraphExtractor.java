@@ -1,8 +1,5 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
@@ -22,178 +19,200 @@ import org.springframework.data.repository.core.support.RepositoryProxyPostProce
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import java.util.List;
+
 /**
- * Captures {@link EntityGraph} on repositories method calls.
- * Created on 22/11/16.
+ * Captures {@link EntityGraph} on repositories method calls. Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
  */
 class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcessor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RepositoryMethodEntityGraphExtractor.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(RepositoryMethodEntityGraphExtractor.class);
 
-	private static final ThreadLocal<JpaEntityGraphMethodInterceptor> CURRENT_REPOSITORY =
-			new NamedThreadLocal<JpaEntityGraphMethodInterceptor>("Thread local holding the current repository");
+  private static final ThreadLocal<JpaEntityGraphMethodInterceptor> CURRENT_REPOSITORY =
+      new NamedThreadLocal<JpaEntityGraphMethodInterceptor>(
+          "Thread local holding the current repository");
 
-	private final EntityManager entityManager;
+  private final EntityManager entityManager;
 
-	RepositoryMethodEntityGraphExtractor(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
+  RepositoryMethodEntityGraphExtractor(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
 
-	@Override
-	public void postProcess(ProxyFactory factory, RepositoryInformation repositoryInformation) {
-		factory.addAdvice(new JpaEntityGraphMethodInterceptor(entityManager, repositoryInformation.getDomainType()));
-	}
+  static EntityGraphBean getCurrentJpaEntityGraph() {
+    JpaEntityGraphMethodInterceptor currentRepository = CURRENT_REPOSITORY.get();
+    if (currentRepository == null) {
+      return null;
+    }
+    return currentRepository.getCurrentJpaEntityGraph();
+  }
 
-	static EntityGraphBean getCurrentJpaEntityGraph() {
-		JpaEntityGraphMethodInterceptor currentRepository = CURRENT_REPOSITORY.get();
-		if (currentRepository == null) {
-			return null;
-		}
-		return currentRepository.getCurrentJpaEntityGraph();
-	}
+  /**
+   * @param entityGraph
+   * @return True if the provided EntityGraph is empty
+   */
+  private static boolean isEmpty(EntityGraph entityGraph) {
+    return entityGraph == null
+        || (entityGraph.getEntityGraphAttributePaths() == null
+            && entityGraph.getEntityGraphName() == null
+            && entityGraph.getEntityGraphType() == null);
+  }
 
-	/**
-	 * @param entityGraph
-	 * @return True if the provided EntityGraph is empty
-	 */
-	private static boolean isEmpty(EntityGraph entityGraph) {
-		return entityGraph == null ||
-				(
-						entityGraph.getEntityGraphAttributePaths() == null
-								&& entityGraph.getEntityGraphName() == null
-								&& entityGraph.getEntityGraphType() == null
-				);
-	}
+  @Override
+  public void postProcess(ProxyFactory factory, RepositoryInformation repositoryInformation) {
+    factory.addAdvice(
+        new JpaEntityGraphMethodInterceptor(entityManager, repositoryInformation.getDomainType()));
+  }
 
-	private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
+  private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
 
-		private static final String DEFAULT_ENTITYGRAPH_NAME_SUFFIX = ".default";
-		private final Class<?> domainClass;
-		private final EntityGraph defaultEntityGraph;
-		private final ThreadLocal<EntityGraphBean> currentEntityGraph = new NamedThreadLocal<EntityGraphBean>("Thread local holding the current spring data jpa repository entity graph");
+    private static final String DEFAULT_ENTITYGRAPH_NAME_SUFFIX = ".default";
+    private final Class<?> domainClass;
+    private final EntityGraph defaultEntityGraph;
+    private final ThreadLocal<EntityGraphBean> currentEntityGraph =
+        new NamedThreadLocal<EntityGraphBean>(
+            "Thread local holding the current spring data jpa repository entity graph");
 
-		JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class domainClass) {
-			this.domainClass = domainClass;
-			this.defaultEntityGraph = findDefaultEntityGraph(entityManager);
-		}
+    JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class domainClass) {
+      this.domainClass = domainClass;
+      this.defaultEntityGraph = findDefaultEntityGraph(entityManager);
+    }
 
-		/**
-		 * @param entityManager
-		 * @return The default entity graph if it exists. Null otherwise.
-		 */
-		private EntityGraph findDefaultEntityGraph(EntityManager entityManager) {
-			EntityGraph defaultEntityGraph = null;
-			List<javax.persistence.EntityGraph<?>> entityGraphs = (List<javax.persistence.EntityGraph<?>>) entityManager.getEntityGraphs(domainClass);
-			for (javax.persistence.EntityGraph entityGraph : entityGraphs) {
-				if (entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
-					if (defaultEntityGraph != null) {
-						throw new MultipleDefaultEntityGraphException(entityGraph.getName(), defaultEntityGraph.getEntityGraphName());
-					}
-					defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName(), true);
-				}
-			}
-			return defaultEntityGraph;
-		}
+    /**
+     * @param entityManager
+     * @return The default entity graph if it exists. Null otherwise.
+     */
+    private EntityGraph findDefaultEntityGraph(EntityManager entityManager) {
+      EntityGraph defaultEntityGraph = null;
+      List<javax.persistence.EntityGraph<?>> entityGraphs =
+          (List<javax.persistence.EntityGraph<?>>) entityManager.getEntityGraphs(domainClass);
+      for (javax.persistence.EntityGraph entityGraph : entityGraphs) {
+        if (entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
+          if (defaultEntityGraph != null) {
+            throw new MultipleDefaultEntityGraphException(
+                entityGraph.getName(), defaultEntityGraph.getEntityGraphName());
+          }
+          defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName(), true);
+        }
+      }
+      return defaultEntityGraph;
+    }
 
-		EntityGraphBean getCurrentJpaEntityGraph() {
-			return currentEntityGraph.get();
-		}
+    EntityGraphBean getCurrentJpaEntityGraph() {
+      return currentEntityGraph.get();
+    }
 
-		@Override
-		public Object invoke(MethodInvocation invocation) throws Throwable {
-			JpaEntityGraphMethodInterceptor oldRepo = CURRENT_REPOSITORY.get();
-			CURRENT_REPOSITORY.set(this);
-			try {
-				return doInvoke(invocation);
-			} finally {
-				CURRENT_REPOSITORY.set(oldRepo);
-			}
-		}
+    @Override
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+      JpaEntityGraphMethodInterceptor oldRepo = CURRENT_REPOSITORY.get();
+      CURRENT_REPOSITORY.set(this);
+      try {
+        return doInvoke(invocation);
+      } finally {
+        CURRENT_REPOSITORY.set(oldRepo);
+      }
+    }
 
-		private Object doInvoke(MethodInvocation invocation) throws Throwable {
-			Object[] arguments = invocation.getArguments();
-			EntityGraph providedEntityGraph = null;
-			for (Object argument : arguments) {
-				if (!(argument instanceof EntityGraph)) {
-					continue;
-				}
-				EntityGraph newEntityGraph = (EntityGraph) argument;
-				if (providedEntityGraph != null) {
-					throw new MultipleEntityGraphException("Duplicate EntityGraphs detected. '"
-							+ providedEntityGraph + "' and '" + newEntityGraph + "' were passed to method " + invocation.getMethod());
-				}
-				providedEntityGraph = newEntityGraph;
-			}
+    private Object doInvoke(MethodInvocation invocation) throws Throwable {
+      Object[] arguments = invocation.getArguments();
+      EntityGraph providedEntityGraph = null;
+      for (Object argument : arguments) {
+        if (!(argument instanceof EntityGraph)) {
+          continue;
+        }
+        EntityGraph newEntityGraph = (EntityGraph) argument;
+        if (providedEntityGraph != null) {
+          throw new MultipleEntityGraphException(
+              "Duplicate EntityGraphs detected. '"
+                  + providedEntityGraph
+                  + "' and '"
+                  + newEntityGraph
+                  + "' were passed to method "
+                  + invocation.getMethod());
+        }
+        providedEntityGraph = newEntityGraph;
+      }
 
-			Class<?> implementationClass;
-			if (invocation instanceof ReflectiveMethodInvocation) {
-				implementationClass = ((ReflectiveMethodInvocation) invocation).getProxy().getClass();
-			} else {
-				implementationClass = invocation.getThis().getClass();
-			}
+      Class<?> implementationClass;
+      if (invocation instanceof ReflectiveMethodInvocation) {
+        implementationClass = ((ReflectiveMethodInvocation) invocation).getProxy().getClass();
+      } else {
+        implementationClass = invocation.getThis().getClass();
+      }
 
-			EntityGraphBean entityGraphCandidate = buildEntityGraphCandidate(
-					providedEntityGraph,
-					ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass)
-			);
+      EntityGraphBean entityGraphCandidate =
+          buildEntityGraphCandidate(
+              providedEntityGraph,
+              ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass));
 
-			if (entityGraphCandidate != null && !entityGraphCandidate.isValid()) {
-				if (entityGraphCandidate.isOptional()) {
-					LOG.trace("Cannot apply EntityGraph {}", entityGraphCandidate);
-					entityGraphCandidate = null;
-				} else {
-					throw new InapplicableEntityGraphException("Cannot apply EntityGraph " + entityGraphCandidate + " to the the current query");
-				}
-			}
+      if (entityGraphCandidate != null && !entityGraphCandidate.isValid()) {
+        if (entityGraphCandidate.isOptional()) {
+          LOG.trace("Cannot apply EntityGraph {}", entityGraphCandidate);
+          entityGraphCandidate = null;
+        } else {
+          throw new InapplicableEntityGraphException(
+              "Cannot apply EntityGraph " + entityGraphCandidate + " to the the current query");
+        }
+      }
 
-			EntityGraphBean oldEntityGraphCandidate = currentEntityGraph.get();
-			boolean newEntityGraphCandidatePreValidated = entityGraphCandidate != null && (oldEntityGraphCandidate == null || !oldEntityGraphCandidate.isPrimary());
-			if (newEntityGraphCandidatePreValidated) {
-				currentEntityGraph.set(entityGraphCandidate);
-			}
-			try {
-				return invocation.proceed();
-			} finally {
-				if (newEntityGraphCandidatePreValidated) {
-					currentEntityGraph.set(oldEntityGraphCandidate);
-				}
-			}
-		}
+      EntityGraphBean oldEntityGraphCandidate = currentEntityGraph.get();
+      boolean newEntityGraphCandidatePreValidated =
+          entityGraphCandidate != null
+              && (oldEntityGraphCandidate == null || !oldEntityGraphCandidate.isPrimary());
+      if (newEntityGraphCandidatePreValidated) {
+        currentEntityGraph.set(entityGraphCandidate);
+      }
+      try {
+        return invocation.proceed();
+      } finally {
+        if (newEntityGraphCandidatePreValidated) {
+          currentEntityGraph.set(oldEntityGraphCandidate);
+        }
+      }
+    }
 
-		private EntityGraphBean buildEntityGraphCandidate(EntityGraph providedEntityGraph, ResolvableType returnType) {
-			boolean isPrimary = true;
-			if (isEmpty(providedEntityGraph)) {
-				providedEntityGraph = defaultEntityGraph;
-				isPrimary = false;
-			}
-			if (providedEntityGraph == null) {
-				return null;
-			}
+    private EntityGraphBean buildEntityGraphCandidate(
+        EntityGraph providedEntityGraph, ResolvableType returnType) {
+      boolean isPrimary = true;
+      if (isEmpty(providedEntityGraph)) {
+        providedEntityGraph = defaultEntityGraph;
+        isPrimary = false;
+      }
+      if (providedEntityGraph == null) {
+        return null;
+      }
 
-			Assert.notNull(providedEntityGraph.getEntityGraphType());
+      Assert.notNull(providedEntityGraph.getEntityGraphType());
 
-			org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
-			switch (providedEntityGraph.getEntityGraphType()) {
-				case FETCH:
-					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
-					break;
-				case LOAD:
-					type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.LOAD;
-					break;
-				default:
-					throw new RuntimeException("Unexpected entity graph type '" + providedEntityGraph.getEntityGraphType() + "'");
-			}
+      org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
+      switch (providedEntityGraph.getEntityGraphType()) {
+        case FETCH:
+          type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
+          break;
+        case LOAD:
+          type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.LOAD;
+          break;
+        default:
+          throw new RuntimeException(
+              "Unexpected entity graph type '" + providedEntityGraph.getEntityGraphType() + "'");
+      }
 
-			List<String> attributePaths = providedEntityGraph.getEntityGraphAttributePaths();
-			JpaEntityGraph jpaEntityGraph = new JpaEntityGraph(
-					StringUtils.hasText(providedEntityGraph.getEntityGraphName()) ? providedEntityGraph.getEntityGraphName() : domainClass.getName() + "-_-_-_-_-_-",
-					type,
-					attributePaths != null ? attributePaths.toArray(new String[attributePaths.size()]) : null
-			);
+      List<String> attributePaths = providedEntityGraph.getEntityGraphAttributePaths();
+      JpaEntityGraph jpaEntityGraph =
+          new JpaEntityGraph(
+              StringUtils.hasText(providedEntityGraph.getEntityGraphName())
+                  ? providedEntityGraph.getEntityGraphName()
+                  : domainClass.getName() + "-_-_-_-_-_-",
+              type,
+              attributePaths != null
+                  ? attributePaths.toArray(new String[attributePaths.size()])
+                  : null);
 
-			return new EntityGraphBean(jpaEntityGraph, domainClass, returnType, providedEntityGraph.isOptional(), isPrimary);
-		}
-	}
+      return new EntityGraphBean(
+          jpaEntityGraph, domainClass, returnType, providedEntityGraph.isOptional(), isPrimary);
+    }
+  }
 }

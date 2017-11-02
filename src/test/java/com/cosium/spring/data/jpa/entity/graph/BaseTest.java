@@ -16,14 +16,18 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
  *
  * @author Reda.Housni-Alaoui
  */
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
-		TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
+@TestExecutionListeners({
+  DependencyInjectionTestExecutionListener.class,
+  DirtiesContextTestExecutionListener.class,
+  TransactionalTestExecutionListener.class,
+  DbUnitTestExecutionListener.class
+})
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {DataRepositoryConfiguration.class})
 @AutoConfigureDataJpa
 @DirtiesContext
 public abstract class BaseTest {
 
-	public static final String DATASET = "classpath:com/cosium/spring/data/jpa/entity/graph/dataset.xml";
-
+  public static final String DATASET =
+      "classpath:com/cosium/spring/data/jpa/entity/graph/dataset.xml";
 }

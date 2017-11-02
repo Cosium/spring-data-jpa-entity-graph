@@ -10,27 +10,26 @@ import javax.persistence.*;
 @Entity
 public class Country {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Access(value = AccessType.PROPERTY)
-	private long id = 0;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Access(value = AccessType.PROPERTY)
+  private long id = 0;
 
-	private String name;
+  private String name;
 
-	public long getId() {
-		return id;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
+  public void setName(String name) {
+    this.name = name;
+  }
 }

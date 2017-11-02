@@ -7,7 +7,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.exception;
  */
 public class InapplicableEntityGraphException extends RepositoryEntityGraphException {
 
-	public InapplicableEntityGraphException(String message) {
-		super(message);
-	}
+  public InapplicableEntityGraphException(String message) {
+    super(message);
+  }
 }

@@ -11,6 +11,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @EnableJpaRepositories(repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
-public class DataRepositoryConfiguration {
-
-}
+public class DataRepositoryConfiguration {}

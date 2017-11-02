@@ -7,7 +7,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.exception;
  */
 public class MultipleEntityGraphException extends RuntimeException {
 
-	public MultipleEntityGraphException(String message) {
-		super(message);
-	}
+  public MultipleEntityGraphException(String message) {
+    super(message);
+  }
 }

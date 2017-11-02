@@ -6,5 +6,5 @@ package com.cosium.spring.data.jpa.entity.graph.repository.sample;
  * @author Reda.Housni-Alaoui
  */
 public interface ProductName {
-	String getName();
+  String getName();
 }

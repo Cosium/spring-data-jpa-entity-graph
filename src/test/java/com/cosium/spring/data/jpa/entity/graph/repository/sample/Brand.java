@@ -7,34 +7,39 @@ import javax.persistence.*;
  *
  * @author Reda.Housni-Alaoui
  */
-@NamedEntityGraphs(value = {
-		@NamedEntityGraph(name = Brand.EMPTY_EG, attributeNodes = {})
-})
+@NamedEntityGraphs(
+  value = {
+    @NamedEntityGraph(
+      name = Brand.EMPTY_EG,
+      attributeNodes = {}
+    )
+  }
+)
 @Entity
 public class Brand {
 
-	public static final String EMPTY_EG = "Brand.empty";
+  public static final String EMPTY_EG = "Brand.empty";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Access(value = AccessType.PROPERTY)
-	private long id = 0;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Access(value = AccessType.PROPERTY)
+  private long id = 0;
 
-	private String name;
+  private String name;
 
-	public long getId() {
-		return id;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 }

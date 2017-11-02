@@ -8,54 +8,55 @@ import org.springframework.util.Assert;
  *
  * @author Reda.Housni-Alaoui
  */
-public abstract class AbstractEntityGraph implements EntityGraph{
+public abstract class AbstractEntityGraph implements EntityGraph {
 
-	protected static final EntityGraphType DEFAULT_ENTITY_GRAPH_TYPE = EntityGraphType.FETCH;
-	private EntityGraphType entityGraphType = DEFAULT_ENTITY_GRAPH_TYPE;
-	private boolean optional;
+  protected static final EntityGraphType DEFAULT_ENTITY_GRAPH_TYPE = EntityGraphType.FETCH;
+  private EntityGraphType entityGraphType = DEFAULT_ENTITY_GRAPH_TYPE;
+  private boolean optional;
 
-	public AbstractEntityGraph(){}
+  public AbstractEntityGraph() {}
 
-	public AbstractEntityGraph(EntityGraphType entityGraphType){
-		this(entityGraphType, false);
-	}
+  public AbstractEntityGraph(EntityGraphType entityGraphType) {
+    this(entityGraphType, false);
+  }
 
-	public AbstractEntityGraph(EntityGraphType entityGraphType, boolean optional){
-		Assert.notNull(entityGraphType);
-		this.entityGraphType = entityGraphType;
-		this.optional = optional;
-	}
+  public AbstractEntityGraph(EntityGraphType entityGraphType, boolean optional) {
+    Assert.notNull(entityGraphType);
+    this.entityGraphType = entityGraphType;
+    this.optional = optional;
+  }
 
-	@Override
-	public EntityGraphType getEntityGraphType() {
-		return entityGraphType;
-	}
+  @Override
+  public EntityGraphType getEntityGraphType() {
+    return entityGraphType;
+  }
 
-	public void setEntityGraphType(EntityGraphType entityGraphType) {
-		Assert.notNull(entityGraphType);
-		this.entityGraphType = entityGraphType;
-	}
+  public void setEntityGraphType(EntityGraphType entityGraphType) {
+    Assert.notNull(entityGraphType);
+    this.entityGraphType = entityGraphType;
+  }
 
-	/**
-	 * False by default
-	 * @return True if the EntityGraph is optional.<br>
-	 * Passing an optional EntityGraph to an unsupported method will not trigger {@link com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException}.
-	 */
-	@Override
-	public boolean isOptional() {
-		return optional;
-	}
+  /**
+   * False by default
+   *
+   * @return True if the EntityGraph is optional.<br>
+   *     Passing an optional EntityGraph to an unsupported method will not trigger {@link
+   *     com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException}.
+   */
+  @Override
+  public boolean isOptional() {
+    return optional;
+  }
 
-	public void setOptional(boolean optional) {
-		this.optional = optional;
-	}
+  public void setOptional(boolean optional) {
+    this.optional = optional;
+  }
 
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("entityGraphType", entityGraphType)
-				.add("optional", optional)
-				.toString();
-	}
-
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("entityGraphType", entityGraphType)
+        .add("optional", optional)
+        .toString();
+  }
 }
