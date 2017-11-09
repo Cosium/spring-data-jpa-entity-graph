@@ -106,7 +106,10 @@
             <plugin>
                 <groupId>com.cosium.code</groupId>
                 <artifactId>maven-git-code-format</artifactId>
-                <version>${maven-git-code-format.version}</version>
+                <version>1.13</version>
+                <configuration>
+                    <truncateHooksBaseScripts>true</truncateHooksBaseScripts>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
