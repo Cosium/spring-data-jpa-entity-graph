@@ -2,7 +2,6 @@ package com.cosium.spring.data.jpa.entity.graph;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -24,7 +23,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 })
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {DataRepositoryConfiguration.class})
-@AutoConfigureDataJpa
 @DirtiesContext
 public abstract class BaseTest {
 
