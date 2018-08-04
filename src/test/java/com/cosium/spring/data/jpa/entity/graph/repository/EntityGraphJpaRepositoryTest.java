@@ -47,7 +47,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Transactional
   @Test
   public void given_empty_eg_when_findone_then_then_brand_should_not_be_loaded() {
-    Optional<Product> product = productRepository.findById(1L, EntityGraphs.none());
+    Optional<Product> product = productRepository.findById(1L, EntityGraphs.empty());
     assertThat(product).isNotEmpty();
     assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
   }
@@ -190,7 +190,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   public void
       given_products_and_ProductName_projection_when_findProductNameByName_without_eg_then_it_should_work() {
     ProductName productName =
-        productRepository.findProductNameByName("Product 1", EntityGraphs.none());
+        productRepository.findProductNameByName("Product 1", EntityGraphs.empty());
     assertThat(productName).isNotNull();
   }
 }

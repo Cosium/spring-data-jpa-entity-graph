@@ -100,7 +100,7 @@ public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
             return null;
           }
         },
-        EntityGraphs.none());
+        EntityGraphs.empty());
   }
 
   @Transactional
@@ -114,7 +114,7 @@ public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
             return null;
           }
         },
-        EntityGraphs.none());
+        EntityGraphs.empty());
   }
 
   @Transactional

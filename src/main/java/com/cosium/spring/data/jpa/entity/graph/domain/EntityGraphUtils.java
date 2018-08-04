@@ -13,11 +13,11 @@ public class EntityGraphUtils {
 
   /**
    * @return An empty EntityGraph
-   * @deprecated Use {@link EntityGraphs#none()}
+   * @deprecated Use {@link EntityGraphs#empty()}
    */
   @Deprecated
   public static EntityGraph empty() {
-    return EntityGraphs.none();
+    return EntityGraphs.empty();
   }
 
   /**

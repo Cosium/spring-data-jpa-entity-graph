@@ -31,7 +31,7 @@ public class RepositoryTest extends BaseTest {
   @Transactional
   @Test
   public void given_empty_eg_when_finding_makers_then_country_should_not_be_initialized() {
-    List<Maker> makers = makerRepository.findByName("Maker 1", EntityGraphs.none());
+    List<Maker> makers = makerRepository.findByName("Maker 1", EntityGraphs.empty());
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isFalse();

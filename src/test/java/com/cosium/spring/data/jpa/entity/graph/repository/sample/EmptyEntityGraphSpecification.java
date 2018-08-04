@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class EmptyEntityGraphSpecification<T> implements Specification<T>, EntityGraph {
 
-  private final EntityGraph entityGraph = EntityGraphs.none();
+  private final EntityGraph entityGraph = EntityGraphs.empty();
 
   @Override
   public EntityGraphType getEntityGraphType() {

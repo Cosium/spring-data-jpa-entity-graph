@@ -9,7 +9,7 @@ import java.util.List;
  */
 public final class EntityGraphs {
 
-  private static final EntityGraph NONE = new NoEntityGraph();
+  private static final EntityGraph EMPTY = new EmptyEntityGraph();
 
   private EntityGraphs() {}
 
@@ -22,11 +22,18 @@ public final class EntityGraphs {
   }
 
   /** @return An EntityGraph representing the absence of entity graph */
-  public static EntityGraph none() {
-    return NONE;
+  public static EntityGraph empty() {
+    return EMPTY;
   }
 
-  private static final class NoEntityGraph implements EntityGraph {
+  public static boolean isEmpty(EntityGraph entityGraph) {
+    return entityGraph == null
+        || (entityGraph.getEntityGraphAttributePaths() == null
+            && entityGraph.getEntityGraphName() == null
+            && entityGraph.getEntityGraphType() == null);
+  }
+
+  private static final class EmptyEntityGraph implements EntityGraph {
 
     @Override
     public EntityGraphType getEntityGraphType() {

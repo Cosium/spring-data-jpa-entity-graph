@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleDefaultEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
@@ -48,17 +49,6 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       return null;
     }
     return currentRepository.getCurrentJpaEntityGraph();
-  }
-
-  /**
-   * @param entityGraph
-   * @return True if the provided EntityGraph is empty
-   */
-  private static boolean isEmpty(EntityGraph entityGraph) {
-    return entityGraph == null
-        || (entityGraph.getEntityGraphAttributePaths() == null
-            && entityGraph.getEntityGraphName() == null
-            && entityGraph.getEntityGraphType() == null);
   }
 
   @Override
@@ -177,7 +167,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
     private EntityGraphBean buildEntityGraphCandidate(
         EntityGraph providedEntityGraph, ResolvableType returnType) {
       boolean isPrimary = true;
-      if (isEmpty(providedEntityGraph)) {
+      if (EntityGraphs.isEmpty(providedEntityGraph)) {
         providedEntityGraph = defaultEntityGraph;
         isPrimary = false;
       }
