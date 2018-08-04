@@ -24,7 +24,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
       LoggerFactory.getLogger(RepositoryQueryEntityGraphInjector.class);
 
   private static final List<String> EXECUTE_QUERY_METHODS =
-      Arrays.asList("getResultList", "getSingleResult");
+      Arrays.asList("getResultList", "getSingleResult", "scroll");
 
   private final EntityManager entityManager;
   private final EntityGraphBean entityGraphCandidate;
