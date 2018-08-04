@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.*;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -46,7 +47,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Transactional
   @Test
   public void given_empty_eg_when_findone_then_then_brand_should_not_be_loaded() {
-    Optional<Product> product = productRepository.findById(1L, EntityGraphUtils.empty());
+    Optional<Product> product = productRepository.findById(1L, EntityGraphs.none());
     assertThat(product).isNotEmpty();
     assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
   }
@@ -55,7 +56,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test
   public void given_brand_eg_when_findone_then_brand_should_be_loaded() {
     Optional<Product> product =
-        productRepository.findById(1L, EntityGraphUtils.fromName(Product.BRAND_EG));
+        productRepository.findById(1L, EntityGraphs.named(Product.BRAND_EG));
     assertThat(product).isNotEmpty();
     assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
   }
@@ -96,7 +97,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test
   public void given_brand_eg_when_findByName_then_brand_should_be_loaded() {
     List<Product> products =
-        productRepository.findByName("Product 1", EntityGraphUtils.fromName(Product.BRAND_EG));
+        productRepository.findByName("Product 1", EntityGraphs.named(Product.BRAND_EG));
     assertThat(products).hasSize(1);
     for (Product product : products) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
@@ -107,8 +108,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test
   public void given_brand_eg_when_findAll_paginated_then_brand_should_be_loaded() {
     Page<Product> productPage =
-        productRepository.findAll(
-            new PageRequest(0, 10), EntityGraphUtils.fromName(Product.BRAND_EG));
+        productRepository.findAll(PageRequest.of(0, 10), EntityGraphs.named(Product.BRAND_EG));
     assertThat(productPage.getContent()).isNotEmpty();
     for (Product product : productPage.getContent()) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
@@ -127,7 +127,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
                 return null;
               }
             },
-            new PageRequest(0, 10));
+            PageRequest.of(0, 10));
 
     assertThat(productPage.getContent()).isNotEmpty();
     for (Product product : productPage.getContent()) {
@@ -174,8 +174,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test(expected = InapplicableEntityGraphException.class)
   public void
       given_products_and_ProductName_projection_when_findProductNameByName_with_mandatory_eg_then_it_should_fail() {
-    productRepository.findProductNameByName(
-        "Product 1", EntityGraphUtils.fromName(Product.BRAND_EG));
+    productRepository.findProductNameByName("Product 1", EntityGraphs.named(Product.BRAND_EG));
   }
 
   @Transactional
@@ -191,7 +190,7 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   public void
       given_products_and_ProductName_projection_when_findProductNameByName_without_eg_then_it_should_work() {
     ProductName productName =
-        productRepository.findProductNameByName("Product 1", EntityGraphUtils.empty());
+        productRepository.findProductNameByName("Product 1", EntityGraphs.none());
     assertThat(productName).isNotNull();
   }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>Spring Data JPA EntityGraph</name>
@@ -23,6 +24,7 @@
         <hibernate.version>5.2.12.Final</hibernate.version>
         <hsqldb.version>2.3.4</hsqldb.version>
         <assertj>3.8.0</assertj>
+        <logback>1.2.3</logback>
 
         <!-- Plugins -->
         <maven-git-code-format.version>1.6</maven-git-code-format.version>
@@ -96,6 +98,12 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

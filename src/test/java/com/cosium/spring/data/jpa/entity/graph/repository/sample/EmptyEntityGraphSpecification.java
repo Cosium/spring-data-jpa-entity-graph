@@ -2,7 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class EmptyEntityGraphSpecification<T> implements Specification<T>, EntityGraph {
 
-  private final EntityGraph entityGraph = EntityGraphUtils.empty();
+  private final EntityGraph entityGraph = EntityGraphs.none();
 
   @Override
   public EntityGraphType getEntityGraphType() {

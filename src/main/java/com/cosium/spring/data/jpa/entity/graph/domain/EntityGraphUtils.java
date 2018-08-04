@@ -3,7 +3,6 @@ package com.cosium.spring.data.jpa.entity.graph.domain;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created on 22/11/16.
@@ -12,19 +11,23 @@ import java.util.List;
  */
 public class EntityGraphUtils {
 
-  private static final EntityGraph EMPTY_ENTITY_GRAPH = new EmptyEntityGraph();
-
-  /** @return An empty EntityGraph */
+  /**
+   * @return An empty EntityGraph
+   * @deprecated Use {@link EntityGraphs#none()}
+   */
+  @Deprecated
   public static EntityGraph empty() {
-    return EMPTY_ENTITY_GRAPH;
+    return EntityGraphs.none();
   }
 
   /**
    * @param name The name of the targeted EntityGraph
    * @return An EntityGraph referenced by name
+   * @deprecated Use {@link EntityGraphs#named(String)}
    */
+  @Deprecated
   public static EntityGraph fromName(String name) {
-    return new NamedEntityGraph(name);
+    return EntityGraphs.named(name);
   }
 
   /**
@@ -45,28 +48,5 @@ public class EntityGraphUtils {
   public static EntityGraph fromAttributePaths(String... attributePaths) {
     Assert.notEmpty(attributePaths, "At least one attribute path is required.");
     return new DynamicEntityGraph(Arrays.asList(attributePaths));
-  }
-
-  private static final class EmptyEntityGraph implements EntityGraph {
-
-    @Override
-    public EntityGraphType getEntityGraphType() {
-      return null;
-    }
-
-    @Override
-    public String getEntityGraphName() {
-      return null;
-    }
-
-    @Override
-    public List<String> getEntityGraphAttributePaths() {
-      return null;
-    }
-
-    @Override
-    public boolean isOptional() {
-      return false;
-    }
   }
 }

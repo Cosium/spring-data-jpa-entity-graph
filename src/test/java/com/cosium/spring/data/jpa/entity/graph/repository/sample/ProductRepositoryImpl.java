@@ -1,7 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
   @Override
   public List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph) {
-    Optional<Brand> brand = brandRepository.findById(1L, EntityGraphUtils.fromName(Brand.EMPTY_EG));
+    Optional<Brand> brand = brandRepository.findById(1L, EntityGraphs.named(Brand.EMPTY_EG));
     entityManager.flush();
     entityManager.clear();
     return productRepository.findByBrand(

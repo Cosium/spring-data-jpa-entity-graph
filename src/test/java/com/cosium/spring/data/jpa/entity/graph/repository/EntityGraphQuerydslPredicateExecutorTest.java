@@ -1,8 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.QProduct;
@@ -36,7 +35,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
   @Test
   public void given_null_eg_when_findone_then_brand_should_not_be_loaded() {
     Optional<Product> product =
-        productRepository.findOne(QProduct.product.name.eq("Product 1"), (EntityGraph) null);
+        productRepository.findOne(QProduct.product.name.eq("Product 1"), null);
     if (!product.isPresent()) {
       fail("Product must be present");
     }
@@ -48,7 +47,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
   public void given_brand_eg_when_findone_then_brand_should_be_loaded() {
     Optional<Product> product =
         productRepository.findOne(
-            QProduct.product.name.eq("Product 1"), EntityGraphUtils.fromName(Product.BRAND_EG));
+            QProduct.product.name.eq("Product 1"), EntityGraphs.named(Product.BRAND_EG));
     if (!product.isPresent()) {
       fail("Product must be present");
     }
@@ -60,7 +59,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
   public void given_brand_eg_when_findpage_then_brand_should_be_loaded() {
     Page<Product> productPage =
         productRepository.findAll(
-            (Predicate) null, new PageRequest(0, 10), EntityGraphUtils.fromName(Product.BRAND_EG));
+            (Predicate) null, PageRequest.of(0, 10), EntityGraphs.named(Product.BRAND_EG));
     assertThat(productPage.getContent()).isNotEmpty();
     for (Product product : productPage.getContent()) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();

@@ -1,7 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.Maker;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.MakerRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -31,7 +31,7 @@ public class RepositoryTest extends BaseTest {
   @Transactional
   @Test
   public void given_empty_eg_when_finding_makers_then_country_should_not_be_initialized() {
-    List<Maker> makers = makerRepository.findByName("Maker 1", EntityGraphUtils.empty());
+    List<Maker> makers = makerRepository.findByName("Maker 1", EntityGraphs.none());
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isFalse();
@@ -42,7 +42,7 @@ public class RepositoryTest extends BaseTest {
   @Test
   public void given_country_eg_when_finding_makers_then_country_should_be_initialized() {
     List<Maker> makers =
-        makerRepository.findByName("Maker 1", EntityGraphUtils.fromName(Maker.COUNTRY_EG));
+        makerRepository.findByName("Maker 1", EntityGraphs.named(Maker.COUNTRY_EG));
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue();
@@ -55,7 +55,7 @@ public class RepositoryTest extends BaseTest {
   public void given_country_eg_when_streaming_makers_then_country_should_be_initialized() {
     List<Maker> makers =
         makerRepository
-            .readByName("Maker 1", EntityGraphUtils.fromName(Maker.COUNTRY_EG))
+            .readByName("Maker 1", EntityGraphs.named(Maker.COUNTRY_EG))
             .collect(Collectors.toList());
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue();

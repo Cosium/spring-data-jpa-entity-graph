@@ -1,7 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.EmptyEntityGraphSpecification;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.EntityGraphSpecification;
@@ -85,7 +85,7 @@ public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
             return null;
           }
         },
-        EntityGraphUtils.fromName(Product.BRAND_EG));
+        EntityGraphs.named(Product.BRAND_EG));
   }
 
   @Transactional
@@ -100,7 +100,7 @@ public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
             return null;
           }
         },
-        EntityGraphUtils.empty());
+        EntityGraphs.none());
   }
 
   @Transactional
@@ -114,7 +114,7 @@ public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
             return null;
           }
         },
-        EntityGraphUtils.empty());
+        EntityGraphs.none());
   }
 
   @Transactional
@@ -129,6 +129,6 @@ public class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
             return null;
           }
         },
-        EntityGraphUtils.fromName(Product.BRAND_EG));
+        EntityGraphs.named(Product.BRAND_EG));
   }
 }
