@@ -5,7 +5,7 @@
     <dependency>
         <groupId>com.cosium.spring.data</groupId>
         <artifactId>spring-data-jpa-entity-graph</artifactId>
-        <version>2.0.0</version>
+        <version>${spring-data-jpa-entity-graph.version}</version>
     </dependency>
     ```
 2. In your Spring configuration, set the repository factory bean class to `EntityGraphJpaRepositoryFactoryBean` :
@@ -62,13 +62,13 @@ public interface ProductRepository extends EntityGraphJpaRepository<Product, Lon
 You can pass the entity graph to the `findByName` method :
 ```java
 // This will apply 'Product.brand' named EntityGraph to findByName
-productRepository.findByName("MyProduct", EntityGraphUtils.fromName("Product.brand"));
+productRepository.findByName("MyProduct", EntityGraphs.named("Product.brand"));
 ```
 
 Or to the `findOne` method :
 ```java
 // This will apply 'Product.brand' named EntityGraph to findOne
-productRepository.findById(1L, EntityGraphUtils.fromName("Product.brand"));
+productRepository.findById(1L, EntityGraphs.named("Product.brand"));
 ```
 
 Or any method you like.
