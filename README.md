@@ -21,10 +21,10 @@ This choice is elegantly made by passing EntityGraph, as an argument, to any Spr
 Example:
 ```java
 // This will apply 'Product.brand' named EntityGraph to findByLabel
-productRepository.findByLabel("foo", EntityGraphUtils.fromName("Product.brand"));
+productRepository.findByLabel("foo", EntityGraphs.named("Product.brand"));
 
 // This will apply 'Product.supplier' named EntityGraph to findByLabel
-productRepository.findByLabel("foo", EntityGraphUtils.fromName("Product.supplier"));
+productRepository.findByLabel("foo", EntityGraphs.named("Product.supplier"));
 ```
 
 Now run to the documentation !
