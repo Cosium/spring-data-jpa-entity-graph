@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk8
+  - oraclejdk11
 before_install:
   - curl -o $HOME/.m2/settings.xml https://raw.githubusercontent.com/Cosium/spring-data-jpa-entity-graph/$TRAVIS_BRANCH/src/site/resources/settings.xml
 after_success:
