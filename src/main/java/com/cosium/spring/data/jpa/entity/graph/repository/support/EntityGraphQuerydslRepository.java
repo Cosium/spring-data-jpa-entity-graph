@@ -25,8 +25,9 @@ public class EntityGraphQuerydslRepository<T, ID extends Serializable>
     extends EntityGraphSimpleJpaRepository<T, ID>
     implements EntityGraphQuerydslPredicateExecutor<T> {
 
-  private final QuerydslJpaRepository<T, ID> querydslJpaRepositoryDelegate;
+  protected final QuerydslJpaRepository<T, ID> querydslJpaRepositoryDelegate;
 
+  @SuppressWarnings("unchecked")
   public EntityGraphQuerydslRepository(
       JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
     super(entityInformation, entityManager);
