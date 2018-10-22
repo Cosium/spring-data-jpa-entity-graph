@@ -1,7 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
 import com.google.common.base.MoreObjects;
-import org.springframework.util.Assert;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Created on 22/11/16.
@@ -21,8 +22,7 @@ public abstract class AbstractEntityGraph implements EntityGraph {
   }
 
   public AbstractEntityGraph(EntityGraphType entityGraphType, boolean optional) {
-    Assert.notNull(entityGraphType);
-    this.entityGraphType = entityGraphType;
+    this.entityGraphType = requireNonNull(entityGraphType);
     this.optional = optional;
   }
 
@@ -32,8 +32,7 @@ public abstract class AbstractEntityGraph implements EntityGraph {
   }
 
   public void setEntityGraphType(EntityGraphType entityGraphType) {
-    Assert.notNull(entityGraphType);
-    this.entityGraphType = entityGraphType;
+    this.entityGraphType = requireNonNull(entityGraphType);
   }
 
   /**

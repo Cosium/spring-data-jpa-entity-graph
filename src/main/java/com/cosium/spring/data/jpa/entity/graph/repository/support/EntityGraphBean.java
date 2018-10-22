@@ -3,7 +3,8 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.google.common.base.MoreObjects;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
-import org.springframework.util.Assert;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Wrapper class allowing to hold a {@link JpaEntityGraph} with its associated domain class. Created
@@ -26,13 +27,9 @@ class EntityGraphBean {
       ResolvableType repositoryMethodReturnType,
       boolean optional,
       boolean primary) {
-    Assert.notNull(jpaEntityGraph);
-    Assert.notNull(domainClass);
-    Assert.notNull(repositoryMethodReturnType);
-
-    this.jpaEntityGraph = jpaEntityGraph;
-    this.domainClass = domainClass;
-    this.repositoryMethodReturnType = repositoryMethodReturnType;
+    this.jpaEntityGraph = requireNonNull(jpaEntityGraph);
+    this.domainClass = requireNonNull(domainClass);
+    this.repositoryMethodReturnType = requireNonNull(repositoryMethodReturnType);
     this.optional = optional;
     this.primary = primary;
     this.valid = computeValidity();

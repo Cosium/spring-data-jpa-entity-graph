@@ -1,6 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
@@ -17,11 +18,12 @@ import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.support.RepositoryProxyPostProcessor;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Captures {@link EntityGraph} on repositories method calls. Created on 22/11/16.
@@ -175,10 +177,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
         return null;
       }
 
-      Assert.notNull(providedEntityGraph.getEntityGraphType());
+      EntityGraphType entityGraphType = requireNonNull(providedEntityGraph.getEntityGraphType());
 
       org.springframework.data.jpa.repository.EntityGraph.EntityGraphType type;
-      switch (providedEntityGraph.getEntityGraphType()) {
+      switch (entityGraphType) {
         case FETCH:
           type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
           break;
@@ -186,8 +188,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
           type = org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.LOAD;
           break;
         default:
-          throw new RuntimeException(
-              "Unexpected entity graph type '" + providedEntityGraph.getEntityGraphType() + "'");
+          throw new RuntimeException("Unexpected entity graph type '" + entityGraphType + "'");
       }
 
       List<String> attributePaths = providedEntityGraph.getEntityGraphAttributePaths();
