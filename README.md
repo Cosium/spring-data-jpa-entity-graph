@@ -41,6 +41,10 @@ spring-data-jpa branches | Latest spring-data-jpa-entity-graph version | Documen
 
 Example: if you were using `spring-data-jpa 1.10.13` in your project, you would need to select any `spring-data-jpa-entity-graph 1.10.x`. Thus `spring-data-jpa-entity-graph 1.10.14` would be eligible.
 
+## Talk
+
+Slides of the talk *Making JPA Great Again* given at Paris JUG in January 2019 are available at https://cosium.github.io/making-jpa-great-again/
+
 ## Genesis
 
 This project was created following the discussion in Spring Data Tracker issue [DATAJPA-749 - Context enabled JPA 2.1 @EntityGraph](https://jira.spring.io/browse/DATAJPA-749) .
