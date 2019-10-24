@@ -26,6 +26,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
 
   private static final List<String> EXECUTE_QUERY_METHODS =
       Arrays.asList("getResultList", "getSingleResult", "scroll");
+  private static final String UNWRAP_METHOD = "unwrap";
 
   private final EntityManager entityManager;
   private final EntityGraphBean entityGraphCandidate;
@@ -46,7 +47,27 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
 
   @Override
   public Object invoke(MethodInvocation invocation) throws Throwable {
-    if (EXECUTE_QUERY_METHODS.contains(invocation.getMethod().getName())) {
+    String invokedMethodName = invocation.getMethod().getName();
+    Object[] invokedMethodArguments = invocation.getArguments();
+    if (UNWRAP_METHOD.equals(invocation.getMethod().getName())
+        && invokedMethodArguments.length == 1
+        && invokedMethodArguments[0] == null) {
+      // Since
+      // https://github.com/spring-projects/spring-data-jpa/commit/74ff5b3a65b4a6d8df391be656c2bbb3373e3fae#diff-3f3f77fedc45cbd28380d53c7d7e481cR301, when Spring
+      // Data JPA finds a proxied Query it calls javax.persistence.Query.unwrap(null). Because of
+      // the
+      // passed null argument, Hibernate target fails with a NullPointerException.
+      //
+      // It seems that Spring Data JPA does this to compensate a bug in EclipseLink. Take a look at
+      // https://github.com/spring-projects/spring-data-jpa/commit/74ff5b3a65b4a6d8df391be656c2bbb3373e3fae#diff-3f3f77fedc45cbd28380d53c7d7e481cR224.
+      // To avoid the null pointer exception, we return the unwrapped query. According to the
+      // existing automated tests, Spring Data JPA does not execute query from the unwrapped query,
+      // so there should be no missing EntityGraph. If the future proves we were wrong, the
+      // alternative is to return a proxied
+      // query eliminating compatibility between this library and EclipseLink :(
+      return invocation.getThis();
+    }
+    if (EXECUTE_QUERY_METHODS.contains(invokedMethodName)) {
       addEntityGraphToQuery((Query) invocation.getThis());
     }
     return invocation.proceed();
