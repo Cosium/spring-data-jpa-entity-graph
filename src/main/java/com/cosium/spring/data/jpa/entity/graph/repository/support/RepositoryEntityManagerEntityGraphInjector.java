@@ -9,7 +9,12 @@ import org.springframework.aop.framework.ProxyFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.*;
+import javax.persistence.criteria.Selection;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Injects captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query
@@ -74,11 +79,16 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
       EntityGraphBean entityGraphCandidate, MethodInvocation invocation) {
     Class<?> resultType = null;
     for (Object argument : invocation.getArguments()) {
-      if (argument instanceof Class) {
+      if (argument instanceof Class<?>) {
         resultType = (Class<?>) argument;
         break;
-      } else if (argument instanceof CriteriaQuery) {
-        resultType = ((CriteriaQuery) argument).getResultType();
+      } else if (argument instanceof CriteriaQuery<?>) {
+        CriteriaQuery<?> criteriaQuery = (CriteriaQuery<?>) argument;
+        Selection<?> selection = criteriaQuery.getSelection();
+        if (selection == null) {
+          continue;
+        }
+        resultType = selection.getJavaType();
         break;
       }
     }

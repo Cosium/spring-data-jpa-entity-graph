@@ -4,6 +4,8 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public interface ProductRepository
         ProductRepositoryCustom {
 
   List<Product> findByName(String name, EntityGraph entityGraph);
+
+  Page<Product> findPageByBrand(Brand brand, Pageable pageable, EntityGraph entityGraph);
 
   List<Product> findByBrand(Brand brand);
 

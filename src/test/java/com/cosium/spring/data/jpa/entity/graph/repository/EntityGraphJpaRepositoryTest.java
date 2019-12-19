@@ -5,7 +5,12 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.*;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.Brand;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.BrandRepository;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.EntityGraphSpecification;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductName;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.hibernate.Hibernate;
@@ -15,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -32,6 +39,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
 public class EntityGraphJpaRepositoryTest extends BaseTest {
+
+  @PersistenceContext private EntityManager entityManager;
 
   @Inject private ProductRepository productRepository;
   @Inject private BrandRepository brandRepository;
@@ -129,6 +138,22 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
             },
             PageRequest.of(0, 10));
 
+    assertThat(productPage.getContent()).isNotEmpty();
+    for (Product product : productPage.getContent()) {
+      assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+    }
+  }
+
+  @Transactional
+  @Test
+  public void given_brand_eg_when_performing_custom_paged_query_then_brand_should_be_loaded() {
+    Brand brand = brandRepository.findById(1L).orElseThrow(RuntimeException::new);
+    entityManager.flush();
+    entityManager.clear();
+
+    Page<Product> productPage =
+        productRepository.findPageByBrand(
+            brand, PageRequest.of(0, 1), EntityGraphs.named(Product.BRAND_EG));
     assertThat(productPage.getContent()).isNotEmpty();
     for (Product product : productPage.getContent()) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
