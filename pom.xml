@@ -12,7 +12,7 @@
 
   <properties>
     <source.level>1.8</source.level>
-    <spring.data.jpa>2.2.0.RELEASE</spring.data.jpa>
+    <spring.data.jpa>2.2.2.RELEASE</spring.data.jpa>
     <eclipselink>2.6.2</eclipselink>
     <querydsl>4.2.1</querydsl>
 
