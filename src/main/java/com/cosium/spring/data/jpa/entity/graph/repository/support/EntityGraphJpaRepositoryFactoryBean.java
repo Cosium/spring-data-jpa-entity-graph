@@ -1,11 +1,10 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import java.io.Serializable;
+import javax.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
-
-import javax.persistence.EntityManager;
-import java.io.Serializable;
 
 /**
  * Forces the use of {@link RepositoryEntityManagerEntityGraphInjector} while targeting {@link
