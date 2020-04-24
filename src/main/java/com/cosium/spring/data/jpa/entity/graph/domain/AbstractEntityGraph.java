@@ -11,7 +11,7 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AbstractEntityGraph implements EntityGraph {
 
-  protected static final EntityGraphType DEFAULT_ENTITY_GRAPH_TYPE = EntityGraphType.FETCH;
+  protected static final EntityGraphType DEFAULT_ENTITY_GRAPH_TYPE = EntityGraphType.LOAD;
   private EntityGraphType entityGraphType = DEFAULT_ENTITY_GRAPH_TYPE;
   private boolean optional;
 
