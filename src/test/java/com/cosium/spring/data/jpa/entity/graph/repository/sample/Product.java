@@ -1,6 +1,16 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 
 /**
  * Created on 22/11/16.
@@ -43,6 +53,9 @@ public class Product {
   @ManyToOne(fetch = FetchType.LAZY)
   private Maker maker;
 
+  @ManyToOne(fetch = FetchType.EAGER)
+  private Category category;
+
   public long getId() {
     return id;
   }
@@ -81,5 +94,13 @@ public class Product {
 
   public void setBarcode(String barcode) {
     this.barcode = barcode;
+  }
+
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
   }
 }

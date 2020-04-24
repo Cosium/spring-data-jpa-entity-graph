@@ -49,4 +49,14 @@ public class EntityGraphUtils {
     Assert.notEmpty(attributePaths, "At least one attribute path is required.");
     return new DynamicEntityGraph(Arrays.asList(attributePaths));
   }
+
+  /**
+   * @param type A {@link EntityGraphType} to use
+   * @param attributePaths The attribute paths to be present in the result
+   * @return A {@link DynamicEntityGraph} with the path attributes passed in as arguments.
+   */
+  public static EntityGraph fromAttributePaths(EntityGraphType type, String... attributePaths) {
+    Assert.notEmpty(attributePaths, "At least one attribute path is required.");
+    return new DynamicEntityGraph(type, Arrays.asList(attributePaths));
+  }
 }

@@ -32,7 +32,7 @@ public abstract class EntityGraphSpecification<T> implements Specification<T>, E
 
   @Override
   public EntityGraphType getEntityGraphType() {
-    return EntityGraphType.FETCH;
+    return EntityGraphType.LOAD;
   }
 
   @Override

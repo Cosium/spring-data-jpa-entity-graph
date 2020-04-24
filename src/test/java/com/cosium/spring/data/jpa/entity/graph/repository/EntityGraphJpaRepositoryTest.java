@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
@@ -92,6 +93,18 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Transactional
   @Test
   public void
+      given_brand_in_attribute_paths_eg_when_findone_then_brand_should_be_loaded_with_FetchType() {
+    Optional<Product> product =
+        productRepository.findById(
+            1L,
+            EntityGraphUtils.fromAttributePaths(EntityGraphType.FETCH, Product.BRAND_PROP_NAME));
+    assertThat(product).isNotEmpty();
+    assertThat(Hibernate.isInitialized(product.get().getBrand())).isTrue();
+  }
+
+  @Transactional
+  @Test
+  public void
       given_brand_and_maker_in_attribute_paths_eg_when_findone_then_brand_and_maker_should_be_loaded() {
     EntityGraph entityGraph =
         EntityGraphUtils.fromAttributePaths(Product.BRAND_PROP_NAME, Product.MAKER_PROP_NAME);
@@ -157,6 +170,24 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
     assertThat(productPage.getContent()).isNotEmpty();
     for (Product product : productPage.getContent()) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+    }
+  }
+
+  @Transactional
+  @Test
+  public void given_brand_eg_when_performing_custom_paged_query_then_category_should_be_loaded() {
+    Brand brand = brandRepository.findById(1L).orElseThrow(RuntimeException::new);
+    entityManager.flush();
+    entityManager.clear();
+
+    Page<Product> productPage =
+        productRepository.findPageByBrand(
+            brand, PageRequest.of(0, 1), EntityGraphs.named(Product.BRAND_EG));
+    assertThat(productPage.getContent()).isNotEmpty();
+    for (Product product : productPage.getContent()) {
+      assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+      assertThat(Hibernate.isInitialized(product.getMaker())).isFalse();
+      assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();
     }
   }
 
