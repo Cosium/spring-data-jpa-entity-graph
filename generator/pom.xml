@@ -23,15 +23,10 @@
     </dependency>
 
     <dependency>
-      <groupId>com.cosium.logging</groupId>
-      <artifactId>annotation-processor-logger</artifactId>
-      <version>1.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.1-api</artifactId>
       <version>1.0.0.Draft-16</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
