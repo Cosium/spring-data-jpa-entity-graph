@@ -25,7 +25,7 @@ This choice is elegantly made by passing EntityGraph, as an argument, to any Spr
 // This will apply 'Product.brand' named EntityGraph to findByLabel
 productRepository.findByLabel("foo", EntityGraphs.named("Product.brand"));
 
-// This will apply "product(brand, category, maker(country))" dynamic entity graph to findByLabel
+// This will apply "product(brand, category, maker(country))" dynamic EntityGraph to findByLabel
 productRepository.findByLabel(
             "foo", 
             // ProductEntityGraph was generated at compilation time
