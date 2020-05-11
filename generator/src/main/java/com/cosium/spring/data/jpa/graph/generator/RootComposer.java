@@ -21,7 +21,7 @@ public class RootComposer implements Composer {
     this.entityGraphClassName = entityGraphClassName;
 
     FieldSpec entityGraphTypeField =
-        FieldSpec.builder(Api.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
+        FieldSpec.builder(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
             .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
             .build();
 
@@ -37,28 +37,21 @@ public class RootComposer implements Composer {
     MethodSpec constructor =
         MethodSpec.constructorBuilder()
             .addModifiers(Modifier.PRIVATE)
-            .addStatement("this($T.$N)", Api.ENTITY_GRAPH_TYPE_CLASS_NAME, "LOAD")
+            .addStatement("this($T.$N)", Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "LOAD")
             .build();
 
     MethodSpec constructorWithEntityGraphType =
         MethodSpec.constructorBuilder()
             .addModifiers(Modifier.PRIVATE)
-            .addParameter(Api.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
+            .addParameter(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
             .addStatement("this.entityGraphType = entityGraphType")
             .addStatement(
                 "entityGraphAttributePaths = new $T()",
                 ParameterizedTypeName.get(ClassName.get(ArrayList.class), listOfString))
             .build();
 
-    MethodSpec rootMethod =
-        MethodSpec.methodBuilder("root")
-            .addModifiers(Modifier.PUBLIC)
-            .returns(entityGraphClassName.nestedClass(SIMPLE_NAME))
-            .addStatement("return this")
-            .build();
-
     MethodSpec buildMethod =
-        MethodSpec.methodBuilder("build")
+        MethodSpec.methodBuilder(Constants.PATH_SEPARATOR)
             .addModifiers(Modifier.PUBLIC)
             .returns(entityGraphClassName)
             .addStatement("return new $T(this)", entityGraphClassName)
@@ -71,7 +64,6 @@ public class RootComposer implements Composer {
             .addField(entityGraphAttributePathsField)
             .addMethod(constructor)
             .addMethod(constructorWithEntityGraphType)
-            .addMethod(rootMethod)
             .addMethod(buildMethod);
   }
 
@@ -102,7 +94,7 @@ public class RootComposer implements Composer {
                 ParameterizedTypeName.get(ArrayList.class, String.class))
             .addStatement("path.add($S)", target.attributeName())
             .addStatement("entityGraphAttributePaths.add(path)")
-            .addStatement("return new $T(root(), path)", targetNodeComposer)
+            .addStatement("return new $T(this, path)", targetNodeComposer)
             .build());
   }
 }

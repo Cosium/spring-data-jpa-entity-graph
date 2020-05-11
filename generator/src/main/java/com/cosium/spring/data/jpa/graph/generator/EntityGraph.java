@@ -23,7 +23,7 @@ public class EntityGraph {
     this.className = entityGraphClassName;
 
     FieldSpec typeField =
-        FieldSpec.builder(Api.ENTITY_GRAPH_TYPE_CLASS_NAME, "type")
+        FieldSpec.builder(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "type")
             .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
             .build();
 
@@ -46,16 +46,16 @@ public class EntityGraph {
             .build();
 
     MethodSpec rootStaticMethod =
-        MethodSpec.methodBuilder("root")
+        MethodSpec.methodBuilder(Constants.PATH_SEPARATOR)
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
             .returns(rootComposerClassName)
             .addStatement("return new $N()", rootComposer.simpleName())
             .build();
 
     MethodSpec rootStaticMethodWithEntityGraphType =
-        MethodSpec.methodBuilder("root")
+        MethodSpec.methodBuilder(Constants.PATH_SEPARATOR)
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-            .addParameter(Api.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
+            .addParameter(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
             .returns(rootComposerClassName)
             .addStatement("return new $N(entityGraphType)", rootComposer.simpleName())
             .build();
@@ -64,7 +64,7 @@ public class EntityGraph {
         MethodSpec.methodBuilder("getEntityGraphType")
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
-            .returns(Api.ENTITY_GRAPH_TYPE_CLASS_NAME)
+            .returns(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME)
             .addStatement("return type")
             .build();
 
@@ -95,7 +95,7 @@ public class EntityGraph {
     typeSpec =
         TypeSpec.classBuilder(entityGraphClassName)
             .addModifiers(Modifier.PUBLIC)
-            .addSuperinterface(Api.ENTITY_GRAPH_CLASS_NAME)
+            .addSuperinterface(Constants.ENTITY_GRAPH_CLASS_NAME)
             .addField(typeField)
             .addField(attributePathsField)
             .addMethod(constructor)
