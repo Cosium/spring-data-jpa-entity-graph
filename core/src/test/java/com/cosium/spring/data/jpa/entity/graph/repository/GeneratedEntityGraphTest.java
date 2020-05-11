@@ -1,0 +1,50 @@
+package com.cosium.spring.data.jpa.entity.graph.repository;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.cosium.spring.data.jpa.entity.graph.BaseTest;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductEntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.hibernate.Hibernate;
+import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
+
+/** @author Réda Housni Alaoui */
+@DatabaseSetup(BaseTest.DATASET)
+@DatabaseTearDown
+public class GeneratedEntityGraphTest extends BaseTest {
+
+  @PersistenceContext private EntityManager entityManager;
+
+  @Inject private ProductRepository productRepository;
+
+  @Transactional
+  @Test
+  public void test() {
+    Product product =
+        productRepository
+            .findById(
+                1L,
+                ProductEntityGraph.root()
+                    .brand()
+                    .root()
+                    .category()
+                    .root()
+                    .maker()
+                    .country()
+                    .root()
+                    .build())
+            .orElseThrow(RuntimeException::new);
+
+    assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isTrue();
+  }
+}

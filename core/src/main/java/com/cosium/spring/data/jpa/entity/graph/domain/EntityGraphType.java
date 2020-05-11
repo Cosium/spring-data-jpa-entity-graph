@@ -11,7 +11,7 @@ public enum EntityGraphType {
 
   private final String key;
 
-  private EntityGraphType(String value) {
+  EntityGraphType(String value) {
     this.key = value;
   }
 

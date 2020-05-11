@@ -21,13 +21,24 @@ This prevents you from choosing the best EntityGraph considering the runtime con
 Thanks to [spring-data-jpa-entity-graph](https://github.com/Cosium/spring-data-jpa-entity-graph), you can choose EntityGraph at runtime!  
 This choice is elegantly made by passing EntityGraph, as an argument, to any Spring Data JPA repository method :heart_eyes:
 
-Example:
 ```java
 // This will apply 'Product.brand' named EntityGraph to findByLabel
 productRepository.findByLabel("foo", EntityGraphs.named("Product.brand"));
 
-// This will apply 'Product.supplier' named EntityGraph to findByLabel
-productRepository.findByLabel("foo", EntityGraphs.named("Product.supplier"));
+// This will apply "product(brand, category, maker(country))" dynamic entity graph findByLabel
+productRepository.findByLabel(
+            "foo", 
+            // ProductEntityGraph was generated at compilation time
+            ProductEntityGraph.root()
+                              .brand()
+                              .root()
+                              .category()
+                              .root()
+                              .maker()
+                              .country()
+                              .root()
+                              .build()
+);
 ```
 
 Now run to the documentation !
