@@ -28,6 +28,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>spring-data-jpa-entity-graph-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <!--Needed by SpringHibernateJpaPersistenceProvider for spring-data-jpa while building with JDK 11-->
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
@@ -60,6 +66,20 @@
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${querydsl}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <version>${hibernate.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
+      <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
 
