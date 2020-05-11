@@ -29,15 +29,15 @@ productRepository.findByLabel("foo", EntityGraphs.named("Product.brand"));
 productRepository.findByLabel(
             "foo", 
             // ProductEntityGraph was generated at compilation time
-            ProductEntityGraph.root()
+            ProductEntityGraph.____()
                               .brand()
-                              .root()
+                              .____
                               .category()
-                              .root()
+                              .____
                               .maker()
                               .country()
-                              .root()
-                              .build()
+                              .____
+                              .____()
 );
 ```
 

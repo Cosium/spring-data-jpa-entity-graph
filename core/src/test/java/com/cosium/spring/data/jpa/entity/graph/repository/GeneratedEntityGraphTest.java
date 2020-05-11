@@ -31,15 +31,15 @@ public class GeneratedEntityGraphTest extends BaseTest {
         productRepository
             .findById(
                 1L,
-                ProductEntityGraph.root()
+                ProductEntityGraph.____()
                     .brand()
-                    .root()
+                    .____
                     .category()
-                    .root()
+                    .____
                     .maker()
                     .country()
-                    .root()
-                    .build())
+                    .____
+                    .____())
             .orElseThrow(RuntimeException::new);
 
     assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();

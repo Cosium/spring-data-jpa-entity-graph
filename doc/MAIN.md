@@ -125,15 +125,15 @@ them, you will be able to build entity graphs like this:
 ```java
 // Let's build entity graph "product(brand, category, maker(country))"
 EntityGraph entityGraph = ProductEntityGraph
-                    .root()
+                    .____()
                     .brand()
-                    .root()
+                    .____
                     .category()
-                    .root()
+                    .____
                     .maker()
                     .country()
-                    .root()
-                    .build();
+                    .____
+                    .____();
 
 productRepository.findById(1L, entityGraph);
 ```

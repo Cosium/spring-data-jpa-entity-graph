@@ -21,7 +21,9 @@ public class NodeComposer implements Composer {
     rootType = TypeVariableName.get("R");
 
     FieldSpec rootField =
-        FieldSpec.builder(rootType, "root").addModifiers(Modifier.PRIVATE, Modifier.FINAL).build();
+        FieldSpec.builder(rootType, Constants.PATH_SEPARATOR)
+            .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+            .build();
 
     ParameterizedTypeName listOfString = ParameterizedTypeName.get(List.class, String.class);
 
@@ -35,15 +37,8 @@ public class NodeComposer implements Composer {
             .addModifiers(Modifier.PUBLIC)
             .addParameter(rootType, "root")
             .addParameter(listOfString, "path")
-            .addStatement("this.root = root")
+            .addStatement("this.____ = root")
             .addStatement("this.path = path")
-            .build();
-
-    MethodSpec rootMethod =
-        MethodSpec.methodBuilder("root")
-            .addModifiers(Modifier.PUBLIC)
-            .returns(rootType)
-            .addStatement("return root")
             .build();
 
     typeSpecBuilder =
@@ -52,8 +47,7 @@ public class NodeComposer implements Composer {
             .addTypeVariable(rootType)
             .addField(rootField)
             .addField(pathField)
-            .addMethod(constructor)
-            .addMethod(rootMethod);
+            .addMethod(constructor);
   }
 
   public TypeSpec toTypeSpec() {
@@ -74,7 +68,7 @@ public class NodeComposer implements Composer {
             .addModifiers(Modifier.PUBLIC)
             .returns(targetNodeComposer)
             .addStatement("path.add($S)", target.attributeName())
-            .addStatement("return new $T(root(), path)", targetNodeComposer)
+            .addStatement("return new $T($N, path)", targetNodeComposer, Constants.PATH_SEPARATOR)
             .build());
   }
 }

@@ -11,14 +11,14 @@ public class GeneratedEntityGraphUnitTest {
 
   @Test
   public void testNoPath() {
-    EntityGraph entityGraph = ProductEntityGraph.root().build();
+    EntityGraph entityGraph = ProductEntityGraph.____().____();
     assertThat(entityGraph.getEntityGraphAttributePaths()).isEmpty();
   }
 
   @Test
   public void testMultiplePaths() {
     EntityGraph entityGraph =
-        ProductEntityGraph.root().brand().root().category().root().maker().country().root().build();
+        ProductEntityGraph.____().brand().____.category().____.maker().country().____.____();
 
     assertThat(entityGraph.getEntityGraphAttributePaths())
         .hasSize(3)
