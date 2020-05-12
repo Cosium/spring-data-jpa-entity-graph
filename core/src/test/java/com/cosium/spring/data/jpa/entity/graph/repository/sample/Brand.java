@@ -1,6 +1,18 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.sample;
 
-import javax.persistence.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MapKey;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.OneToMany;
 
 /**
  * Created on 22/11/16.
@@ -27,6 +39,10 @@ public class Brand {
 
   private String name;
 
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
+  @MapKey
+  private final Map<Long, Product> products = new LinkedHashMap<>();
+
   public long getId() {
     return id;
   }
@@ -41,5 +57,9 @@ public class Brand {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Map<Long, Product> getProducts() {
+    return products;
   }
 }

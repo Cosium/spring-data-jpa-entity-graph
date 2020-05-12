@@ -2,11 +2,13 @@ package com.cosium.spring.data.jpa.graph.generator;
 
 import static javax.lang.model.element.ElementKind.FIELD;
 
+import java.util.List;
 import java.util.Optional;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.persistence.Entity;
@@ -43,7 +45,13 @@ public class MetamodelAttribute {
 
   public Optional<MetamodelAttributeTarget> jpaEntityTarget() {
     DeclaredType attributeType = (DeclaredType) variableElement.asType();
-    DeclaredType targetType = (DeclaredType) attributeType.getTypeArguments().get(1);
+    List<? extends TypeMirror> typeArguments = attributeType.getTypeArguments();
+    // This is the lazy way of doing this. We consider that any sub interfaces of
+    // javax.persistence.metamodel.Attribute
+    // will declare the target type as the last type arguments.
+    // e.g. MapAttribute<Brand, Long, Product> where Product is the target
+    // TODO do this cleanly by browsing the class hierarchy
+    DeclaredType targetType = (DeclaredType) typeArguments.get(typeArguments.size() - 1);
     TypeElement targetTypeElement = (TypeElement) targetType.asElement();
 
     if (targetTypeElement.getAnnotation(Entity.class) == null) {
