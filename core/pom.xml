@@ -11,7 +11,7 @@
   <artifactId>spring-data-jpa-entity-graph</artifactId>
 
   <properties>
-    <spring.data.jpa>2.3.0.BUILD-SNAPSHOT</spring.data.jpa>
+    <spring.data.jpa>2.3.0.RELEASE</spring.data.jpa>
     <eclipselink>2.6.8</eclipselink>
     <querydsl>4.2.1</querydsl>
 
