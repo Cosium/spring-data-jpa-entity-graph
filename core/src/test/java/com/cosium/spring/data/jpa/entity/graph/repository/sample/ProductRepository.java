@@ -4,11 +4,11 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 /**
  * Created on 22/11/16.
@@ -36,4 +36,7 @@ public interface ProductRepository
 
   @Query("select p.name from Product p")
   List<Object[]> findAllRaw();
+
+  @Query("select p from Product p where p.id = :id")
+  Optional<Product> findByIdUsingQueryAnnotation(long id, EntityGraph entityGraph);
 }

@@ -19,16 +19,21 @@ class EntityGraphAwareJpaParameters extends JpaParameters {
 
   private static class EntityGraphAwareJpaParameter extends JpaParameters.JpaParameter {
 
-    private final MethodParameter parameter;
+    private final boolean entityGraph;
 
     protected EntityGraphAwareJpaParameter(MethodParameter parameter) {
       super(parameter);
-      this.parameter = parameter;
+      this.entityGraph = EntityGraph.class.equals(parameter.getParameterType());
     }
 
     @Override
     public boolean isBindable() {
-      return !EntityGraph.class.equals(parameter.getParameterType()) && super.isBindable();
+      return !entityGraph && super.isBindable();
+    }
+
+    @Override
+    public boolean isSpecialParameter() {
+      return entityGraph || super.isSpecialParameter();
     }
   }
 }

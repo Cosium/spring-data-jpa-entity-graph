@@ -1,5 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType;
@@ -14,12 +16,8 @@ import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductName;
 import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import org.hibernate.Hibernate;
-import org.junit.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
-
+import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,10 +25,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.hibernate.Hibernate;
+import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created on 22/11/16.
@@ -218,6 +217,17 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test
   public void given_products_when_findAllRaw_then_it_should_work() {
     assertThat(productRepository.findAllRaw()).isNotEmpty();
+  }
+
+  @Transactional
+  @Test
+  public void
+      given_products_when_findByIdUsingQueryAnnotation_using_brand_eg_then_brand_should_be_eagerly_loaded() {
+    Product product =
+        productRepository
+            .findByIdUsingQueryAnnotation(1L, EntityGraphs.named(Product.BRAND_EG))
+            .orElseThrow(RuntimeException::new);
+    assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
   }
 
   @Transactional
