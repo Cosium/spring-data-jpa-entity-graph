@@ -5,6 +5,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.data.jpa.repository.support.QueryHints;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -86,10 +87,9 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
     }
 
     QueryHintsUtils.removeEntityGraphs(query.getHints());
-    Map<String, Object> hints =
+    QueryHints hints =
         QueryHintsUtils.buildQueryHints(entityManager, entityGraphCandidate);
-    for (Map.Entry<String, Object> hint : hints.entrySet()) {
-      query.setHint(hint.getKey(), hint.getValue());
-    }
+
+    hints.forEach(query::setHint);
   }
 }

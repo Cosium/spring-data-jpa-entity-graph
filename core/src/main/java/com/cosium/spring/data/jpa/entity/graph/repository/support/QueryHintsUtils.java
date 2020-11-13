@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.query.Jpa21Utils;
+import org.springframework.data.jpa.repository.support.QueryHints;
 
 import javax.persistence.EntityManager;
 import java.util.Map;
@@ -35,9 +36,9 @@ class QueryHintsUtils {
     queryHints.remove(EntityGraph.EntityGraphType.LOAD.getKey());
   }
 
-  static Map<String, Object> buildQueryHints(
+  static QueryHints buildQueryHints(
       EntityManager entityManager, EntityGraphBean entityGraph) {
-    return Jpa21Utils.tryGetFetchGraphHints(
+    return Jpa21Utils.getFetchGraphHint(
         entityManager, entityGraph.getJpaEntityGraph(), entityGraph.getDomainClass());
   }
 }
