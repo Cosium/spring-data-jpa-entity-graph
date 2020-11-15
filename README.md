@@ -51,7 +51,6 @@ This library follows the Spring Data JPA versionning semantic.
 
 spring-data-jpa branches | Latest spring-data-jpa-entity-graph version | Documentation
 ---------------------------- | --------------- | -----------------
-
 2.4.x | [![Maven Central Latest](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22) | [2.4.x documentation](doc/MAIN.md)
 2.3.x | [![Maven Central Latest](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph/2.3.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22) | [2.3.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/2.3.x/doc/MAIN.md)
 2.2.x | [![Maven Central Latest](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph/2.2.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22) | [2.2.x documentation](https://github.com/Cosium/spring-data-jpa-entity-graph/blob/2.2.x/doc/MAIN.md)
