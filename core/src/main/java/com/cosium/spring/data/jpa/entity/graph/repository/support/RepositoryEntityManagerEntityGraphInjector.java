@@ -124,11 +124,12 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
       return;
     }
 
-    queryProperties = new HashMap<String, Object>(queryProperties);
+    queryProperties = new HashMap<>(queryProperties);
     QueryHintsUtils.removeEntityGraphs(queryProperties);
-    queryProperties.putAll(
-        QueryHintsUtils.buildQueryHints(
-            (EntityManager) invocation.getThis(), entityGraphCandidate));
+
+    QueryHintsUtils.buildQueryHints(
+            (EntityManager) invocation.getThis(), entityGraphCandidate).forEach(queryProperties::put);
+
     invocation.getArguments()[index] = queryProperties;
   }
 }
