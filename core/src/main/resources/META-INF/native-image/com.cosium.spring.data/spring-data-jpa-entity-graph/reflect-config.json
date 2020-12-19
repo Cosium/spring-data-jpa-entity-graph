@@ -1,0 +1,11 @@
+[
+  {
+    "name": "com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphJpaRepositoryFactoryBean",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphSimpleJpaRepository",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  }
+]
