@@ -1,5 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import static java.util.Objects.requireNonNull;
+
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
@@ -7,6 +9,8 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleDefaultEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -20,11 +24,6 @@ import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.support.RepositoryProxyPostProcessor;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static java.util.Objects.requireNonNull;
-
 /**
  * Captures {@link EntityGraph} on repositories method calls. Created on 22/11/16.
  *
@@ -36,8 +35,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       LoggerFactory.getLogger(RepositoryMethodEntityGraphExtractor.class);
 
   private static final ThreadLocal<JpaEntityGraphMethodInterceptor> CURRENT_REPOSITORY =
-      new NamedThreadLocal<JpaEntityGraphMethodInterceptor>(
-          "Thread local holding the current repository");
+      new NamedThreadLocal<>("Thread local holding the current repository");
 
   private final EntityManager entityManager;
 
@@ -65,30 +63,32 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
     private final Class<?> domainClass;
     private final EntityGraph defaultEntityGraph;
     private final ThreadLocal<EntityGraphBean> currentEntityGraph =
-        new NamedThreadLocal<EntityGraphBean>(
+        new NamedThreadLocal<>(
             "Thread local holding the current spring data jpa repository entity graph");
 
-    JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class domainClass) {
+    JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class<?> domainClass) {
       this.domainClass = domainClass;
-      this.defaultEntityGraph = findDefaultEntityGraph(entityManager);
+      this.defaultEntityGraph = findDefaultEntityGraph(entityManager, domainClass);
     }
 
     /**
      * @param entityManager
      * @return The default entity graph if it exists. Null otherwise.
      */
-    private EntityGraph findDefaultEntityGraph(EntityManager entityManager) {
+    private static <T> EntityGraph findDefaultEntityGraph(
+        EntityManager entityManager, Class<T> domainClass) {
       EntityGraph defaultEntityGraph = null;
-      List<javax.persistence.EntityGraph<?>> entityGraphs =
-          (List<javax.persistence.EntityGraph<?>>) entityManager.getEntityGraphs(domainClass);
-      for (javax.persistence.EntityGraph entityGraph : entityGraphs) {
-        if (entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
-          if (defaultEntityGraph != null) {
-            throw new MultipleDefaultEntityGraphException(
-                entityGraph.getName(), defaultEntityGraph.getEntityGraphName());
-          }
-          defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName(), true);
+      List<javax.persistence.EntityGraph<? super T>> entityGraphs =
+          entityManager.getEntityGraphs(domainClass);
+      for (javax.persistence.EntityGraph<? super T> entityGraph : entityGraphs) {
+        if (!entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
+          continue;
         }
+        if (defaultEntityGraph != null) {
+          throw new MultipleDefaultEntityGraphException(
+              entityGraph.getName(), defaultEntityGraph.getEntityGraphName());
+        }
+        defaultEntityGraph = EntityGraphUtils.fromName(entityGraph.getName(), true);
       }
       return defaultEntityGraph;
     }
@@ -198,9 +198,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
                   ? providedEntityGraph.getEntityGraphName()
                   : domainClass.getName() + "-_-_-_-_-_-",
               type,
-              attributePaths != null
-                  ? attributePaths.toArray(new String[attributePaths.size()])
-                  : null);
+              attributePaths != null ? attributePaths.toArray(new String[0]) : null);
 
       return new EntityGraphBean(
           jpaEntityGraph, domainClass, returnType, providedEntityGraph.isOptional(), isPrimary);
