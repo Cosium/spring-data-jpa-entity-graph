@@ -71,10 +71,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       this.defaultEntityGraph = findDefaultEntityGraph(entityManager, domainClass);
     }
 
-    /**
-     * @param entityManager
-     * @return The default entity graph if it exists. Null otherwise.
-     */
+    /** @return The default entity graph if it exists. Null otherwise. */
     private static <T> EntityGraph findDefaultEntityGraph(
         EntityManager entityManager, Class<T> domainClass) {
       EntityGraph defaultEntityGraph = null;
