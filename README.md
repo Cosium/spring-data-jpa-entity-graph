@@ -63,6 +63,10 @@ spring-data-jpa branches | Latest spring-data-jpa-entity-graph version | Documen
 
 For example, if you were using `spring-data-jpa 2.2.x` in your project, you would need to select any `spring-data-jpa-entity-graph 2.2.x`. Thus `spring-data-jpa-entity-graph 2.2.8` would be eligible.
 
+## Demo
+
+You can play with https://github.com/Cosium/spring-data-jpa-entity-graph-sample to see the extension in action in a simple Spring Application.
+
 ## "Making JPA Great Again" talk
 
 This talk was given at Paris JUG in January 2019.  
