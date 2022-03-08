@@ -4,10 +4,12 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created on 18/03/17.
@@ -20,6 +22,9 @@ public interface EntityGraphPagingAndSortingRepository<T, ID extends Serializabl
 
   /** @see PagingAndSortingRepository#findAll(Pageable) */
   Page<T> findAll(Pageable pageable, EntityGraph entityGraph);
+
+  /** @see PagingAndSortingRepository#findAll(Pageable) */
+  List<T> findAll(Pageable pageable, Specification<T> specification, EntityGraph entityGraph);
 
   /** @see PagingAndSortingRepository#findAll(Sort) */
   Iterable<T> findAll(Sort sort, EntityGraph entityGraph);

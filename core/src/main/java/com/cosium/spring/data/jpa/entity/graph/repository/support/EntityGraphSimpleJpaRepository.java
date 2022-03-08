@@ -78,6 +78,12 @@ public class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
   }
 
   @Override
+  public List<T> findAll(
+      Pageable pageable, Specification<T> specification, EntityGraph entityGraph) {
+    return getQuery(specification, pageable).getResultList();
+  }
+
+  @Override
   public <S extends T> List<S> findAll(Example<S> example, Sort sort, EntityGraph entityGraph) {
     return findAll(example, sort);
   }
