@@ -3,15 +3,13 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +78,25 @@ public class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
   @Override
   public List<T> findAll(
       Pageable pageable, Specification<T> specification, EntityGraph entityGraph) {
-    return getQuery(specification, pageable).getResultList();
+    return super.getQuery(specification, pageable)
+        .setMaxResults(pageable.getPageSize())
+        .getResultList();
+  }
+
+  @Override
+  public Slice<T> findSlice(Specification<T> spec, Pageable pageable, EntityGraph entityGraph) {
+    TypedQuery<T> query = super.getQuery(spec, pageable);
+
+    query.setFirstResult((int) pageable.getOffset());
+    int extraSize = pageable.getPageSize() + 1;
+    query.setMaxResults(extraSize);
+    boolean hasNext = query.getResultList().size() == extraSize;
+
+    List<T> result = query.getResultList();
+    if (hasNext) {
+      result.remove(extraSize - 1);
+    }
+    return new SliceImpl<>(result, pageable, hasNext);
   }
 
   @Override

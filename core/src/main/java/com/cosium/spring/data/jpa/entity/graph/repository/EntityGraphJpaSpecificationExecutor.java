@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -30,4 +31,6 @@ public interface EntityGraphJpaSpecificationExecutor<T> extends JpaSpecification
 
   /** @see JpaSpecificationExecutor#findAll(Specification, Sort) */
   List<T> findAll(Specification<T> spec, Sort sort, EntityGraph entityGraph);
+
+  Slice<T> findSlice(Specification<T> spec, Pageable pageable, EntityGraph entityGraph);
 }
