@@ -88,15 +88,13 @@ public class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
     TypedQuery<T> query = super.getQuery(spec, pageable);
 
     query.setFirstResult((int) pageable.getOffset());
-    int extraSize = pageable.getPageSize() + 1;
-    query.setMaxResults(extraSize);
-    boolean hasNext = query.getResultList().size() == extraSize;
+    query.setMaxResults(pageable.getPageSize() + 1);
 
     List<T> result = query.getResultList();
-    if (hasNext) {
-      result.remove(extraSize - 1);
-    }
-    return new SliceImpl<>(result, pageable, hasNext);
+    boolean hasNext = pageable.isPaged() && result.size() > pageable.getPageSize();
+
+    return new SliceImpl<T>(
+        hasNext ? result.subList(0, pageable.getPageSize()) : result, pageable, hasNext);
   }
 
   @Override
