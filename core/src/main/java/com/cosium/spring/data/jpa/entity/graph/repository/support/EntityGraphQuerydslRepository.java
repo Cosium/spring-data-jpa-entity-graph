@@ -4,6 +4,7 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,7 @@ import org.springframework.data.querydsl.EntityPathResolver;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.Optional;
+import org.springframework.data.repository.query.FluentQuery;
 
 /**
  * A {@link org.springframework.data.querydsl.QuerydslPredicateExecutor} that supports {@link
@@ -114,5 +116,11 @@ public class EntityGraphQuerydslRepository<T, ID extends Serializable>
   @Override
   public boolean exists(Predicate predicate) {
     return querydslJpaRepositoryDelegate.exists(predicate);
+  }
+
+  @Override
+  public <S extends T, R> R findBy(
+      Predicate predicate, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    return querydslJpaRepositoryDelegate.findBy(predicate, queryFunction);
   }
 }
