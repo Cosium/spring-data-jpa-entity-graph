@@ -1,4 +1,3 @@
-[![Gitter](https://badges.gitter.im/Cosium/spring-data-jpa-entity-graph.svg)](https://gitter.im/Cosium/spring-data-jpa-entity-graph?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://github.com/Cosium/spring-data-jpa-entity-graph/actions/workflows/ci.yml/badge.svg)](https://github.com/Cosium/spring-data-jpa-entity-graph/actions/workflows/ci.yml)
 [![Codecov branch](https://img.shields.io/codecov/c/github/Cosium/spring-data-jpa-entity-graph/master.svg)](https://codecov.io/gh/Cosium/spring-data-jpa-entity-graph)
 
