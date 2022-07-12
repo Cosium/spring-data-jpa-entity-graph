@@ -56,6 +56,11 @@ public class Product {
   @ManyToOne(fetch = FetchType.EAGER)
   private Category category;
 
+  // The sole presence of this field ensures
+  // https://github.com/Cosium/spring-data-jpa-entity-graph/issues/68 correction
+  // Should not be removed
+  private byte[] image;
+
   public long getId() {
     return id;
   }

@@ -44,15 +44,27 @@ public class MetamodelAttribute {
   }
 
   public Optional<MetamodelAttributeTarget> jpaEntityTarget() {
-    DeclaredType attributeType = (DeclaredType) variableElement.asType();
+    TypeMirror rawAttributeType = variableElement.asType();
+    if (!(rawAttributeType instanceof DeclaredType)) {
+      return Optional.empty();
+    }
+    DeclaredType attributeType = (DeclaredType) rawAttributeType;
     List<? extends TypeMirror> typeArguments = attributeType.getTypeArguments();
     // This is the lazy way of doing this. We consider that any sub interfaces of
     // javax.persistence.metamodel.Attribute
     // will declare the target type as the last type arguments.
     // e.g. MapAttribute<Brand, Long, Product> where Product is the target
     // TODO do this cleanly by browsing the class hierarchy
-    DeclaredType targetType = (DeclaredType) typeArguments.get(typeArguments.size() - 1);
-    TypeElement targetTypeElement = (TypeElement) targetType.asElement();
+    TypeMirror rawTargetType = typeArguments.get(typeArguments.size() - 1);
+    if (!(rawTargetType instanceof DeclaredType)) {
+      return Optional.empty();
+    }
+    DeclaredType targetType = (DeclaredType) rawTargetType;
+    Element rawTargetTypeElement = targetType.asElement();
+    if (!(rawTargetTypeElement instanceof TypeElement)) {
+      return Optional.empty();
+    }
+    TypeElement targetTypeElement = (TypeElement) rawTargetTypeElement;
 
     if (targetTypeElement.getAnnotation(Entity.class) == null) {
       return Optional.empty();
