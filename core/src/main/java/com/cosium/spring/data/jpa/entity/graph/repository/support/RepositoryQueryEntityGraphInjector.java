@@ -1,19 +1,17 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Arrays;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.data.jpa.repository.support.QueryHints;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Created on 24/11/16.
@@ -87,8 +85,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
     }
 
     QueryHintsUtils.removeEntityGraphs(query.getHints());
-    QueryHints hints =
-        QueryHintsUtils.buildQueryHints(entityManager, entityGraphCandidate);
+    QueryHints hints = QueryHintsUtils.buildQueryHints(entityManager, entityGraphCandidate);
 
     hints.forEach(query::setHint);
   }

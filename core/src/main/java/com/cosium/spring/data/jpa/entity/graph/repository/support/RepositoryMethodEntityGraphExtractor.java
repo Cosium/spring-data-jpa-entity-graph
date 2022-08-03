@@ -10,6 +10,7 @@ import com.cosium.spring.data.jpa.entity.graph.repository.exception.Inapplicable
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleDefaultEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.EntityManager;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -129,7 +130,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       if (invocation instanceof ReflectiveMethodInvocation) {
         implementationClass = ((ReflectiveMethodInvocation) invocation).getProxy().getClass();
       } else {
-        implementationClass = invocation.getThis().getClass();
+        Object invocationQualifier = invocation.getThis();
+        Objects.requireNonNull(
+            invocationQualifier, "No qualifier found for invocation " + invocationQualifier);
+        implementationClass = invocationQualifier.getClass();
       }
 
       EntityGraphBean entityGraphCandidate =

@@ -16,7 +16,7 @@ import org.springframework.data.querydsl.EntityPathResolver;
 @Ignore
 public class EntityGraphQuerydslRepositoryTest {
 
-  private class EntityGraphQuerydslRepositoryChild
+  private static class EntityGraphQuerydslRepositoryChild
       extends EntityGraphQuerydslRepository<Object, Integer> {
 
     public EntityGraphQuerydslRepositoryChild(

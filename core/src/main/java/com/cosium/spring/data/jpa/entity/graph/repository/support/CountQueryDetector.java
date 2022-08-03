@@ -17,7 +17,7 @@ class CountQueryDetector implements MethodInterceptor {
   private static final String FETCH_METHOD_NAME_PREFIX = "fetch";
 
   private static final NamedThreadLocal<Boolean> IS_COUNT_QUERY =
-      new NamedThreadLocal<Boolean>(
+      new NamedThreadLocal<>(
           "A thread local holding a boolean describing "
               + "the fact that the current query is count query");
 
@@ -30,7 +30,7 @@ class CountQueryDetector implements MethodInterceptor {
   }
 
   static boolean isCountQuery() {
-    return IS_COUNT_QUERY.get() == null ? false : IS_COUNT_QUERY.get();
+    return IS_COUNT_QUERY.get() != null && IS_COUNT_QUERY.get();
   }
 
   @Override

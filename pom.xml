@@ -188,7 +188,7 @@
 
   <organization>
     <name>Cosium</name>
-    <url>http://www.cosium.com</url>
+    <url>https://www.cosium.com</url>
   </organization>
 
   <developers>
@@ -203,7 +203,7 @@
   <licenses>
     <license>
       <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <url>https://www.opensource.org/licenses/mit-license.php</url>
       <distribution>repo</distribution>
     </license>
   </licenses>

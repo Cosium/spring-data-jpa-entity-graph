@@ -19,14 +19,7 @@ import javax.persistence.OneToMany;
  *
  * @author Reda.Housni-Alaoui
  */
-@NamedEntityGraphs(
-  value = {
-    @NamedEntityGraph(
-      name = Brand.EMPTY_EG,
-      attributeNodes = {}
-    )
-  }
-)
+@NamedEntityGraphs(value = {@NamedEntityGraph(name = Brand.EMPTY_EG)})
 @Entity
 public class Brand {
 

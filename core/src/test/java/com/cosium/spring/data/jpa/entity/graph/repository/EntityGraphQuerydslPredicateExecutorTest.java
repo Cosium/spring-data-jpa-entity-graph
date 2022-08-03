@@ -36,6 +36,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
         productRepository.findOne(QProduct.product.name.eq("Product 1"), null);
     if (!product.isPresent()) {
       fail("Product must be present");
+      return;
     }
     assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
   }

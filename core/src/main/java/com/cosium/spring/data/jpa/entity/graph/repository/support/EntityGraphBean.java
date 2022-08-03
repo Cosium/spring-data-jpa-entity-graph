@@ -1,10 +1,10 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.base.MoreObjects;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Wrapper class allowing to hold a {@link JpaEntityGraph} with its associated domain class. Created
@@ -37,10 +37,12 @@ class EntityGraphBean {
 
   private boolean computeValidity() {
     Class<?> resolvedReturnType = repositoryMethodReturnType.resolve();
-    if (Void.TYPE.equals(resolvedReturnType) || domainClass.isAssignableFrom(resolvedReturnType)) {
+    if (resolvedReturnType != null
+        && (Void.TYPE.equals(resolvedReturnType)
+            || domainClass.isAssignableFrom(resolvedReturnType))) {
       return true;
     }
-    for (Class genericType : repositoryMethodReturnType.resolveGenerics()) {
+    for (Class<?> genericType : repositoryMethodReturnType.resolveGenerics()) {
       if (domainClass.isAssignableFrom(genericType)) {
         return true;
       }
@@ -69,8 +71,8 @@ class EntityGraphBean {
   }
 
   /**
-   * @return True if this EntityGraph is a primary one. Default EntityGraph is an example of non
-   *     primary EntityGraph.
+   * @return True if this EntityGraph is a primary one. Default EntityGraph is an example of
+   *     non-primary EntityGraph.
    */
   public boolean isPrimary() {
     return primary;
