@@ -4,22 +4,24 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import java.io.Serializable;
+import java.util.Optional;
 import java.util.function.Function;
+import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
-
-import javax.persistence.EntityManager;
-import java.io.Serializable;
-import java.util.Optional;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.lang.Nullable;
 
 /**
  * A {@link org.springframework.data.querydsl.QuerydslPredicateExecutor} that supports {@link
- * EntityGraph} passed through method arguments. Created on 23/11/16.
+ * EntityGraph} passed through method arguments.
  *
  * @author Reda.Housni-Alaoui
  */
@@ -27,24 +29,22 @@ public class EntityGraphQuerydslRepository<T, ID extends Serializable>
     extends EntityGraphSimpleJpaRepository<T, ID>
     implements EntityGraphQuerydslPredicateExecutor<T> {
 
-  protected final QuerydslJpaRepository<T, ID> querydslJpaRepositoryDelegate;
+  protected final QuerydslPredicateExecutor<T> querydslJpaRepositoryDelegate;
 
-  @SuppressWarnings("unchecked")
   public EntityGraphQuerydslRepository(
       JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
-    super(entityInformation, entityManager);
-    this.querydslJpaRepositoryDelegate =
-        new EntityGraphAwareQuerydslJpaRepository<>(
-            (JpaEntityInformation<T, ID>) entityInformation, entityManager);
+    this(entityInformation, entityManager, SimpleEntityPathResolver.INSTANCE, null);
   }
 
   public EntityGraphQuerydslRepository(
-      JpaEntityInformation<T, ID> entityInformation,
+      JpaEntityInformation<T, ?> entityInformation,
       EntityManager entityManager,
-      EntityPathResolver resolver) {
+      EntityPathResolver resolver,
+      @Nullable CrudMethodMetadata metadata) {
     super(entityInformation, entityManager);
     this.querydslJpaRepositoryDelegate =
-        new EntityGraphAwareQuerydslJpaRepository<>(entityInformation, entityManager, resolver);
+        new EntityGraphAwareQuerydslJpaRepository<>(
+            entityInformation, entityManager, resolver, metadata);
   }
 
   @Override

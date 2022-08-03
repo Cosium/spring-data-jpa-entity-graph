@@ -17,7 +17,7 @@ public class NamedEntityGraph extends AbstractEntityGraph {
 
   public NamedEntityGraph(EntityGraphType type, boolean optional, String name) {
     super(type, optional);
-    Assert.hasLength(name);
+    Assert.hasLength(name, "The name must not be empty");
     this.name = name;
   }
 
