@@ -3,7 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import com.google.common.collect.Lists;
+import java.util.Collections;
 import org.junit.Test;
 
 public class NamedEntityGraphTest {
@@ -46,7 +46,7 @@ public class NamedEntityGraphTest {
   public void testGraphsWithDifferentClassNotEqual() {
     final EntityGraph namedEntityGraph = new NamedEntityGraph(EntityGraphType.LOAD, "graph");
     final EntityGraph dynamicEntityGraph =
-        new DynamicEntityGraph(EntityGraphType.LOAD, Lists.newArrayList("path"));
+        new DynamicEntityGraph(EntityGraphType.LOAD, Collections.singletonList("path"));
 
     assertNotEquals(namedEntityGraph, dynamicEntityGraph);
     assertNotEquals(namedEntityGraph.hashCode(), dynamicEntityGraph.hashCode());

@@ -1,9 +1,9 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
-import com.google.common.base.MoreObjects;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * Created on 22/11/16.
@@ -35,7 +35,9 @@ public class DynamicEntityGraph extends AbstractEntityGraph {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("attributePaths", attributePaths).toString();
+    return new StringJoiner(", ", DynamicEntityGraph.class.getSimpleName() + "[", "]")
+        .add("attributePaths=" + attributePaths)
+        .toString();
   }
 
   @Override

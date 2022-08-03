@@ -1,8 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
-import com.google.common.base.MoreObjects;
-
 import static java.util.Objects.requireNonNull;
+
+import java.util.StringJoiner;
 
 /**
  * Created on 22/11/16.
@@ -53,9 +53,9 @@ public abstract class AbstractEntityGraph implements EntityGraph {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("entityGraphType", entityGraphType)
-        .add("optional", optional)
+    return new StringJoiner(", ", AbstractEntityGraph.class.getSimpleName() + "[", "]")
+        .add("entityGraphType=" + entityGraphType)
+        .add("optional=" + optional)
         .toString();
   }
 }

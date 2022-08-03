@@ -2,7 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.base.MoreObjects;
+import java.util.StringJoiner;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 
@@ -80,11 +80,13 @@ class EntityGraphBean {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("jpaEntityGraph", jpaEntityGraph)
-        .add("domainClass", domainClass)
-        .add("repositoryMethodReturnType", repositoryMethodReturnType)
-        .add("optional", optional)
+    return new StringJoiner(", ", EntityGraphBean.class.getSimpleName() + "[", "]")
+        .add("jpaEntityGraph=" + jpaEntityGraph)
+        .add("domainClass=" + domainClass)
+        .add("repositoryMethodReturnType=" + repositoryMethodReturnType)
+        .add("optional=" + optional)
+        .add("primary=" + primary)
+        .add("valid=" + valid)
         .toString();
   }
 }

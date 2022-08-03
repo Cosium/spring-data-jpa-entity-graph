@@ -1,10 +1,9 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
-import com.google.common.base.MoreObjects;
-import java.util.Objects;
-import org.springframework.util.Assert;
-
 import java.util.List;
+import java.util.Objects;
+import java.util.StringJoiner;
+import org.springframework.util.Assert;
 
 /**
  * Created on 22/11/16.
@@ -41,7 +40,9 @@ public class NamedEntityGraph extends AbstractEntityGraph {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("name", name).toString();
+    return new StringJoiner(", ", NamedEntityGraph.class.getSimpleName() + "[", "]")
+        .add("name='" + name + "'")
+        .toString();
   }
 
   @Override
