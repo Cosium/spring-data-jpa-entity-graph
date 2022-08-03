@@ -11,24 +11,7 @@ import java.util.Arrays;
  */
 public class EntityGraphUtils {
 
-  /**
-   * @return An empty EntityGraph
-   * @deprecated Use {@link EntityGraphs#empty()}
-   */
-  @Deprecated
-  public static EntityGraph empty() {
-    return EntityGraphs.empty();
-  }
-
-  /**
-   * @param name The name of the targeted EntityGraph
-   * @return An EntityGraph referenced by name
-   * @deprecated Use {@link EntityGraphs#named(String)}
-   */
-  @Deprecated
-  public static EntityGraph fromName(String name) {
-    return EntityGraphs.named(name);
-  }
+  private EntityGraphUtils() {}
 
   /**
    * @param name The name of the targeted EntityGraph
