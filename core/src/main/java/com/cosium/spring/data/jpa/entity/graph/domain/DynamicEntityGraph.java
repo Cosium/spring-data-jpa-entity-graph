@@ -9,7 +9,10 @@ import java.util.StringJoiner;
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
+ * @deprecated Use {@link com.cosium.spring.data.jpa.entity.graph.domain2.DynamicEntityGraph}
+ *     instead.
  */
+@Deprecated
 public class DynamicEntityGraph extends AbstractEntityGraph {
 
   private final List<String> attributePaths;

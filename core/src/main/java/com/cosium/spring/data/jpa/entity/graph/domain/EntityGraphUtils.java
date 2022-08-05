@@ -8,7 +8,10 @@ import java.util.Arrays;
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
+ * @deprecated Use {@link com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph} or
+ *     {@link com.cosium.spring.data.jpa.entity.graph.domain2.DynamicEntityGraph} instead.
  */
+@Deprecated
 public class EntityGraphUtils {
 
   private EntityGraphUtils() {}

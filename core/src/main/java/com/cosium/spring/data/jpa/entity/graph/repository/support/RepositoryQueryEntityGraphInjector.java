@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import static java.util.Objects.requireNonNull;
 
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -11,7 +12,6 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.data.jpa.repository.support.QueryHints;
 
 /**
  * Created on 24/11/16.
@@ -28,16 +28,16 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
   private static final String UNWRAP_METHOD = "unwrap";
 
   private final EntityManager entityManager;
-  private final EntityGraphBean entityGraphCandidate;
+  private final EntityGraphQueryHintCandidate entityGraphCandidate;
 
   private RepositoryQueryEntityGraphInjector(
-      EntityManager entityManager, EntityGraphBean entityGraphCandidate) {
+      EntityManager entityManager, EntityGraphQueryHintCandidate entityGraphCandidate) {
     this.entityManager = requireNonNull(entityManager);
     this.entityGraphCandidate = requireNonNull(entityGraphCandidate);
   }
 
   static Query proxy(
-      Query query, EntityManager entityManager, EntityGraphBean entityGraphCandidate) {
+      Query query, EntityManager entityManager, EntityGraphQueryHintCandidate entityGraphCandidate) {
     ProxyFactory proxyFactory = new ProxyFactory(query);
     proxyFactory.addAdvice(
         new RepositoryQueryEntityGraphInjector(entityManager, entityGraphCandidate));
@@ -77,7 +77,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
       LOG.trace("CountQuery detected.");
       return;
     }
-    if (!entityGraphCandidate.isPrimary()
+    if (!entityGraphCandidate.primary()
         && QueryHintsUtils.containsEntityGraph(query.getHints())) {
       LOG.trace(
           "The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
@@ -85,8 +85,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
     }
 
     QueryHintsUtils.removeEntityGraphs(query.getHints());
-    QueryHints hints = QueryHintsUtils.buildQueryHints(entityManager, entityGraphCandidate);
-
-    hints.forEach(query::setHint);
+    EntityGraphQueryHint entityGraphQueryHint = entityGraphCandidate.queryHint();
+    query.setHint(entityGraphQueryHint.type().key(), entityGraphQueryHint.entityGraph());
   }
 }

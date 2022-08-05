@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.QProduct;
+import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.sample.Product;
+import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
+import com.cosium.spring.data.jpa.entity.graph.sample.QProduct;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
   public void given_brand_eg_when_findone_then_brand_should_be_loaded() {
     Optional<Product> product =
         productRepository.findOne(
-            QProduct.product.name.eq("Product 1"), EntityGraphs.named(Product.BRAND_EG));
+            QProduct.product.name.eq("Product 1"), NamedEntityGraph.loading(Product.BRAND_EG));
     if (!product.isPresent()) {
       fail("Product must be present");
       return;
@@ -61,7 +61,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
         productRepository.findAll(
             QProduct.product.id.isNotNull(),
             PageRequest.of(0, 10),
-            EntityGraphs.named(Product.BRAND_EG));
+            NamedEntityGraph.loading(Product.BRAND_EG));
     assertThat(productPage.getContent()).isNotEmpty();
     for (Product product : productPage.getContent()) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();

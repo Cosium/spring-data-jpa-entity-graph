@@ -1,5 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
   @Override
   public Object invoke(MethodInvocation invocation) throws Throwable {
-    EntityGraphBean entityGraphCandidate =
+    EntityGraphQueryHintCandidate entityGraphCandidate =
         RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
     String methodName = invocation.getMethod().getName();
     boolean hasEntityGraphCandidate = entityGraphCandidate != null;
@@ -76,23 +77,25 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
   }
 
   private boolean isQueryCreationEligible(
-      EntityGraphBean entityGraphCandidate, MethodInvocation invocation) {
+          EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
     Class<?> resultType = null;
     for (Object argument : invocation.getArguments()) {
       if (argument instanceof Class<?>) {
         resultType = (Class<?>) argument;
         break;
-      } else if (argument instanceof CriteriaQuery<?>) {
-        CriteriaQuery<?> criteriaQuery = (CriteriaQuery<?>) argument;
-        Selection<?> selection = criteriaQuery.getSelection();
-        if (selection == null) {
-          continue;
-        }
-        resultType = selection.getJavaType();
-        break;
       }
+      if (!(argument instanceof CriteriaQuery<?>)) {
+        continue;
+      }
+      CriteriaQuery<?> criteriaQuery = (CriteriaQuery<?>) argument;
+      Selection<?> selection = criteriaQuery.getSelection();
+      if (selection == null) {
+        continue;
+      }
+      resultType = selection.getJavaType();
+      break;
     }
-    return resultType == null || resultType.equals(entityGraphCandidate.getDomainClass());
+    return resultType == null || resultType.equals(entityGraphCandidate.domainClass());
   }
 
   /**
@@ -102,7 +105,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
    * @param invocation The invocation of the find method
    */
   private void addEntityGraphToFindMethodQueryHints(
-      EntityGraphBean entityGraphCandidate, MethodInvocation invocation) {
+          EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
     LOG.trace("Trying to push the EntityGraph candidate to the query hints find method");
 
     Map<String, Object> queryProperties = null;
@@ -118,17 +121,17 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
       LOG.trace("No query hints passed to the find method.");
       return;
     }
-    if (!entityGraphCandidate.isPrimary() && QueryHintsUtils.containsEntityGraph(queryProperties)) {
+    if (!entityGraphCandidate.primary() && QueryHintsUtils.containsEntityGraph(queryProperties)) {
       LOG.trace(
-          "The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
+          "The query hints passed with the find method already holds an entity graph. Overriding aborted because the candidate EntityGraph is not primary.");
       return;
     }
 
     queryProperties = new HashMap<>(queryProperties);
     QueryHintsUtils.removeEntityGraphs(queryProperties);
 
-    QueryHintsUtils.buildQueryHints(
-            (EntityManager) invocation.getThis(), entityGraphCandidate).forEach(queryProperties::put);
+    EntityGraphQueryHint entityGraphQueryHint = entityGraphCandidate.queryHint();
+    queryProperties.put(entityGraphQueryHint.type().key(), entityGraphQueryHint.entityGraph());
 
     invocation.getArguments()[index] = queryProperties;
   }

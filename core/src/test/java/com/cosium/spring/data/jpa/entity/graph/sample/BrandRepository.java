@@ -1,4 +1,4 @@
-package com.cosium.spring.data.jpa.entity.graph.repository.sample;
+package com.cosium.spring.data.jpa.entity.graph.sample;
 
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 

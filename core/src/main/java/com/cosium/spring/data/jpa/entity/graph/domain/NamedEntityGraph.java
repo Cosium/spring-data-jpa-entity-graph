@@ -9,7 +9,9 @@ import org.springframework.util.Assert;
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
+ * @deprecated Use {@link com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph} instead.
  */
+@Deprecated
 public class NamedEntityGraph extends AbstractEntityGraph {
 
   private final String name;

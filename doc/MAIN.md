@@ -62,21 +62,23 @@ public interface ProductRepository extends EntityGraphJpaRepository<Product, Lon
 You can pass the entity graph to the `findByName` method :
 ```java
 // This will apply 'Product.brand' named EntityGraph to findByName
-productRepository.findByName("MyProduct", EntityGraphs.named("Product.brand"));
+productRepository.findByName("MyProduct", NamedEntityGraph.loading("Product.brand"));
 ```
 
 Or to the `findOne` method :
 ```java
 // This will apply 'Product.brand' named EntityGraph to findOne
-productRepository.findById(1L, EntityGraphs.named("Product.brand"));
+productRepository.findById(1L, NamedEntityGraph.loading("Product.brand"));
 ```
 
 Or any method you like.
 
+## Dynamic EntityGraph
+
 You can also pass a dynamically built EntityGraph by using `DynamicEntityGraph`, it's also accessible through a helper method:
 
 ```java
-productRepository.findById(1L, EntityGraphUtils.fromAttributePaths("brand", "maker"));
+productRepository.findById(1L, DynamicEntityGraph.loading().addPath("brand").addPath("maker").build());
 ```
 
 This is similar to [Spring's ad-hoc attribute paths](http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-property-expressions),

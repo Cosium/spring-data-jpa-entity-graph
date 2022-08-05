@@ -3,10 +3,10 @@ package com.cosium.spring.data.jpa.entity.graph.domain;
 import java.util.Optional;
 
 /**
- * Created on 04/08/18.
- *
  * @author Reda.Housni-Alaoui
+ * @deprecated Without replacement
  */
+@Deprecated
 public final class OptionalEntityGraph {
 
   /** @return The entity graph if not null and not empty, empty otherwise */
