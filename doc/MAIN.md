@@ -139,31 +139,3 @@ EntityGraph entityGraph = ProductEntityGraph
 
 productRepository.findById(1L, entityGraph);
 ```
-
-## Default EntityGraph
-
-For an Entity, you can define its default EntityGraph.  
-An Entity default EntityGraph will be used each time the Entity repository method is called without EntityGraph.  
-
-A default EntityGraph name must end with `.default`. 
-
-```java
-@NamedEntityGraphs(value = {
-    @NamedEntityGraph(name = "Product.default", attributeNodes = {
-        @NamedAttributeNode("brand")
-    })
-})
-@Entity
-public class Product {
-    @Id
-    private long id = 0;
-    private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Brand brand;
-    //...
-}	
-```
-```java
-// This call will make use of "Product.default" EntityGraph.
-productRepository.findById(1L);
-```

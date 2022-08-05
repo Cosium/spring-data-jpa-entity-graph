@@ -67,11 +67,25 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
     JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class<?> domainClass) {
       this.domainClass = domainClass;
       this.entityManager = entityManager;
-      this.defaultEntityGraph = findDefaultEntityGraph(entityManager, domainClass);
+      this.defaultEntityGraph =
+          findDefaultEntityGraphName(entityManager, domainClass)
+              .map(NamedEntityGraph::loading)
+              .map(DefaultEntityGraph::new)
+              .orElse(null);
+      if (defaultEntityGraph == null) {
+        return;
+      }
+      LOG.warn(
+          "Found 'Default EntityGraph' {} for {}. "
+              + "'Default EntityGraph' feature is deprecated. "
+              + "It will be removed in a future version. "
+              + "Read https://github.com/Cosium/spring-data-jpa-entity-graph/issues/73#issue-1330079585 for more information.",
+          defaultEntityGraph,
+          domainClass);
     }
 
     /** @return The default entity graph if it exists. Null otherwise. */
-    private static <T> DefaultEntityGraph findDefaultEntityGraph(
+    private static <T> Optional<String> findDefaultEntityGraphName(
         EntityManager entityManager, Class<T> domainClass) {
       String defaultEntityGraphName = null;
       List<javax.persistence.EntityGraph<? super T>> entityGraphs =
@@ -86,10 +100,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
         }
         defaultEntityGraphName = entityGraph.getName();
       }
-      return Optional.ofNullable(defaultEntityGraphName)
-              .map(NamedEntityGraph::loading)
-              .map(DefaultEntityGraph::new)
-              .orElse(null);
+      return Optional.ofNullable(defaultEntityGraphName);
     }
 
     public EntityGraphQueryHintCandidate getCurrentJpaEntityGraph() {
@@ -137,10 +148,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
         implementationClass = invocationQualifier.getClass();
       }
 
-      ResolvableType returnType = ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass);
+      ResolvableType returnType =
+          ResolvableType.forMethodReturnType(invocation.getMethod(), implementationClass);
 
-      EntityGraphQueryHintCandidate candidate =
-          buildEntityGraphCandidate(providedEntityGraph);
+      EntityGraphQueryHintCandidate candidate = buildEntityGraphCandidate(providedEntityGraph);
 
       if (candidate != null && !canApplyEntityGraph(returnType)) {
         if (!candidate.queryHint().failIfInapplicable()) {
@@ -154,8 +165,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 
       EntityGraphQueryHintCandidate genuineCandidate = currentEntityGraph.get();
       boolean newEntityGraphCandidatePreValidated =
-          candidate != null
-              && (genuineCandidate == null || !genuineCandidate.primary());
+          candidate != null && (genuineCandidate == null || !genuineCandidate.primary());
       if (newEntityGraphCandidatePreValidated) {
         currentEntityGraph.set(candidate);
       }
@@ -171,13 +181,16 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
     private EntityGraphQueryHintCandidate buildEntityGraphCandidate(
         EntityGraph providedEntityGraph) {
 
-      EntityGraphQueryHint queryHint = Optional.ofNullable(providedEntityGraph)
+      EntityGraphQueryHint queryHint =
+          Optional.ofNullable(providedEntityGraph)
               .flatMap(entityGraph -> entityGraph.buildQueryHint(entityManager, domainClass))
               .orElse(null);
 
       boolean isPrimary = true;
       if (queryHint == null) {
-        queryHint = Optional.ofNullable(defaultEntityGraph).flatMap(entityGraph -> entityGraph.buildQueryHint(entityManager, domainClass))
+        queryHint =
+            Optional.ofNullable(defaultEntityGraph)
+                .flatMap(entityGraph -> entityGraph.buildQueryHint(entityManager, domainClass))
                 .orElse(null);
         isPrimary = false;
       }
@@ -190,7 +203,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
     private boolean canApplyEntityGraph(ResolvableType repositoryMethodReturnType) {
       Class<?> resolvedReturnType = repositoryMethodReturnType.resolve();
       if (resolvedReturnType != null
-              && (Void.TYPE.equals(resolvedReturnType)
+          && (Void.TYPE.equals(resolvedReturnType)
               || domainClass.isAssignableFrom(resolvedReturnType))) {
         return true;
       }
