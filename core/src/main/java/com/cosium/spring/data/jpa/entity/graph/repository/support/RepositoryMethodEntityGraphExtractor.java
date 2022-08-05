@@ -58,7 +58,8 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
   private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
 
     private static final Logger DEFAULT_ENTITY_GRAPH_LOGGER =
-        LoggerFactory.getLogger(JpaEntityGraphMethodInterceptor.class + ".DefaultEntityGraph");
+        LoggerFactory.getLogger(
+            JpaEntityGraphMethodInterceptor.class.getCanonicalName() + ".DefaultEntityGraph");
 
     private static final String DEFAULT_ENTITY_GRAPH_NAME_SUFFIX = ".default";
     private static final AtomicInteger DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT =
