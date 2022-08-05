@@ -56,7 +56,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
 
   private static class JpaEntityGraphMethodInterceptor implements MethodInterceptor {
 
-    private static final String DEFAULT_ENTITYGRAPH_NAME_SUFFIX = ".default";
+    private static final Logger DEFAULT_ENTITY_GRAPH_LOGGER =
+        LoggerFactory.getLogger(JpaEntityGraphMethodInterceptor.class + ".DefaultEntityGraph");
+
+    private static final String DEFAULT_ENTITY_GRAPH_NAME_SUFFIX = ".default";
     private final Class<?> domainClass;
     private final EntityManager entityManager;
     private final DefaultEntityGraph defaultEntityGraph;
@@ -75,7 +78,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       if (defaultEntityGraph == null) {
         return;
       }
-      LOG.warn(
+      DEFAULT_ENTITY_GRAPH_LOGGER.warn(
           "Found 'Default EntityGraph' {} for {}. "
               + "'Default EntityGraph' feature is deprecated. "
               + "It will be removed in a future version. "
@@ -91,7 +94,7 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       List<javax.persistence.EntityGraph<? super T>> entityGraphs =
           entityManager.getEntityGraphs(domainClass);
       for (javax.persistence.EntityGraph<? super T> entityGraph : entityGraphs) {
-        if (!entityGraph.getName().endsWith(DEFAULT_ENTITYGRAPH_NAME_SUFFIX)) {
+        if (!entityGraph.getName().endsWith(DEFAULT_ENTITY_GRAPH_NAME_SUFFIX)) {
           continue;
         }
         if (defaultEntityGraphName != null) {
