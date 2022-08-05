@@ -9,6 +9,7 @@ import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEnti
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.EntityManager;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -60,6 +61,10 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
         LoggerFactory.getLogger(JpaEntityGraphMethodInterceptor.class + ".DefaultEntityGraph");
 
     private static final String DEFAULT_ENTITY_GRAPH_NAME_SUFFIX = ".default";
+    private static final AtomicInteger DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT =
+        new AtomicInteger();
+    private static final int MAX_DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT = 10;
+
     private final Class<?> domainClass;
     private final EntityManager entityManager;
     private final DefaultEntityGraph defaultEntityGraph;
@@ -70,21 +75,24 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
     JpaEntityGraphMethodInterceptor(EntityManager entityManager, Class<?> domainClass) {
       this.domainClass = domainClass;
       this.entityManager = entityManager;
+      String defaultEntityGraphName =
+          findDefaultEntityGraphName(entityManager, domainClass).orElse(null);
+      if (defaultEntityGraphName != null
+          && DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT.incrementAndGet()
+              < MAX_DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT) {
+        DEFAULT_ENTITY_GRAPH_LOGGER.warn(
+            "Found 'Default EntityGraph' {} for {}. "
+                + "'Default EntityGraph' feature is deprecated. "
+                + "It will be removed in a future version. "
+                + "Read https://github.com/Cosium/spring-data-jpa-entity-graph/issues/73#issue-1330079585 for more information.",
+            defaultEntityGraphName,
+            domainClass);
+      }
       this.defaultEntityGraph =
-          findDefaultEntityGraphName(entityManager, domainClass)
+          Optional.ofNullable(defaultEntityGraphName)
               .map(NamedEntityGraph::loading)
               .map(DefaultEntityGraph::new)
               .orElse(null);
-      if (defaultEntityGraph == null) {
-        return;
-      }
-      DEFAULT_ENTITY_GRAPH_LOGGER.warn(
-          "Found 'Default EntityGraph' {} for {}. "
-              + "'Default EntityGraph' feature is deprecated. "
-              + "It will be removed in a future version. "
-              + "Read https://github.com/Cosium/spring-data-jpa-entity-graph/issues/73#issue-1330079585 for more information.",
-          defaultEntityGraph,
-          domainClass);
     }
 
     /** @return The default entity graph if it exists. Null otherwise. */
