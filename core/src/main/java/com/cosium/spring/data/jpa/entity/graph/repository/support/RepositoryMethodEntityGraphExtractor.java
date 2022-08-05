@@ -79,8 +79,9 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       String defaultEntityGraphName =
           findDefaultEntityGraphName(entityManager, domainClass).orElse(null);
       if (defaultEntityGraphName != null
-          && DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT.incrementAndGet()
+          && DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT.get()
               < MAX_DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT) {
+        DEFAULT_ENTITY_GRAPH_DEPRECATION_LOG_COUNT.incrementAndGet();
         DEFAULT_ENTITY_GRAPH_LOGGER.warn(
             "Found 'Default EntityGraph' {} for {}. "
                 + "'Default EntityGraph' feature is deprecated. "
