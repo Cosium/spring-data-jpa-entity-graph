@@ -1,10 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.query.Jpa21Utils;
-import org.springframework.data.jpa.repository.support.QueryHints;
-
-import javax.persistence.EntityManager;
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphType;
 import java.util.Map;
 
 /**
@@ -17,23 +13,18 @@ class QueryHintsUtils {
   private QueryHintsUtils() {}
 
   /** @return True if the QueryHints already hold an EntityGraph */
-  static boolean containsEntityGraph(Map<String, Object> queryHints) {
+  public static boolean containsEntityGraph(Map<String, Object> queryHints) {
     return queryHints != null
-        && (queryHints.containsKey(EntityGraph.EntityGraphType.FETCH.getKey())
-            || queryHints.containsKey(EntityGraph.EntityGraphType.LOAD.getKey()));
+        && (queryHints.containsKey(EntityGraphType.FETCH.key())
+            || queryHints.containsKey(EntityGraphType.LOAD.key()));
   }
 
   /** Remove all EntityGraph pre-existing in the QueryHints */
-  static void removeEntityGraphs(Map<String, Object> queryHints) {
+  public static void removeEntityGraphs(Map<String, Object> queryHints) {
     if (queryHints == null) {
       return;
     }
-    queryHints.remove(EntityGraph.EntityGraphType.FETCH.getKey());
-    queryHints.remove(EntityGraph.EntityGraphType.LOAD.getKey());
-  }
-
-  static QueryHints buildQueryHints(EntityManager entityManager, EntityGraphBean entityGraph) {
-    return Jpa21Utils.getFetchGraphHint(
-        entityManager, entityGraph.getJpaEntityGraph(), entityGraph.getDomainClass());
+    queryHints.remove(EntityGraphType.FETCH.key());
+    queryHints.remove(EntityGraphType.LOAD.key());
   }
 }

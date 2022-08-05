@@ -1,15 +1,14 @@
-package com.cosium.spring.data.jpa.entity.graph.repository.sample;
+package com.cosium.spring.data.jpa.entity.graph.sample;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/** */
+/**
+ * Created on 17/03/17.
+ *
+ * @author Reda.Housni-Alaoui
+ */
 @Entity
-public class Category {
+public class Country {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

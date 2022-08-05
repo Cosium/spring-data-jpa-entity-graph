@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;

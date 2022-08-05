@@ -6,8 +6,10 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.WildcardTypeName;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
@@ -22,15 +24,10 @@ public class EntityGraph {
       ClassName entityGraphClassName, RootComposer rootComposer, NodeComposer nodeComposer) {
     this.className = entityGraphClassName;
 
-    FieldSpec typeField =
-        FieldSpec.builder(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "type")
-            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-            .build();
-
-    FieldSpec attributePathsField =
-        FieldSpec.builder(ParameterizedTypeName.get(List.class, String.class), "attributePaths")
-            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-            .build();
+    FieldSpec delegateField =
+            FieldSpec.builder(Constants.ENTITY_GRAPH_CLASS_NAME, "delegate")
+                    .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+                    .build();
 
     ClassName rootComposerClassName = entityGraphClassName.nestedClass(rootComposer.simpleName());
 
@@ -38,11 +35,13 @@ public class EntityGraph {
         MethodSpec.constructorBuilder()
             .addModifiers(Modifier.PRIVATE)
             .addParameter(rootComposerClassName, "rootComposer")
-            .addStatement("this.type = rootComposer.entityGraphType")
+            .addStatement("$T type = rootComposer.entityGraphType", Constants.ENTITY_GRAPH_TYPE_CLASS_NAME)
             .addStatement(
-                "this.attributePaths = rootComposer.entityGraphAttributePaths.stream()"
+                "$T attributePaths = rootComposer.entityGraphAttributePaths.stream()"
                     + ".map(pathParts -> String.join(\".\", pathParts)).collect($T.toList())",
+                    ParameterizedTypeName.get(List.class, String.class),
                 Collectors.class)
+                .addStatement("this.delegate = new $T(type, attributePaths)", Constants.DYNAMIC_ENTITY_GRAPH_CLASS_NAME)
             .build();
 
     MethodSpec rootStaticMethod =
@@ -61,50 +60,24 @@ public class EntityGraph {
             .build();
 
     MethodSpec getEntityGraphTypeMethod =
-        MethodSpec.methodBuilder("getEntityGraphType")
+        MethodSpec.methodBuilder("buildQueryHint")
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
-            .returns(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME)
-            .addStatement("return type")
-            .build();
-
-    MethodSpec getEntityGraphAttributePathsMethod =
-        MethodSpec.methodBuilder("getEntityGraphAttributePaths")
-            .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(Override.class)
-            .returns(ParameterizedTypeName.get(List.class, String.class))
-            .addStatement("return attributePaths")
-            .build();
-
-    MethodSpec getEntityGraphNameMethod =
-        MethodSpec.methodBuilder("getEntityGraphName")
-            .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(Override.class)
-            .returns(String.class)
-            .addStatement("return null")
-            .build();
-
-    MethodSpec isOptionalMethod =
-        MethodSpec.methodBuilder("isOptional")
-            .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(Override.class)
-            .returns(boolean.class)
-            .addStatement("return false")
+            .addParameter(Constants.ENTITY_MANAGER_CLASS_NAME, "entityManager")
+            .addParameter(ParameterizedTypeName.get(ClassName.get(Class.class), WildcardTypeName.subtypeOf(Object.class)), "entityType")
+            .returns(ParameterizedTypeName.get(ClassName.get(Optional.class), Constants.ENTITY_GRAPH_QUERY_HINT_CLASS_NAME))
+            .addStatement("return delegate.buildQueryHint(entityManager, entityType)")
             .build();
 
     typeSpec =
         TypeSpec.classBuilder(entityGraphClassName)
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(Constants.ENTITY_GRAPH_CLASS_NAME)
-            .addField(typeField)
-            .addField(attributePathsField)
+            .addField(delegateField)
             .addMethod(constructor)
             .addMethod(rootStaticMethod)
             .addMethod(rootStaticMethodWithEntityGraphType)
             .addMethod(getEntityGraphTypeMethod)
-            .addMethod(getEntityGraphAttributePathsMethod)
-            .addMethod(getEntityGraphNameMethod)
-            .addMethod(isOptionalMethod)
             .addType(rootComposer.toTypeSpec())
             .addType(nodeComposer.toTypeSpec())
             .build();

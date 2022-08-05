@@ -6,7 +6,10 @@ import java.util.List;
  * Created on 04/08/18.
  *
  * @author Reda.Housni-Alaoui
+ * @deprecated Use {@link com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph} or
+ *     {@link com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph#NOOP} instead.
  */
+@Deprecated
 public final class EntityGraphs {
 
   private static final EntityGraph EMPTY = new EmptyEntityGraph();
@@ -21,7 +24,12 @@ public final class EntityGraphs {
     return new NamedEntityGraph(name);
   }
 
-  /** @return An EntityGraph representing the absence of entity graph */
+  /**
+   * @return An EntityGraph representing the absence of entity graph
+   * @deprecated Use {@link com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph#NOOP}
+   *     instead.
+   */
+  @Deprecated
   public static EntityGraph empty() {
     return EMPTY;
   }

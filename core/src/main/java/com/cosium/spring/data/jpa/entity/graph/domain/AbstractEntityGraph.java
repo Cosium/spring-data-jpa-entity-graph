@@ -8,7 +8,9 @@ import java.util.StringJoiner;
  * Created on 22/11/16.
  *
  * @author Reda.Housni-Alaoui
+ * @deprecated Without replacement
  */
+@Deprecated
 public abstract class AbstractEntityGraph implements EntityGraph {
 
   protected static final EntityGraphType DEFAULT_ENTITY_GRAPH_TYPE = EntityGraphType.LOAD;

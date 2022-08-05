@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.query;
 
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import java.lang.reflect.Method;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.jpa.repository.query.JpaParameters;
@@ -23,7 +23,7 @@ class EntityGraphAwareJpaParameters extends JpaParameters {
 
     protected EntityGraphAwareJpaParameter(MethodParameter parameter) {
       super(parameter);
-      this.entityGraph = EntityGraph.class.equals(parameter.getParameterType());
+      this.entityGraph = EntityGraph.class.isAssignableFrom(parameter.getParameterType());
     }
 
     @Override

@@ -3,14 +3,12 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductEntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
+import com.cosium.spring.data.jpa.entity.graph.sample.Product;
+import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
 public class GeneratedEntityGraphTest extends BaseTest {
-
-  @PersistenceContext private EntityManager entityManager;
 
   @Inject private ProductRepository productRepository;
 

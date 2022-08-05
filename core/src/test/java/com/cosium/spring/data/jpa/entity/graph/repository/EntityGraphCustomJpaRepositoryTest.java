@@ -1,19 +1,18 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.repository.sample.ProductRepository;
+import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.sample.Product;
+import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import java.util.List;
+import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created on 28/11/16.
@@ -29,7 +28,7 @@ public class EntityGraphCustomJpaRepositoryTest extends BaseTest {
   @Test
   @Transactional
   public void given_products_when_calling_customvoidmethod_with_eg_then_it_should_work() {
-    productRepository.customMethod(EntityGraphs.named(Product.BRAND_EG));
+    productRepository.customMethod(NamedEntityGraph.loading(Product.BRAND_EG));
   }
 
   @Test
@@ -38,7 +37,7 @@ public class EntityGraphCustomJpaRepositoryTest extends BaseTest {
       given_products_when_calling_customMethodCallingAnotherRepository_with_eg_then_brand_should_be_loaded() {
     List<Product> products =
         productRepository.customMethodCallingAnotherRepository(
-            EntityGraphs.named(Product.BRAND_EG));
+            NamedEntityGraph.loading(Product.BRAND_EG));
     assertThat(products).isNotEmpty();
     for (Product product : products) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
