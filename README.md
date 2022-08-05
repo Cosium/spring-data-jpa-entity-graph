@@ -48,8 +48,8 @@ productRepository.findByLabel(
             "foo", 
             DynamicEntityGraph.loading()
                               .addPath("brand")
-		                      .addPath("category")
-		                      .addPath("maker", "country")
+		              .addPath("category")
+		              .addPath("maker", "country")
                               .build()
 );
 ```
