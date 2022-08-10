@@ -94,4 +94,4 @@ The video is in French:
 
 ## Genesis
 
-This project was created following the discussion in Spring Data Tracker issue [DATAJPA-749 - Context enabled JPA 2.1 @EntityGraph](https://jira.spring.io/browse/DATAJPA-749) .
+This project was created following https://github.com/spring-projects/spring-data-jpa/issues/1120 discussion.
