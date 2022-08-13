@@ -14,7 +14,9 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.persistence.metamodel.StaticMetamodel;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class MetamodelClass {
 
   private final Elements elements;
@@ -53,9 +55,7 @@ public class MetamodelClass {
 
     List<Composer> composers = Arrays.asList(rootComposer, nodeComposer);
 
-    elements
-        .getAllMembers(typeElement)
-        .stream()
+    elements.getAllMembers(typeElement).stream()
         .map(member -> MetamodelAttribute.parse(elements, types, member))
         .filter(Optional::isPresent)
         .map(Optional::get)

@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class EntityGraph {
 
   private final ClassName className;

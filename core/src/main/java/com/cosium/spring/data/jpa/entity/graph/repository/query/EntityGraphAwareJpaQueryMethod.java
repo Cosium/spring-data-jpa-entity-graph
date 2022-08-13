@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.query.JpaQueryMethod;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 class EntityGraphAwareJpaQueryMethod extends JpaQueryMethod {
 
   protected EntityGraphAwareJpaQueryMethod(

@@ -133,7 +133,9 @@ public class DynamicEntityGraph implements EntityGraph {
       this.type = requireNonNull(type);
     }
 
-    /** @param pathParts e.g. {@code ["supplier.address"]} or {@code ["supplier", "address"]} */
+    /**
+     * @param pathParts e.g. {@code ["supplier.address"]} or {@code ["supplier", "address"]}
+     */
     public Builder addPath(String... pathParts) {
       attributePaths.add(
           Arrays.stream(pathParts)

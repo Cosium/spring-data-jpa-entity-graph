@@ -14,13 +14,19 @@ import javax.persistence.EntityManager;
 @Deprecated
 public interface EntityGraph extends com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph {
 
-  /** @return The type of the entity graph. May be null. */
+  /**
+   * @return The type of the entity graph. May be null.
+   */
   EntityGraphType getEntityGraphType();
 
-  /** @return The name to use to retrieve the EntityGraph. May be null. */
+  /**
+   * @return The name to use to retrieve the EntityGraph. May be null.
+   */
   String getEntityGraphName();
 
-  /** @return The attribute paths. May be null. */
+  /**
+   * @return The attribute paths. May be null.
+   */
   List<String> getEntityGraphAttributePaths();
 
   /**

@@ -3,13 +3,12 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-
-import java.util.Optional;
 
 /**
  * Created on 17/06/17.

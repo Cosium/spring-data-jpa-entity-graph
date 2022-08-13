@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.jpa.repository.query.JpaParameters;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 class EntityGraphAwareJpaParameters extends JpaParameters {
 
   public EntityGraphAwareJpaParameters(Method method) {

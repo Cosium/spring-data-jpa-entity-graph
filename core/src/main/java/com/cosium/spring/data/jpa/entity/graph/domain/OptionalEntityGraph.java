@@ -9,7 +9,9 @@ import java.util.Optional;
 @Deprecated
 public final class OptionalEntityGraph {
 
-  /** @return The entity graph if not null and not empty, empty otherwise */
+  /**
+   * @return The entity graph if not null and not empty, empty otherwise
+   */
   public static Optional<EntityGraph> of(EntityGraph entityGraph) {
     if (EntityGraphs.isEmpty(entityGraph)) {
       return Optional.empty();

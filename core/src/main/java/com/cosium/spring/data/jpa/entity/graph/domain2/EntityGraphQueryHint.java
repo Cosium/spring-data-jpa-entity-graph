@@ -4,7 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import javax.persistence.EntityGraph;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class EntityGraphQueryHint {
 
   private final EntityGraphType type;

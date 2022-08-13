@@ -18,22 +18,29 @@
 
   <properties>
     <source.level>1.8</source.level>
-    <maven-git-code-format.version>1.6</maven-git-code-format.version>
+    <git-code-format-maven-plugin.version>3.4</git-code-format-maven-plugin.version>
   </properties>
 
   <build>
     <plugins>
       <plugin>
         <groupId>com.cosium.code</groupId>
-        <artifactId>maven-git-code-format</artifactId>
-        <version>1.13</version>
-        <configuration>
-          <truncateHooksBaseScripts>true</truncateHooksBaseScripts>
-        </configuration>
+        <artifactId>git-code-format-maven-plugin</artifactId>
+        <version>${git-code-format-maven-plugin.version}</version>
         <executions>
+          <!-- On commit, format the modified java files -->
           <execution>
+            <id>install-formatter-hook</id>
             <goals>
               <goal>install-hooks</goal>
+            </goals>
+          </execution>
+          <!-- On Maven verify phase, fail if any file
+          (including unmodified) is badly formatted -->
+          <execution>
+            <id>validate-code-format</id>
+            <goals>
+              <goal>validate-code-format</goal>
             </goals>
           </execution>
         </executions>

@@ -14,7 +14,9 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.persistence.metamodel.StaticMetamodel;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 @AutoService(Processor.class)
 public class Generator extends AbstractProcessor {
 
@@ -38,9 +40,7 @@ public class Generator extends AbstractProcessor {
       return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
     }
 
-    roundEnv
-        .getElementsAnnotatedWith(StaticMetamodel.class)
-        .stream()
+    roundEnv.getElementsAnnotatedWith(StaticMetamodel.class).stream()
         .map(TypeElement.class::cast)
         .map(typeElement -> new MetamodelClass(elements, types, typeElement))
         .forEach(metamodelClass -> metamodelClass.writeEntityGraphTo(filer));

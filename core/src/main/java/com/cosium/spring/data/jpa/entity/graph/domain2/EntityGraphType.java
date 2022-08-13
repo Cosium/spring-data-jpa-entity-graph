@@ -1,6 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.domain2;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public enum EntityGraphType {
   /**
    * When the javax.persistence.loadgraph property is used to specify an entity graph, attributes

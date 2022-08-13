@@ -22,7 +22,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Subgraph;
 import org.junit.Test;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
 public class GeneratedEntityGraphTest extends BaseTest {

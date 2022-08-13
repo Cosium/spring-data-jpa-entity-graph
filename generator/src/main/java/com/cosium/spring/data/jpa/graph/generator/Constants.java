@@ -2,7 +2,9 @@ package com.cosium.spring.data.jpa.graph.generator;
 
 import com.squareup.javapoet.ClassName;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class Constants {
 
   private Constants() {}

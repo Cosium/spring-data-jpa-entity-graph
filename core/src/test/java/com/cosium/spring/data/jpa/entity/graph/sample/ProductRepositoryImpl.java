@@ -2,13 +2,12 @@ package com.cosium.spring.data.jpa.entity.graph.sample;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
-import org.springframework.stereotype.Component;
-
+import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 /**
  * Created on 28/11/16.

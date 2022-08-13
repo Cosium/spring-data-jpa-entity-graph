@@ -1,6 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph;
 
 import com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphJpaRepositoryFactoryBean;
+import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -12,8 +13,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-
 /**
  * Created on 22/11/16.
  *
@@ -21,9 +20,8 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories(
-  basePackages = "com.cosium.spring.data.jpa.entity.graph",
-  repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class
-)
+    basePackages = "com.cosium.spring.data.jpa.entity.graph",
+    repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
 @EnableTransactionManagement
 public class DataRepositoryConfiguration {
 

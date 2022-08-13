@@ -14,7 +14,9 @@ import javax.lang.model.util.Types;
 import javax.persistence.Entity;
 import javax.persistence.metamodel.Attribute;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class MetamodelAttribute {
 
   private final VariableElement variableElement;

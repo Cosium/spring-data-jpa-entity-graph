@@ -9,7 +9,9 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class NodeComposer implements Composer {
 
   public static final String SIMPLE_NAME = "NodeComposer";

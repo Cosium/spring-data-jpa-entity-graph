@@ -2,7 +2,9 @@ package com.cosium.spring.data.jpa.graph.generator;
 
 import javax.lang.model.element.TypeElement;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class MetamodelAttributeTarget {
 
   private final String attributeName;

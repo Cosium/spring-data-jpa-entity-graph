@@ -1,8 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Test;
 
 /**
  * Created on 04/08/18.

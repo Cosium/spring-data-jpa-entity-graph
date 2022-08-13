@@ -5,7 +5,9 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 class DefaultEntityGraph implements EntityGraph {
 
   private final EntityGraph delegate;

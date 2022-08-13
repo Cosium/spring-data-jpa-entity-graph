@@ -3,6 +3,10 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,11 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-
-import javax.persistence.EntityManager;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * A {@link SimpleJpaRepository} that supports {@link EntityGraph} passed through method arguments.

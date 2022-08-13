@@ -23,9 +23,8 @@ import javax.persistence.OneToMany;
  */
 @NamedEntityGraphs({
   @NamedEntityGraph(
-    name = Maker.COUNTRY_EG,
-    attributeNodes = {@NamedAttributeNode("country")}
-  )
+      name = Maker.COUNTRY_EG,
+      attributeNodes = {@NamedAttributeNode("country")})
 })
 @Entity
 public class Maker {

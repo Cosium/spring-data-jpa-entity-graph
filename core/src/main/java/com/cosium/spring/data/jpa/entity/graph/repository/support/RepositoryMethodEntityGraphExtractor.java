@@ -97,7 +97,9 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
               .orElse(null);
     }
 
-    /** @return The default entity graph if it exists. Null otherwise. */
+    /**
+     * @return The default entity graph if it exists. Null otherwise.
+     */
     private static <T> Optional<String> findDefaultEntityGraphName(
         EntityManager entityManager, Class<T> domainClass) {
       String defaultEntityGraphName = null;

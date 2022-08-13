@@ -18,17 +18,14 @@ import javax.persistence.NamedEntityGraphs;
  * @author Reda.Housni-Alaoui
  */
 @NamedEntityGraphs(
-  value = {
-    @NamedEntityGraph(
-      name = Product.DEFAULT_EG,
-      attributeNodes = {@NamedAttributeNode("maker")}
-    ),
-    @NamedEntityGraph(
-      name = Product.BRAND_EG,
-      attributeNodes = {@NamedAttributeNode("brand")}
-    )
-  }
-)
+    value = {
+      @NamedEntityGraph(
+          name = Product.DEFAULT_EG,
+          attributeNodes = {@NamedAttributeNode("maker")}),
+      @NamedEntityGraph(
+          name = Product.BRAND_EG,
+          attributeNodes = {@NamedAttributeNode("brand")})
+    })
 @Entity
 public class Product {
 

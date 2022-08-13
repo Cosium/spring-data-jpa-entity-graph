@@ -10,7 +10,9 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class RootComposer implements Composer {
 
   private static final String SIMPLE_NAME = "RootComposer";

@@ -4,7 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 class EntityGraphQueryHintCandidate {
 
   private final EntityGraphQueryHint queryHint;

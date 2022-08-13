@@ -1,10 +1,9 @@
 package com.cosium.spring.data.jpa.entity.graph.sample;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
-import org.springframework.data.repository.Repository;
-
 import java.util.List;
 import java.util.stream.Stream;
+import org.springframework.data.repository.Repository;
 
 /**
  * Created on 17/03/17.

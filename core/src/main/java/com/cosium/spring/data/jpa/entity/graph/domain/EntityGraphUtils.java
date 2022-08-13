@@ -1,8 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
-import org.springframework.util.Assert;
-
 import java.util.Arrays;
+import org.springframework.util.Assert;
 
 /**
  * Created on 22/11/16.

@@ -4,7 +4,9 @@ import com.squareup.javapoet.ClassName;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 public class EntityGraphClassName {
 
   private final Elements elements;

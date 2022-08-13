@@ -13,7 +13,9 @@ import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-/** @author Réda Housni Alaoui */
+/**
+ * @author Réda Housni Alaoui
+ */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
 public class GeneratedEntityGraphTest extends BaseTest {
