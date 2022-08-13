@@ -25,9 +25,9 @@ public class EntityGraph {
     this.className = entityGraphClassName;
 
     FieldSpec delegateField =
-            FieldSpec.builder(Constants.ENTITY_GRAPH_CLASS_NAME, "delegate")
-                    .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-                    .build();
+        FieldSpec.builder(Constants.ENTITY_GRAPH_CLASS_NAME, "delegate")
+            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+            .build();
 
     ClassName rootComposerClassName = entityGraphClassName.nestedClass(rootComposer.simpleName());
 
@@ -35,13 +35,16 @@ public class EntityGraph {
         MethodSpec.constructorBuilder()
             .addModifiers(Modifier.PRIVATE)
             .addParameter(rootComposerClassName, "rootComposer")
-            .addStatement("$T type = rootComposer.entityGraphType", Constants.ENTITY_GRAPH_TYPE_CLASS_NAME)
+            .addStatement(
+                "$T type = rootComposer.entityGraphType", Constants.ENTITY_GRAPH_TYPE_CLASS_NAME)
             .addStatement(
                 "$T attributePaths = rootComposer.entityGraphAttributePaths.stream()"
                     + ".map(pathParts -> String.join(\".\", pathParts)).collect($T.toList())",
-                    ParameterizedTypeName.get(List.class, String.class),
+                ParameterizedTypeName.get(List.class, String.class),
                 Collectors.class)
-                .addStatement("this.delegate = new $T(type, attributePaths)", Constants.DYNAMIC_ENTITY_GRAPH_CLASS_NAME)
+            .addStatement(
+                "this.delegate = new $T(type, attributePaths)",
+                Constants.DYNAMIC_ENTITY_GRAPH_CLASS_NAME)
             .build();
 
     MethodSpec rootStaticMethod =
@@ -64,8 +67,13 @@ public class EntityGraph {
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
             .addParameter(Constants.ENTITY_MANAGER_CLASS_NAME, "entityManager")
-            .addParameter(ParameterizedTypeName.get(ClassName.get(Class.class), WildcardTypeName.subtypeOf(Object.class)), "entityType")
-            .returns(ParameterizedTypeName.get(ClassName.get(Optional.class), Constants.ENTITY_GRAPH_QUERY_HINT_CLASS_NAME))
+            .addParameter(
+                ParameterizedTypeName.get(
+                    ClassName.get(Class.class), WildcardTypeName.subtypeOf(Object.class)),
+                "entityType")
+            .returns(
+                ParameterizedTypeName.get(
+                    ClassName.get(Optional.class), Constants.ENTITY_GRAPH_QUERY_HINT_CLASS_NAME))
             .addStatement("return delegate.buildQueryHint(entityManager, entityType)")
             .build();
 

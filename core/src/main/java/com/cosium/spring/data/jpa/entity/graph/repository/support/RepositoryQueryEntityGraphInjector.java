@@ -37,7 +37,9 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
   }
 
   static Query proxy(
-      Query query, EntityManager entityManager, EntityGraphQueryHintCandidate entityGraphCandidate) {
+      Query query,
+      EntityManager entityManager,
+      EntityGraphQueryHintCandidate entityGraphCandidate) {
     ProxyFactory proxyFactory = new ProxyFactory(query);
     proxyFactory.addAdvice(
         new RepositoryQueryEntityGraphInjector(entityManager, entityGraphCandidate));
@@ -77,8 +79,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
       LOG.trace("CountQuery detected.");
       return;
     }
-    if (!entityGraphCandidate.primary()
-        && QueryHintsUtils.containsEntityGraph(query.getHints())) {
+    if (!entityGraphCandidate.primary() && QueryHintsUtils.containsEntityGraph(query.getHints())) {
       LOG.trace(
           "The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
       return;

@@ -16,6 +16,10 @@ public class NamedEntityGraph implements EntityGraph {
   private final EntityGraphType type;
   private final String name;
 
+  public NamedEntityGraph(String name) {
+    this(EntityGraphType.LOAD, name);
+  }
+
   public NamedEntityGraph(EntityGraphType type, String name) {
     this.type = requireNonNull(type);
     this.name = requireNonNull(name);

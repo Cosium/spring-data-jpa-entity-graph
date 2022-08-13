@@ -77,7 +77,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
   }
 
   private boolean isQueryCreationEligible(
-          EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
+      EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
     Class<?> resultType = null;
     for (Object argument : invocation.getArguments()) {
       if (argument instanceof Class<?>) {
@@ -105,7 +105,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
    * @param invocation The invocation of the find method
    */
   private void addEntityGraphToFindMethodQueryHints(
-          EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
+      EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
     LOG.trace("Trying to push the EntityGraph candidate to the query hints find method");
 
     Map<String, Object> queryProperties = null;

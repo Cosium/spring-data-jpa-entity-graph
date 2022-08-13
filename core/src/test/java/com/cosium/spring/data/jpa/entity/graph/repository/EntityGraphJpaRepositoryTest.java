@@ -74,6 +74,17 @@ public class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
+  public void given_brand_eg_when_execute_findone_then_brand_should_be_loaded() {
+    Product product =
+        NamedEntityGraph.loading(Product.BRAND_EG)
+            .execute(entityGraph -> productRepository.findById(1L, entityGraph))
+            .orElseThrow(RuntimeException::new);
+
+    assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+  }
+
+  @Transactional
+  @Test
   public void given_brand_in_attribute_paths_eg_when_findone_then_brand_should_be_loaded() {
     Optional<Product> product =
         productRepository.findById(
