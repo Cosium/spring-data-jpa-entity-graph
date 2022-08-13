@@ -3,15 +3,13 @@
 
 # Spring Data JPA EntityGraph
 
-## About
-
 [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) only supports `EntityGraph` through annotations.  
 Thus, for a repository method, you must select at most one `EntityGraph` before compilation.  
 This prevents you from choosing the best `EntityGraph` considering the runtime context :broken_heart:
 
 [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) allows you to choose `EntityGraph` at runtime! This choice is elegantly made by passing `EntityGraph`, as an argument, to any Spring Data JPA repository method :heart_eyes:
 
-## Quick start
+# Quick start
 1. Select the correct version from the [compatibility matrix](#compatibility-matrix)
 2. In addition to [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa), add [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) dependency :
 
@@ -32,9 +30,9 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
     }
     ```
 
-## Usage
+# Usage
 
-### On custom repository methods
+## On custom repository methods
 
 If you want to define a custom repository method accepting an `EntityGraph`, just do it™.
 
@@ -49,7 +47,7 @@ interface MyRepository extends Repository<MyEntity, Long> {
 myRepository.findByLabel("foo", NamedEntityGraph.loading("bar"));
 ```
 
-### On pre-defined repository methods
+## On pre-defined repository methods
 
 [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) provides repository interfaces extending [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa). For each [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) pre-defined method, the provided interfaces overload the method with `EntityGraph` as an additional argument.
 
@@ -78,9 +76,9 @@ interface MyRepository extends EntityGraphCrudRepository<MyEntity, Long> {
 myRepository.findById(1L, NamedEntityGraph.loading("foo"));
 ```
 
-### EntityGraph provided implementations
+## EntityGraph provided implementations
 
-#### DynamicEntityGraph
+### DynamicEntityGraph
 
 `DynamicEntityGraph` class allows you to create on-the-fly `EntityGraph` by defining their attribute paths. This is similar to [Spring's ad-hoc attribute paths](http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-property-expressions).
 
@@ -120,7 +118,7 @@ Then perform the `findByName` using ad-hoc `product(brand, maker(address))` `Ent
 myRepository.findById(1L, DynamicEntityGraph.loading().addPath("brand").addPath("maker", "address").build());
 ```
 
-#### NamedEntityGraph
+### NamedEntityGraph
 
 `NamedEntityGraph` class allows you to reference an `EntityGraph` by its name. Such `EntityGraph` must have beforehand been registered through `EntityManager#createEntityGraph(String graphName)` or declared using `@NamedEntityGraph` annotation.
 
@@ -154,7 +152,7 @@ Then perform the `findByName` query using `productBrand` named `EntityGraph` lik
 myRepository.findByName("foo", NamedEntityGraph.loading("bar"));
 ```
 
-#### Type safe EntityGraph
+### Type safe EntityGraph
 
 Composing entity graphs by hand can be tedious and error-prone. Wouldn't it be great to benefit from autocompletion and strong type checking while composing your entity graph?
 
@@ -218,7 +216,7 @@ productRepository.findById(1L, ProductEntityGraph
                                .____());
 ```
 
-### Chaining EntityGraph definition with query execution
+## Chaining EntityGraph definition with query execution
 
 If you prefer fluent apis, you can use any instance of `EntityGraph` like this:
 
@@ -234,7 +232,7 @@ List<Product> products = ProductEntityGraph
                           .execute(entityGraph -> myRepository.findByLabel("foo", entityGraph));
 ```
 
-### EntityGraph Semantics
+## EntityGraph Semantics
 
 JPA 2.1 defines 2 semantics:
 * [Load Graph Semantics](https://download.oracle.com/otn-pub/jcp/persistence-2_1-fr-eval-spec/JavaPersistence.pdf)
@@ -244,11 +242,11 @@ JPA 2.1 defines 2 semantics:
 
 Each provided `EntityGraph` implementation provides an easy way to select the `Graph Semantics`.
 
-## Demo
+# Demo
 
 You can play with https://github.com/Cosium/spring-data-jpa-entity-graph-sample to see the extension in action in a simple Spring Application.
 
-## Compatibility matrix
+# Compatibility matrix
 
 | [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) version | [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) version                                                                                                                                                                |
 |-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -265,7 +263,7 @@ You can play with https://github.com/Cosium/spring-data-jpa-entity-graph-sample 
 
 For example, if you were using `spring-data-jpa 2.2.x` in your project, you would need to select any `spring-data-jpa-entity-graph 2.2.x`. Thus `spring-data-jpa-entity-graph 2.2.8` would be eligible.
 
-## "Making JPA Great Again" talk
+# "Making JPA Great Again" talk
 
 This talk was given at Paris JUG in January 2019.  
 
@@ -273,6 +271,6 @@ The [slides](https://cosium.github.io/making-jpa-great-again/) are in english.
 The video is in French:  
 [![Alt text](https://img.youtube.com/vi/7yZgSdkvJDE/0.jpg)](https://www.youtube.com/watch?v=7yZgSdkvJDE)
 
-## Genesis
+# Genesis
 
 This project was created following https://github.com/spring-projects/spring-data-jpa/issues/1120 discussion.
