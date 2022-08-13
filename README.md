@@ -149,7 +149,7 @@ public interface MyRepository extends Repository<Product, Long> {
 
 Then perform the `findByName` query using `productBrand` named `EntityGraph` like this :
 ```java
-myRepository.findByName("foo", NamedEntityGraph.loading("bar"));
+myRepository.findByName("foo", NamedEntityGraph.loading("productBrand"));
 ```
 
 ### Type safe EntityGraph
