@@ -67,6 +67,7 @@ The following matrix describes the mapping between [Spring Data JPA](https://git
 | CrudRepository                                                        | EntityGraphCrudRepository                                                             |
 | PagingAndSortingRepository                                            | EntityGraphPagingAndSortingRepository                                                 |
 | QueryByExampleExecutor                                                | EntityGraphQueryByExampleExecutor                                                     |
+
 For example, if you wanted to use `Optional<T> findById(ID id, EntityGraph entityGraph)`, you could declare and use your repository like this:
 
 ```java
