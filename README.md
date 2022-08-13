@@ -51,9 +51,9 @@ myRepository.findByLabel("foo", NamedEntityGraph.loading("bar"));
 
 ### On pre-defined repository methods
 
-This project provides repository interfaces extending [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa). For each [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) pre-defined method, the provided interfaces overload the method with `EntityGraph` as an additional argument.
+[Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) provides repository interfaces extending [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa). For each [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) pre-defined method, the provided interfaces overload the method with `EntityGraph` as an additional argument.
 
-For example, [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) `CrudRepository` defines method `Optional<T> findById(ID id)`. This method is overloaded by `EntityGraphCrudRepository` as `Optional<T> findById(ID id, EntityGraph entityGraph)`.
+For example, [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) `CrudRepository` defines method `Optional<T> findById(ID id)`. This method is overloaded by [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) `EntityGraphCrudRepository` as `Optional<T> findById(ID id, EntityGraph entityGraph)`.
 
 To be able to use these overloaded methods, you must override one of [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) provided repository interfaces.
 
