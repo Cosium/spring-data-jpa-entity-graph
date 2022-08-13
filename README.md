@@ -62,15 +62,15 @@ productRepository.findByLabel("foo", NamedEntityGraph.loading("Product.brand"));
 ```java
 // This will apply "product(brand, category, maker(country))" dynamic EntityGraph to findByLabel using a fluent code style
 ProductEntityGraph.____()
-		.brand()
-		.____
-		.category()
-		.____
-		.maker()
-		.country()
-		.____
-		.____()
-        .execute(entityGraph -> productRepository.findByLabel("foo", entityGraph));
+		  .brand()
+		  .____
+		  .category()
+		  .____
+		  .maker()
+		  .country()
+		  .____
+		  .____()
+                  .execute(entityGraph -> productRepository.findByLabel("foo", entityGraph));
 ```
 
 Now run to the documentation !
