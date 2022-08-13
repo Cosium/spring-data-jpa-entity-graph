@@ -1,45 +1,44 @@
 package com.cosium.spring.data.jpa.entity.graph.domain2;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class NamedEntityGraphTest {
+class NamedEntityGraphTest {
 
   @Test
-  public void testGraphsWithSameNamesEqual() {
+  void testGraphsWithSameNamesEqual() {
     final EntityGraph graph1 = NamedEntityGraph.loading("graph");
     final EntityGraph graph2 = NamedEntityGraph.loading("graph");
-    assertEquals(graph1, graph2);
-    assertEquals(graph1.hashCode(), graph2.hashCode());
+
+    assertThat(graph1).isEqualTo(graph2).hasSameHashCodeAs(graph2);
   }
 
   @Test
-  public void testGraphsWithDifferentNamesNotEqual() {
+  void testGraphsWithDifferentNamesNotEqual() {
     final EntityGraph graph1 = NamedEntityGraph.loading("graph1");
     final EntityGraph graph2 = NamedEntityGraph.loading("graph2");
-    assertNotEquals(graph1, graph2);
-    assertNotEquals(graph1.hashCode(), graph2.hashCode());
+
+    assertThat(graph1).isNotEqualTo(graph2).doesNotHaveSameHashCodeAs(graph2);
   }
 
   @Test
-  public void testGraphsWithDifferentTypesNotEqual() {
-
+  void testGraphsWithDifferentTypesNotEqual() {
     final NamedEntityGraph graph1 = new NamedEntityGraph(EntityGraphType.LOAD, "graph");
     final NamedEntityGraph graph2 = new NamedEntityGraph(EntityGraphType.FETCH, "graph");
-    assertNotEquals(graph1, graph2);
-    assertNotEquals(graph1.hashCode(), graph2.hashCode());
+
+    assertThat(graph1).isNotEqualTo(graph2).doesNotHaveSameHashCodeAs(graph2);
   }
 
   @Test
-  public void testGraphsWithDifferentClassNotEqual() {
+  void testGraphsWithDifferentClassNotEqual() {
     final EntityGraph namedEntityGraph = new NamedEntityGraph(EntityGraphType.LOAD, "graph");
     final EntityGraph dynamicEntityGraph =
         new DynamicEntityGraph(EntityGraphType.LOAD, Collections.singletonList("path"));
 
-    assertNotEquals(namedEntityGraph, dynamicEntityGraph);
-    assertNotEquals(namedEntityGraph.hashCode(), dynamicEntityGraph.hashCode());
+    assertThat(namedEntityGraph)
+        .isNotEqualTo(dynamicEntityGraph)
+        .doesNotHaveSameHashCodeAs(dynamicEntityGraph);
   }
 }

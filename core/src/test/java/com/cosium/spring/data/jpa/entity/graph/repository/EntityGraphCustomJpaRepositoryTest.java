@@ -11,7 +11,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -21,19 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class EntityGraphCustomJpaRepositoryTest extends BaseTest {
+class EntityGraphCustomJpaRepositoryTest extends BaseTest {
 
   @Inject private ProductRepository productRepository;
 
   @Test
   @Transactional
-  public void given_products_when_calling_customvoidmethod_with_eg_then_it_should_work() {
+  void given_products_when_calling_customvoidmethod_with_eg_then_it_should_work() {
     productRepository.customMethod(NamedEntityGraph.loading(Product.BRAND_EG));
   }
 
   @Test
   @Transactional
-  public void
+  void
       given_products_when_calling_customMethodCallingAnotherRepository_with_eg_then_brand_should_be_loaded() {
     List<Product> products =
         productRepository.customMethodCallingAnotherRepository(

@@ -1,41 +1,44 @@
 package com.cosium.spring.data.jpa.entity.graph.domain;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-public class DynamicEntityGraphTest {
+class DynamicEntityGraphTest {
 
   @Test
-  public void testGraphsWithSamePathsEqual() {
+  @DisplayName("Test graphs with same paths equal")
+  void test1() {
     List<String> paths = new ArrayList<>();
     paths.add("path1");
     paths.add("path2");
     paths.add("path3");
     final DynamicEntityGraph graph1 = new DynamicEntityGraph(paths);
     final DynamicEntityGraph graph2 = new DynamicEntityGraph(paths);
-    assertEquals(graph1, graph2);
-    assertEquals(graph1.hashCode(), graph2.hashCode());
+
+    assertThat(graph1).isEqualTo(graph2).hasSameHashCodeAs(graph2);
   }
 
   @Test
-  public void testGraphsWithDifferentTypesNotEqual() {
+  @DisplayName("Test graphs with different types not equal")
+  void test2() {
     List<String> paths = new ArrayList<>();
     paths.add("path1");
     paths.add("path2");
     paths.add("path3");
     final DynamicEntityGraph graph1 = new DynamicEntityGraph(EntityGraphType.FETCH, paths);
     final DynamicEntityGraph graph2 = new DynamicEntityGraph(EntityGraphType.LOAD, paths);
-    assertNotEquals(graph1, graph2);
-    assertNotEquals(graph1.hashCode(), graph2.hashCode());
+
+    assertThat(graph1).isNotEqualTo(graph2).doesNotHaveSameHashCodeAs(graph2);
   }
 
   @Test
-  public void testGraphsWithDifferentOptionalityNotEqual() {
+  @DisplayName("Test graphs with different optionality not equal")
+  void test3() {
     List<String> paths = new ArrayList<>();
     paths.add("path1");
     paths.add("path2");
@@ -45,17 +48,18 @@ public class DynamicEntityGraphTest {
     final DynamicEntityGraph requiredGraph = new DynamicEntityGraph(EntityGraphType.LOAD, paths);
     requiredGraph.setOptional(false);
 
-    assertNotEquals(optionalGraph, requiredGraph);
-    assertNotEquals(optionalGraph.hashCode(), requiredGraph.hashCode());
+    assertThat(optionalGraph).isNotEqualTo(requiredGraph).doesNotHaveSameHashCodeAs(requiredGraph);
   }
 
   @Test
-  public void testGraphsWithDifferentClassNotEqual() {
+  @DisplayName("Test graphs with different class not equal")
+  void test4() {
     final EntityGraph namedEntityGraph = new NamedEntityGraph(EntityGraphType.LOAD, "graph");
     final EntityGraph dynamicEntityGraph =
         new DynamicEntityGraph(EntityGraphType.LOAD, Collections.singletonList("path"));
 
-    assertNotEquals(dynamicEntityGraph, namedEntityGraph);
-    assertNotEquals(dynamicEntityGraph.hashCode(), namedEntityGraph.hashCode());
+    assertThat(dynamicEntityGraph)
+        .isNotEqualTo(namedEntityGraph)
+        .doesNotHaveSameHashCodeAs(namedEntityGraph);
   }
 }

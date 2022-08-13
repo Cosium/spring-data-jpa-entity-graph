@@ -10,11 +10,9 @@ import com.cosium.spring.data.jpa.entity.graph.sample.MakerRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -24,13 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class RepositoryTest extends BaseTest {
+class RepositoryTest extends BaseTest {
 
   @Inject private MakerRepository makerRepository;
 
   @Transactional
   @Test
-  public void given_noop_eg_when_finding_makers_then_country_should_not_be_initialized() {
+  void given_noop_eg_when_finding_makers_then_country_should_not_be_initialized() {
     List<Maker> makers = makerRepository.findByName("Maker 1", EntityGraph.NOOP);
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
@@ -40,26 +38,12 @@ public class RepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  public void given_country_eg_when_finding_makers_then_country_should_be_initialized() {
+  void given_country_eg_when_finding_makers_then_country_should_be_initialized() {
     List<Maker> makers =
         makerRepository.findByName("Maker 1", NamedEntityGraph.loading(Maker.COUNTRY_EG));
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue();
     }
-  }
-
-  @Ignore
-  @Transactional
-  @Test
-  public void given_country_eg_when_streaming_makers_then_country_should_be_initialized() {
-    List<Maker> makers =
-        makerRepository
-            .readByName("Maker 1", NamedEntityGraph.loading(Maker.COUNTRY_EG))
-            .collect(Collectors.toList());
-    for (Maker maker : makers) {
-      assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue();
-    }
-    makers.forEach(maker -> assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue());
   }
 }

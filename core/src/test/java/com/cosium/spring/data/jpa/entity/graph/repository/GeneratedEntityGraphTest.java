@@ -10,7 +10,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class GeneratedEntityGraphTest extends BaseTest {
+class GeneratedEntityGraphTest extends BaseTest {
 
   @Inject private ProductRepository productRepository;
 
   @Transactional
   @Test
-  public void test() {
+  void test() {
     Product product =
         productRepository
             .findById(

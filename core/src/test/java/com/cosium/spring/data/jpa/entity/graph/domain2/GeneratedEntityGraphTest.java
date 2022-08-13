@@ -20,25 +20,25 @@ import javax.persistence.AttributeNode;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Subgraph;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Réda Housni Alaoui
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class GeneratedEntityGraphTest extends BaseTest {
+class GeneratedEntityGraphTest extends BaseTest {
 
   @PersistenceContext private EntityManager entityManager;
 
   @Test
-  public void testNoPath() {
+  void testNoPath() {
     String entityGraph = buildJpaEntityGraph(ProductEntityGraph.____().____(), Product.class);
     assertThat(entityGraph).isEqualTo("");
   }
 
   @Test
-  public void testMultiplePaths() {
+  void testMultiplePaths() {
     String entityGraph =
         buildJpaEntityGraph(
             ProductEntityGraph.____().brand().____.category().____.maker().country().____.____(),
@@ -48,7 +48,7 @@ public class GeneratedEntityGraphTest extends BaseTest {
   }
 
   @Test
-  public void testPathToMap() {
+  void testPathToMap() {
     assertThat(new Brand().getProducts()).isInstanceOf(Map.class);
 
     String entityGraph =
@@ -57,7 +57,7 @@ public class GeneratedEntityGraphTest extends BaseTest {
   }
 
   @Test
-  public void testPathToCollection() {
+  void testPathToCollection() {
     assertThat(new Maker().getProducts()).isInstanceOf(Set.class);
 
     String entityGraph =

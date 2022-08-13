@@ -13,7 +13,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.Optional;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DatabaseSetup(BaseTest.DATASET)
 @DatabaseTearDown
-public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
+class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Inject private ProductRepository productRepository;
 
   @Transactional
   @Test
-  public void given_null_eg_when_findone_then_brand_should_not_be_loaded() {
+  void given_null_eg_when_findone_then_brand_should_not_be_loaded() {
     Optional<Product> product =
         productRepository.findOne(QProduct.product.name.eq("Product 1"), null);
     if (!product.isPresent()) {
@@ -43,7 +43,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  public void given_brand_eg_when_findone_then_brand_should_be_loaded() {
+  void given_brand_eg_when_findone_then_brand_should_be_loaded() {
     Optional<Product> product =
         productRepository.findOne(
             QProduct.product.name.eq("Product 1"), NamedEntityGraph.loading(Product.BRAND_EG));
@@ -56,7 +56,7 @@ public class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  public void given_brand_eg_when_findpage_then_brand_should_be_loaded() {
+  void given_brand_eg_when_findpage_then_brand_should_be_loaded() {
     Page<Product> productPage =
         productRepository.findAll(
             QProduct.product.id.isNotNull(),
