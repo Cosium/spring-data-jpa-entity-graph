@@ -115,9 +115,9 @@ public interface MyRepository extends Repository<Product, Long> {
 }
 ```
 
-Then perform the `findByName` using ad-hoc `product(brand, maker(country))` `EntityGraph` :
+Then perform the `findByName` using ad-hoc `product(brand, maker(address))` `EntityGraph` :
 ```java
-myRepository.findById(1L, DynamicEntityGraph.loading().addPath("brand").addPath("maker", "country").build());
+myRepository.findById(1L, DynamicEntityGraph.loading().addPath("brand").addPath("maker", "address").build());
 ```
 
 #### NamedEntityGraph
