@@ -20,7 +20,7 @@ import javax.persistence.NamedEntityGraphs;
 @NamedEntityGraphs(
     value = {
       @NamedEntityGraph(
-          name = Product.DEFAULT_EG,
+          name = "Product.default",
           attributeNodes = {@NamedAttributeNode("maker")}),
       @NamedEntityGraph(
           name = Product.BRAND_EG,
@@ -29,7 +29,6 @@ import javax.persistence.NamedEntityGraphs;
 @Entity
 public class Product {
 
-  public static final String DEFAULT_EG = "Product.default";
   public static final String BRAND_EG = "Product.brand";
 
   public static final String BRAND_PROP_NAME = "brand";

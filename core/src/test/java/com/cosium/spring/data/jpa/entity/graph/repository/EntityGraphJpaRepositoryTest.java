@@ -194,13 +194,15 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  @DisplayName("Given brand eg when find by name then brand should be loaded")
+  @DisplayName("Non NOOP EntityGraph has priority over @EntityGraph")
   void test110() {
     List<Product> products =
-        productRepository.findByName("Product 1", NamedEntityGraph.loading(Product.BRAND_EG));
+        productRepository.findByName(
+            "Product 1", DynamicEntityGraph.loading().addPath("maker").build());
     assertThat(products).hasSize(1);
     for (Product product : products) {
-      assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+      assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
+      assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
     }
   }
 
@@ -211,7 +213,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
     List<Product> products = productRepository.findByName("Product 1", EntityGraph.NOOP);
     assertThat(products).hasSize(1);
     for (Product product : products) {
-      assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+      assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
     }
   }
 
