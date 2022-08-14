@@ -22,6 +22,10 @@ public interface ProductRepository
         ProductRepositoryCustom {
 
   @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
+  @Override
+  Iterable<Product> findAll(EntityGraph entityGraph);
+
+  @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
   List<Product> findByName(String name, EntityGraph entityGraph);
 
   Page<Product> findPageByBrand(Brand brand, Pageable pageable, EntityGraph entityGraph);

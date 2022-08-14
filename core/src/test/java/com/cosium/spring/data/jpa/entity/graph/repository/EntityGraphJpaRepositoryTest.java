@@ -157,7 +157,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  @DisplayName("Non NOOP EntityGraph has priority over @EntityGraph")
+  @DisplayName("On custom method, non NOOP EntityGraph has priority over @EntityGraph")
   void test110() {
     List<Product> products =
         productRepository.findByName(
@@ -171,10 +171,32 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  @DisplayName("@EntityGraph has priority over EntityGraph#NOOP")
+  @DisplayName("On custom method, @EntityGraph has priority over EntityGraph#NOOP")
   void test111() {
     List<Product> products = productRepository.findByName("Product 1", EntityGraph.NOOP);
     assertThat(products).hasSize(1);
+    for (Product product : products) {
+      assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+    }
+  }
+
+  @Transactional
+  @Test
+  @DisplayName("On pre-defined method, non NOOP EntityGraph has priority over @EntityGraph")
+  void test112() {
+    Iterable<Product> products =
+        productRepository.findAll(DynamicEntityGraph.loading().addPath("maker").build());
+    for (Product product : products) {
+      assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
+      assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+    }
+  }
+
+  @Transactional
+  @Test
+  @DisplayName("On pre-defined method, @EntityGraph has priority over EntityGraph#NOOP")
+  void test113() {
+    Iterable<Product> products = productRepository.findAll(EntityGraph.NOOP);
     for (Product product : products) {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
     }
