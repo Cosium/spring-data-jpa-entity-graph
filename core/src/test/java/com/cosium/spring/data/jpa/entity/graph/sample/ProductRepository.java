@@ -21,6 +21,7 @@ public interface ProductRepository
         EntityGraphQuerydslPredicateExecutor<Product>,
         ProductRepositoryCustom {
 
+  @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "maker")
   List<Product> findByName(String name, EntityGraph entityGraph);
 
   Page<Product> findPageByBrand(Brand brand, Pageable pageable, EntityGraph entityGraph);
