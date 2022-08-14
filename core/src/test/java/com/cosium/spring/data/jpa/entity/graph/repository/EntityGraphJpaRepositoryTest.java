@@ -140,43 +140,6 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  @DisplayName("Empty legacy fetch graph has no impact")
-  void test9() {
-    Product product =
-        productRepository
-            .findById(
-                1L,
-                new com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph() {
-
-                  @Override
-                  public com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType
-                      getEntityGraphType() {
-                    return com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphType.FETCH;
-                  }
-
-                  @Override
-                  public String getEntityGraphName() {
-                    return null;
-                  }
-
-                  @Override
-                  public List<String> getEntityGraphAttributePaths() {
-                    return null;
-                  }
-
-                  @Override
-                  public boolean isOptional() {
-                    return false;
-                  }
-                })
-            .orElseThrow(RuntimeException::new);
-    assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
-    assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
-    assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();
-  }
-
-  @Transactional
-  @Test
   @DisplayName(
       "Given brand and maker in attribute paths eg when findone then brand and maker should be loaded")
   void test10() {
@@ -285,15 +248,6 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
       assertThat(Hibernate.isInitialized(product.getMaker())).isFalse();
       assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();
     }
-  }
-
-  @Transactional
-  @Test
-  @DisplayName("Given default eg when findone without eg then supplier should be loaded")
-  void test16() {
-    Optional<Product> product = productRepository.findById(1L);
-    assertThat(product).isNotEmpty();
-    assertThat(Hibernate.isInitialized(product.get().getMaker())).isTrue();
   }
 
   @Transactional
