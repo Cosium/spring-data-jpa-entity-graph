@@ -13,6 +13,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.Optional;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,8 @@ class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_null_eg_when_findone_then_brand_should_not_be_loaded() {
+  @DisplayName("Given null eg when findone then brand should not be loaded")
+  void test1() {
     Optional<Product> product =
         productRepository.findOne(QProduct.product.name.eq("Product 1"), null);
     if (!product.isPresent()) {
@@ -43,7 +45,8 @@ class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findone_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when findone then brand should be loaded")
+  void test2() {
     Optional<Product> product =
         productRepository.findOne(
             QProduct.product.name.eq("Product 1"), NamedEntityGraph.loading(Product.BRAND_EG));
@@ -56,7 +59,8 @@ class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findpage_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when findpage then brand should be loaded")
+  void test3() {
     Page<Product> productPage =
         productRepository.findAll(
             QProduct.product.id.isNotNull(),

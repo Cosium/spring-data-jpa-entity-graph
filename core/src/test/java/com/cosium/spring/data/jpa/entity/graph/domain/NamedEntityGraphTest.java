@@ -44,7 +44,8 @@ class NamedEntityGraphTest {
   }
 
   @Test
-  void testGraphsWithDifferentClassNotEqual() {
+  @DisplayName("Test graphs with different class not equal")
+  void test5() {
     final EntityGraph namedEntityGraph = new NamedEntityGraph(EntityGraphType.LOAD, "graph");
     final EntityGraph dynamicEntityGraph =
         new DynamicEntityGraph(EntityGraphType.LOAD, Collections.singletonList("path"));

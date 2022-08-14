@@ -28,6 +28,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Hibernate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,7 +51,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_null_eg_when_findone_then_then_brand_should_not_be_loaded() {
+  @DisplayName("Given null eg when findone then then brand should not be loaded")
+  void test1() {
     Optional<Product> product = productRepository.findById(1L, null);
     assertThat(product).isNotEmpty();
     assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
@@ -58,7 +60,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_empty_eg_when_findone_then_then_brand_should_not_be_loaded() {
+  @DisplayName("Given empty eg when findone then then brand should not be loaded")
+  void test2() {
     Optional<Product> product = productRepository.findById(1L, EntityGraph.NOOP);
     assertThat(product).isNotEmpty();
     assertThat(Hibernate.isInitialized(product.get().getBrand())).isFalse();
@@ -66,7 +69,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findone_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when findone then brand should be loaded")
+  void test3() {
     Optional<Product> product =
         productRepository.findById(1L, NamedEntityGraph.loading(Product.BRAND_EG));
     assertThat(product).isNotEmpty();
@@ -75,7 +79,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_execute_findone_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when execute findone then brand should be loaded")
+  void test4() {
     Product product =
         NamedEntityGraph.loading(Product.BRAND_EG)
             .execute(entityGraph -> productRepository.findById(1L, entityGraph))
@@ -86,7 +91,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_in_attribute_paths_eg_when_findone_then_brand_should_be_loaded() {
+  @DisplayName("Given brand in attribute paths eg when findone then brand should be loaded")
+  void test5() {
     Optional<Product> product =
         productRepository.findById(
             1L, DynamicEntityGraph.loading().addPath(Product.BRAND_PROP_NAME).build());
@@ -96,7 +102,9 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_in_attribute_paths_eg_when_findone_then_brand_should_be_loaded_with_FetchType() {
+  @DisplayName(
+      "Given brand in attribute paths eg when findone then brand should be loaded with fetch type")
+  void test6() {
     Optional<Product> product =
         productRepository.findById(
             1L, DynamicEntityGraph.fetching().addPath(Product.BRAND_PROP_NAME).build());
@@ -106,7 +114,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void querying_with_an_empty_fetch_graph_turn_eager_fetchtype_into_lazy() {
+  @DisplayName("Querying with an empty fetch graph turn eager fetchtype into lazy")
+  void test7() {
     Product product =
         productRepository
             .findById(1L, DynamicEntityGraph.fetching().build())
@@ -118,7 +127,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void querying_with_an_empty_generated_fetch_graph_turn_eager_fetchtype_into_lazy() {
+  @DisplayName("Querying with an empty generated fetch graph turn eager fetchtype into lazy")
+  void test8() {
     Product product =
         productRepository
             .findById(1L, ProductEntityGraph.____(EntityGraphType.FETCH).____())
@@ -130,7 +140,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void empty_legacy_fetch_graph_has_no_impact() {
+  @DisplayName("Empty legacy fetch graph has no impact")
+  void test9() {
     Product product =
         productRepository
             .findById(
@@ -166,8 +177,9 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void
-      given_brand_and_maker_in_attribute_paths_eg_when_findone_then_brand_and_maker_should_be_loaded() {
+  @DisplayName(
+      "Given brand and maker in attribute paths eg when findone then brand and maker should be loaded")
+  void test10() {
     EntityGraph entityGraph =
         DynamicEntityGraph.loading()
             .addPath(Product.BRAND_PROP_NAME)
@@ -182,7 +194,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findByName_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when find by name then brand should be loaded")
+  void test11() {
     List<Product> products =
         productRepository.findByName("Product 1", NamedEntityGraph.loading(Product.BRAND_EG));
     assertThat(products).hasSize(1);
@@ -193,7 +206,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findAll_paginated_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when find all paginated then brand should be loaded")
+  void test12() {
     Page<Product> productPage =
         productRepository.findAll(
             PageRequest.of(0, 10), NamedEntityGraph.loading(Product.BRAND_EG));
@@ -205,7 +219,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findAll_paginated_with_spec_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when find all paginated with spec then brand should be loaded")
+  void test13() {
     Page<Product> productPage =
         productRepository.findAll(
             new EntityGraphSpecification<Product>(Product.BRAND_EG) {
@@ -225,7 +240,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_performing_custom_paged_query_then_brand_should_be_loaded() {
+  @DisplayName("Given brand eg when performing custom paged query then brand should be loaded")
+  void test14() {
     Brand brand = brandRepository.findById(1L).orElseThrow(RuntimeException::new);
     entityManager.flush();
     entityManager.clear();
@@ -241,7 +257,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_performing_custom_paged_query_then_category_should_be_loaded() {
+  @DisplayName("Given brand eg when performing custom paged query then category should be loaded")
+  void test15() {
     Brand brand = brandRepository.findById(1L).orElseThrow(RuntimeException::new);
     entityManager.flush();
     entityManager.clear();
@@ -259,7 +276,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_default_eg_when_findone_without_eg_then_supplier_should_be_loaded() {
+  @DisplayName("Given default eg when findone without eg then supplier should be loaded")
+  void test16() {
     Optional<Product> product = productRepository.findById(1L);
     assertThat(product).isNotEmpty();
     assertThat(Hibernate.isInitialized(product.get().getMaker())).isTrue();
@@ -267,8 +285,9 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void
-      given_default_eg_when_findByBarcode_with_eg_annotation_on_brand_eg_then_brand_should_be_loaded() {
+  @DisplayName(
+      "Given default eg when find by barcode with eg annotation on brand eg then brand should be loaded")
+  void test17() {
     Product product = productRepository.findByBarcode("1111");
     assertThat(product).isNotNull();
     assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
@@ -276,20 +295,23 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_products_when_countproductsbyname_then_it_should_work() {
+  @DisplayName("Given products when countproductsbyname then it should work")
+  void test18() {
     assertThat(productRepository.countByName("Product 1")).isEqualTo(1);
   }
 
   @Transactional
   @Test
-  void given_products_when_findAllRaw_then_it_should_work() {
+  @DisplayName("Given products when find all raw then it should work")
+  void test19() {
     assertThat(productRepository.findAllRaw()).isNotEmpty();
   }
 
   @Transactional
   @Test
-  void
-      given_products_when_findByIdUsingQueryAnnotation_using_brand_eg_then_brand_should_be_eagerly_loaded() {
+  @DisplayName(
+      "Given products when find by id using query annotation using brand eg then brand should be eagerly loaded")
+  void test20() {
     Product product =
         productRepository
             .findByIdUsingQueryAnnotation(1L, NamedEntityGraph.loading(Product.BRAND_EG))
@@ -299,14 +321,16 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_entity_without_default_eg_when_findall_then_it_should_work() {
+  @DisplayName("Given entity without default eg when findall then it should work")
+  void test21() {
     assertThat(brandRepository.findAll()).isNotEmpty();
   }
 
   @Transactional
   @Test
-  void
-      given_products_and_ProductName_projection_when_findProductNameByName_with_mandatory_eg_then_it_should_fail() {
+  @DisplayName(
+      "Given products and product name projection when find product name by name with mandatory eg then it should fail")
+  void test22() {
     NamedEntityGraph entityGraph = NamedEntityGraph.loading(Product.BRAND_EG);
     assertThatThrownBy(() -> productRepository.findProductNameByName("Product 1", entityGraph))
         .isInstanceOf(InapplicableEntityGraphException.class);
@@ -314,8 +338,9 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void
-      given_products_and_ProductName_projection_when_findProductNameByName_without_eg_then_it_should_work() {
+  @DisplayName(
+      "Given products and product name projection when find product name by name without eg then it should work")
+  void test23() {
     ProductName productName =
         productRepository.findProductNameByName("Product 1", EntityGraph.NOOP);
     assertThat(productName).isNotNull();

@@ -21,6 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Hibernate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,9 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_brand_eg_when_findbyspecification_implementing_eg_then_brand_should_be_loaded() {
+  @DisplayName(
+      "Given brand eg when findbyspecification implementing eg then brand should be loaded")
+  void test1() {
     List<Product> products =
         productRepository.findAll(
             (Specification<Product>)
@@ -57,7 +60,8 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_products_when_findAllBySpec_with_two_egs_then_it_should_fail() {
+  @DisplayName("Given products when find all by spec with two egs then it should fail")
+  void test2() {
     EntityGraphSpecification<Product> entityGraph1 =
         new EntityGraphSpecification<Product>(Product.BRAND_EG) {
           @Override
@@ -73,7 +77,9 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_products_when_findAllBySpec_with_an_noop_eg_and_a_non_empty_one_then_it_should_fail() {
+  @DisplayName(
+      "Given products when find all by spec with an noop eg and a non empty one then it should fail")
+  void test3() {
     EntityGraphSpecification<Product> entityGraphSpecification =
         new EntityGraphSpecification<Product>(Product.BRAND_EG) {
           @Override
@@ -89,7 +95,8 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_products_when_findAllBySpec_with_two_noop_eg_then_it_should_fail() {
+  @DisplayName("Given products when find all by spec with two noop eg then it should fail")
+  void test4() {
     EmptyEntityGraphSpecification<Product> entityGraphSpecification =
         new EmptyEntityGraphSpecification<Product>() {
           @Override
@@ -105,8 +112,9 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
   @Transactional
   @Test
-  void
-      given_products_when_findAllBySpec_with_a_non_empty_eg_and_an_empty_one_then_it_should_fail() {
+  @DisplayName(
+      "Given products when find all by spec with a non empty eg and an empty one then it should fail")
+  void test5() {
     EmptyEntityGraphSpecification<Product> entityGraph1 =
         new EmptyEntityGraphSpecification<Product>() {
           @Override

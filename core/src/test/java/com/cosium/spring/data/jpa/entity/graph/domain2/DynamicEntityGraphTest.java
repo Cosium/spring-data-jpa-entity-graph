@@ -5,12 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class DynamicEntityGraphTest {
 
   @Test
-  void testGraphsWithSamePathsEqual() {
+  @DisplayName("Test graphs with same paths equal")
+  void test1() {
     List<String> paths = new ArrayList<>();
     paths.add("path1");
     paths.add("path2");
@@ -22,7 +24,8 @@ class DynamicEntityGraphTest {
   }
 
   @Test
-  void testGraphsWithDifferentTypesNotEqual() {
+  @DisplayName("Test graphs with different types not equal")
+  void test2() {
     List<String> paths = new ArrayList<>();
     paths.add("path1");
     paths.add("path2");
@@ -34,7 +37,8 @@ class DynamicEntityGraphTest {
   }
 
   @Test
-  void testGraphsWithDifferentClassNotEqual() {
+  @DisplayName("Test graphs with different class not equal")
+  void test3() {
     final EntityGraph namedEntityGraph = new NamedEntityGraph(EntityGraphType.LOAD, "graph");
     final EntityGraph dynamicEntityGraph =
         new DynamicEntityGraph(EntityGraphType.LOAD, Collections.singletonList("path"));

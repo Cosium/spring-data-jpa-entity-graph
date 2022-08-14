@@ -12,6 +12,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,8 @@ class RepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_noop_eg_when_finding_makers_then_country_should_not_be_initialized() {
+  @DisplayName("Given noop eg when finding makers then country should not be initialized")
+  void test1() {
     List<Maker> makers = makerRepository.findByName("Maker 1", EntityGraph.NOOP);
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
@@ -38,7 +40,8 @@ class RepositoryTest extends BaseTest {
 
   @Transactional
   @Test
-  void given_country_eg_when_finding_makers_then_country_should_be_initialized() {
+  @DisplayName("Given country eg when finding makers then country should be initialized")
+  void test2() {
     List<Maker> makers =
         makerRepository.findByName("Maker 1", NamedEntityGraph.loading(Maker.COUNTRY_EG));
     assertThat(makers).isNotEmpty();
