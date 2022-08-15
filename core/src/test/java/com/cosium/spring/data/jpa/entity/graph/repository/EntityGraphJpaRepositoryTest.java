@@ -14,7 +14,6 @@ import com.cosium.spring.data.jpa.entity.graph.sample.Brand;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -40,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Reda.Housni-Alaoui
  */
 @DatabaseSetup(BaseTest.DATASET)
-@DatabaseTearDown
 class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @PersistenceContext private EntityManager entityManager;

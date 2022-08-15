@@ -8,7 +8,6 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.QProduct;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.Optional;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Reda.Housni-Alaoui
  */
 @DatabaseSetup(BaseTest.DATASET)
-@DatabaseTearDown
 class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
 
   @Inject private ProductRepository productRepository;

@@ -10,7 +10,6 @@ import com.cosium.spring.data.jpa.entity.graph.sample.MakerEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +26,6 @@ import org.junit.jupiter.api.Test;
  * @author Réda Housni Alaoui
  */
 @DatabaseSetup(BaseTest.DATASET)
-@DatabaseTearDown
 class GeneratedEntityGraphTest extends BaseTest {
 
   @PersistenceContext private EntityManager entityManager;

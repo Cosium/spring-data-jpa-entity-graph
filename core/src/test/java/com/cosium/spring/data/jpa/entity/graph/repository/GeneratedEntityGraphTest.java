@@ -6,7 +6,6 @@ import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Réda Housni Alaoui
  */
 @DatabaseSetup(BaseTest.DATASET)
-@DatabaseTearDown
 class GeneratedEntityGraphTest extends BaseTest {
 
   @Inject private ProductRepository productRepository;

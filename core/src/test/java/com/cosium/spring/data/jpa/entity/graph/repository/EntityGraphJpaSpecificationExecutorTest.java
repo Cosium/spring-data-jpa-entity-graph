@@ -10,7 +10,6 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -31,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Reda.Housni-Alaoui
  */
 @DatabaseSetup(BaseTest.DATASET)
-@DatabaseTearDown
 class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
   @Inject private ProductRepository productRepository;
