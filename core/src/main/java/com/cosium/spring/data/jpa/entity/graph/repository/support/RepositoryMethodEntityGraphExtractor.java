@@ -84,7 +84,11 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
       try {
         return doInvoke(invocation);
       } finally {
-        CURRENT_REPOSITORY.set(oldRepo);
+        if (oldRepo == null) {
+          CURRENT_REPOSITORY.remove();
+        } else {
+          CURRENT_REPOSITORY.set(oldRepo);
+        }
       }
     }
 
@@ -142,7 +146,11 @@ class RepositoryMethodEntityGraphExtractor implements RepositoryProxyPostProcess
         return invocation.proceed();
       } finally {
         if (newEntityGraphCandidatePreValidated) {
-          currentEntityGraph.set(genuineCandidate);
+          if (genuineCandidate == null) {
+            currentEntityGraph.remove();
+          } else {
+            currentEntityGraph.set(genuineCandidate);
+          }
         }
       }
     }

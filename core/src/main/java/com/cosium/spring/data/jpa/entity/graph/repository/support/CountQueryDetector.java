@@ -41,7 +41,7 @@ class CountQueryDetector implements MethodInterceptor {
     try {
       return invocation.proceed();
     } finally {
-      IS_COUNT_QUERY.set(false);
+      IS_COUNT_QUERY.remove();
     }
   }
 }
