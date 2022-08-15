@@ -8,7 +8,7 @@
 
   <groupId>com.cosium.spring.data</groupId>
   <artifactId>spring-data-jpa-entity-graph-parent</artifactId>
-  <version>2.7.6-SNAPSHOT</version>
+  <version>2.7.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
