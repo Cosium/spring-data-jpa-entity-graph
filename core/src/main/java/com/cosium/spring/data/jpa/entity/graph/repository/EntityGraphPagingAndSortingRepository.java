@@ -1,7 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
-import java.io.Serializable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Reda.Housni-Alaoui
  */
 @NoRepositoryBean
-public interface EntityGraphPagingAndSortingRepository<T, ID extends Serializable>
+public interface EntityGraphPagingAndSortingRepository<T, ID>
     extends PagingAndSortingRepository<T, ID>, EntityGraphCrudRepository<T, ID> {
 
   /**

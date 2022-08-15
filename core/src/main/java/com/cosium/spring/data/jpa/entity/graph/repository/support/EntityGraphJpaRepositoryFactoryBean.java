@@ -1,6 +1,5 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import java.io.Serializable;
 import javax.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import org.springframework.data.repository.Repository;
@@ -14,8 +13,7 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
  *
  * @author Reda.Housni-Alaoui
  */
-public class EntityGraphJpaRepositoryFactoryBean<
-        R extends Repository<T, I>, T, I extends Serializable>
+public class EntityGraphJpaRepositoryFactoryBean<R extends Repository<T, I>, T, I>
     extends JpaRepositoryFactoryBean<R, T, I> {
 
   /**

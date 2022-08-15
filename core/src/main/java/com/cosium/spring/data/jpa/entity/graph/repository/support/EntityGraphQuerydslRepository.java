@@ -4,7 +4,6 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
-import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
@@ -25,8 +24,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Reda.Housni-Alaoui
  */
-public class EntityGraphQuerydslRepository<T, ID extends Serializable>
-    extends EntityGraphSimpleJpaRepository<T, ID>
+public class EntityGraphQuerydslRepository<T, ID> extends EntityGraphSimpleJpaRepository<T, ID>
     implements EntityGraphQuerydslPredicateExecutor<T> {
 
   protected final QuerydslPredicateExecutor<T> querydslJpaRepositoryDelegate;

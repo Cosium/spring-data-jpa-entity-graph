@@ -1,6 +1,5 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import java.io.Serializable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -10,7 +9,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @author Reda.Housni-Alaoui
  */
 @NoRepositoryBean
-public interface EntityGraphJpaRepository<T, ID extends Serializable>
+public interface EntityGraphJpaRepository<T, ID>
     extends JpaRepository<T, ID>,
         EntityGraphPagingAndSortingRepository<T, ID>,
         EntityGraphQueryByExampleExecutor<T> {}

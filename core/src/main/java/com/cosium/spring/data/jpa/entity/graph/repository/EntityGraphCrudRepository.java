@@ -1,7 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
-import java.io.Serializable;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -12,8 +11,8 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @author Reda.Housni-Alaoui
  */
 @NoRepositoryBean
-public interface EntityGraphCrudRepository<T, ID extends Serializable>
-    extends CrudRepository<T, ID> {
+public interface EntityGraphCrudRepository<T, ID>
+    extends CrudRepository<T, ID>, EntityGraphRepository<T, ID> {
 
   /**
    * @see CrudRepository#findById(Object)
