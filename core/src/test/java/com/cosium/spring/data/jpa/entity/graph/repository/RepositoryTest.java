@@ -6,14 +6,15 @@ import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Maker;
-import com.cosium.spring.data.jpa.entity.graph.sample.MakerRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -48,5 +49,17 @@ class RepositoryTest extends BaseTest {
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue();
     }
+  }
+
+  /**
+   * Created on 17/03/17.
+   *
+   * @author Reda.Housni-Alaoui
+   */
+  public interface MakerRepository extends Repository<Maker, Long> {
+
+    List<Maker> findByName(String name, EntityGraph entityGraph);
+
+    Stream<Maker> readByName(String name, EntityGraph entityGraph);
   }
 }

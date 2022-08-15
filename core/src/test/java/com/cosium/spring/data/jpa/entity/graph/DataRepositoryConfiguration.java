@@ -21,7 +21,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(
     basePackages = "com.cosium.spring.data.jpa.entity.graph",
-    repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
+    repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class,
+    considerNestedRepositories = true)
 @EnableTransactionManagement
 public class DataRepositoryConfiguration {
 

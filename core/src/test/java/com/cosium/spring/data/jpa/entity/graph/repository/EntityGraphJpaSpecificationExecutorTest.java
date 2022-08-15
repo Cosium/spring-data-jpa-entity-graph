@@ -9,7 +9,6 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
@@ -160,4 +159,8 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
       return entityGraphDelegate.buildQueryHint(entityManager, entityType);
     }
   }
+
+  public interface ProductRepository
+      extends EntityGraphJpaRepository<Product, Long>,
+          EntityGraphJpaSpecificationExecutor<Product> {}
 }

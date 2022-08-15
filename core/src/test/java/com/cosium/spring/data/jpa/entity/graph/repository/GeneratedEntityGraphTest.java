@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import javax.inject.Inject;
@@ -45,4 +44,6 @@ class GeneratedEntityGraphTest extends BaseTest {
     assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
     assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isTrue();
   }
+
+  public interface ProductRepository extends EntityGraphCrudRepository<Product, Long> {}
 }

@@ -3,16 +3,22 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.sample.Brand;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.repository.Repository;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,4 +52,39 @@ class EntityGraphCustomJpaRepositoryTest extends BaseTest {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
     }
   }
+
+  public interface ProductRepository extends Repository<Product, Long>, ProductRepositoryCustom {
+
+    List<Product> findByBrand(Brand brand);
+  }
+
+  public interface ProductRepositoryCustom {
+
+    void customMethod(EntityGraph entityGraph);
+
+    List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph);
+  }
+
+  @Component
+  public static class ProductRepositoryImpl implements ProductRepositoryCustom {
+
+    @Inject private BrandRepository brandRepository;
+    @Inject private ProductRepository productRepository;
+    @PersistenceContext private EntityManager entityManager;
+
+    @Override
+    public void customMethod(EntityGraph entityGraph) {}
+
+    @Override
+    public List<Product> customMethodCallingAnotherRepository(EntityGraph entityGraph) {
+      Optional<Brand> brand =
+          brandRepository.findById(1L, NamedEntityGraph.loading(Brand.EMPTY_EG));
+      entityManager.flush();
+      entityManager.clear();
+      return productRepository.findByBrand(
+          brand.orElseThrow(() -> new RuntimeException("Brand not found")));
+    }
+  }
+
+  public interface BrandRepository extends EntityGraphJpaRepository<Brand, Long> {}
 }

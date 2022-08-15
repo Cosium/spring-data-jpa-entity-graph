@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.fail;
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
-import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.cosium.spring.data.jpa.entity.graph.sample.QProduct;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -71,4 +71,7 @@ class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
       assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
     }
   }
+
+  public interface ProductRepository
+      extends Repository<Product, Long>, EntityGraphQuerydslPredicateExecutor<Product> {}
 }

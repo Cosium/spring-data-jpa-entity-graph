@@ -11,11 +11,8 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphType;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.sample.Brand;
-import com.cosium.spring.data.jpa.entity.graph.sample.BrandRepository;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.sample.ProductName;
-import com.cosium.spring.data.jpa.entity.graph.sample.ProductRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import java.util.List;
@@ -32,7 +29,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -349,5 +348,38 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
         EntityManager entityManager, Class<?> entityType) {
       return entityGraphDelegate.buildQueryHint(entityManager, entityType);
     }
+  }
+
+  public interface BrandRepository extends EntityGraphJpaRepository<Brand, Long> {}
+
+  public interface ProductRepository
+      extends EntityGraphJpaRepository<Product, Long>,
+          EntityGraphJpaSpecificationExecutor<Product> {
+
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
+    @Override
+    Iterable<Product> findAll(EntityGraph entityGraph);
+
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
+    List<Product> findByName(String name, EntityGraph entityGraph);
+
+    Page<Product> findPageByBrand(Brand brand, Pageable pageable, EntityGraph entityGraph);
+
+    ProductName findProductNameByName(String name, EntityGraph entityGraph);
+
+    @org.springframework.data.jpa.repository.EntityGraph(value = Product.BRAND_EG)
+    Product findByBarcode(String barcode);
+
+    long countByName(String name);
+
+    @Query("select p.name from Product p")
+    List<Object[]> findAllRaw();
+
+    @Query("select p from Product p where p.id = :id")
+    Optional<Product> findByIdUsingQueryAnnotation(long id, EntityGraph entityGraph);
+  }
+
+  public interface ProductName {
+    String getName();
   }
 }
