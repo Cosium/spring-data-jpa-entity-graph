@@ -7,6 +7,10 @@ package com.cosium.spring.data.jpa.entity.graph.repository.exception;
  */
 public class MultipleDefaultEntityGraphException extends RepositoryEntityGraphException {
 
+  public MultipleDefaultEntityGraphException(String message) {
+    super(message);
+  }
+
   public MultipleDefaultEntityGraphException(String entityGraph1Name, String entityGraph2Name) {
     super(
         "Multiple default entity graphs detected : "

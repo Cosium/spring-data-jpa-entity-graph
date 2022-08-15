@@ -3,7 +3,6 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -22,8 +21,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
  *
  * @author Reda.Housni-Alaoui
  */
-public class EntityGraphSimpleJpaRepository<T, ID extends Serializable>
-    extends SimpleJpaRepository<T, ID>
+public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T, ID>
     implements EntityGraphJpaRepository<T, ID>, EntityGraphJpaSpecificationExecutor<T> {
 
   public EntityGraphSimpleJpaRepository(

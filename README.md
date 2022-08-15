@@ -216,6 +216,44 @@ productRepository.findById(1L, ProductEntityGraph
                                .____());
 ```
 
+## Repository default EntityGraph
+
+You can declare at most one `EntityGraph` per repository by overriding `EntityGraphRepository#defaultEntityGraph` method. 
+
+Calling **any** repository query method - custom or pre-defined - without `EntityGraph` or with an `EntityGraph#NOOP` equivalent will lead to the `DefaultEntityGraph` usage. Otherwise, the `EntityGraph` passed as query method argument will always have priority.
+
+You could declare a repository as follows :
+```java
+interface MyRepository extends EntityGraphCrudRepository<MyEntity, Long> {
+  @Override
+  default Optional<EntityGraph> defaultEntityGraph() {
+    return NamedEntityGraph.loading("foo").execute(Optional::of);
+  } 
+  
+  List<MyEntity> findByName(String name);
+  List<MyEntity> findByName(String name, EntityGraph entityGraph);
+}
+```
+
+The following snippets will lead to the `DefaultEntityGraph` usage:
+```java
+myRepository.findById(1L);
+```
+```java
+myRepository.findById(1L, EntityGraph.NOOP);
+```
+```java
+myRepository.findByName("bar");
+```
+
+The following snippets will ignore the `DefaultEntityGraph` and instead use the `EntityGraph` passed as argument:
+```java
+myRepository.findById(1L, NamedEntityGraph.loading("alice"));
+```
+```java
+myRepository.findByName("bar", NamedEntityGraph.loading("barry"));
+```
+
 ## Chaining EntityGraph definition with query execution
 
 If you prefer fluent apis, you can use any instance of `EntityGraph` like this:
