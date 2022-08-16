@@ -25,7 +25,8 @@ public class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
    */
   public EntityGraphJpaRepositoryFactory(EntityManager entityManager) {
     super(entityManager);
-    addRepositoryProxyPostProcessor(new RepositoryMethodEntityGraphExtractor(entityManager));
+    addRepositoryProxyPostProcessor(
+        EntityGraphQueryHintCandidates.createPostProcessor(entityManager));
     setQueryMethodFactory(
         new EntityGraphAwareJpaQueryMethodFactory(
             PersistenceProvider.fromEntityManager(entityManager)));

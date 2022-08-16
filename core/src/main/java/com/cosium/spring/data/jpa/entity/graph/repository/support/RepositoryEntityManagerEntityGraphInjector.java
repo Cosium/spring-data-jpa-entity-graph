@@ -55,8 +55,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
   @Override
   public Object invoke(MethodInvocation invocation) throws Throwable {
-    EntityGraphQueryHintCandidate entityGraphCandidate =
-        RepositoryMethodEntityGraphExtractor.getCurrentJpaEntityGraph();
+    EntityGraphQueryHintCandidate entityGraphCandidate = EntityGraphQueryHintCandidates.current();
     String methodName = invocation.getMethod().getName();
     boolean hasEntityGraphCandidate = entityGraphCandidate != null;
     if (hasEntityGraphCandidate && FIND_METHODS.contains(methodName)) {
