@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class EntityGraphCustomJpaRepositoryTest extends BaseTest {
 
-  @Inject private ProductRepository productRepository;
+  @Inject private EntityGraphCustomJpaRepositoryTestProductRepository productRepository;
 
   @Test
   @Transactional
@@ -51,7 +51,8 @@ class EntityGraphCustomJpaRepositoryTest extends BaseTest {
     }
   }
 
-  public interface ProductRepository extends Repository<Product, Long>, ProductRepositoryCustom {
+  public interface EntityGraphCustomJpaRepositoryTestProductRepository
+      extends Repository<Product, Long>, ProductRepositoryCustom {
 
     List<Product> findByBrand(Brand brand);
   }
@@ -64,10 +65,11 @@ class EntityGraphCustomJpaRepositoryTest extends BaseTest {
   }
 
   @Component
-  public static class ProductRepositoryImpl implements ProductRepositoryCustom {
+  public static class EntityGraphCustomJpaRepositoryTestProductRepositoryImpl
+      implements ProductRepositoryCustom {
 
     @Inject private BrandRepository brandRepository;
-    @Inject private ProductRepository productRepository;
+    @Inject private EntityGraphCustomJpaRepositoryTestProductRepository productRepository;
     @PersistenceContext private EntityManager entityManager;
 
     @Override

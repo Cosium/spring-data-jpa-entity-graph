@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph;
 import com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphJpaRepositoryFactoryBean;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class,
     considerNestedRepositories = true)
 @EnableTransactionManagement
+@ComponentScan
 public class DataRepositoryConfiguration {
 
   @Bean

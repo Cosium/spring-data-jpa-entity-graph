@@ -1,18 +1,14 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import static java.util.Objects.requireNonNull;
-
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
-import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.ProxyMethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.core.ResolvableType;
@@ -61,9 +57,6 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
 
   @Override
   public Object invoke(MethodInvocation invocation) throws Throwable {
-    if (CURRENT_CANDIDATES.get() == this) {
-      return invocation.proceed();
-    }
     EntityGraphQueryHintCandidates oldRepo = CURRENT_CANDIDATES.get();
     CURRENT_CANDIDATES.set(this);
     try {
@@ -78,36 +71,11 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
   }
 
   private Object doInvoke(MethodInvocation invocation) throws Throwable {
-    Object[] arguments = invocation.getArguments();
-    EntityGraph providedEntityGraph = null;
-    for (Object argument : arguments) {
-      if (!(argument instanceof EntityGraph)) {
-        continue;
-      }
-      EntityGraph newEntityGraph = (EntityGraph) argument;
-      if (providedEntityGraph != null) {
-        throw new MultipleEntityGraphException(
-            "Duplicate EntityGraphs detected. '"
-                + providedEntityGraph
-                + "' and '"
-                + newEntityGraph
-                + "' were passed to method "
-                + invocation.getMethod());
-      }
-      providedEntityGraph = newEntityGraph;
-    }
-
-    Object repository;
-    if (invocation instanceof ProxyMethodInvocation) {
-      repository = ((ProxyMethodInvocation) invocation).getProxy();
-    } else {
-      repository = invocation.getThis();
-      requireNonNull(repository, "No qualifier found for invocation " + repository);
-    }
-
+    RepositoryMethodInvocation methodInvocation = new RepositoryMethodInvocation(invocation);
+    EntityGraph providedEntityGraph = methodInvocation.findEntityGraphArgument();
+    Object repository = methodInvocation.repository();
     ResolvableType returnType =
-        ResolvableType.forMethodReturnType(invocation.getMethod(), repository.getClass());
-
+        ResolvableType.forMethodReturnType(methodInvocation.method(), repository.getClass());
     EntityGraphQueryHintCandidate candidate =
         buildEntityGraphCandidate(providedEntityGraph, repository);
 
@@ -128,7 +96,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
       currentCandidate.set(candidate);
     }
     try {
-      return invocation.proceed();
+      return methodInvocation.proceed();
     } finally {
       if (newEntityGraphCandidatePreValidated) {
         if (genuineCandidate == null) {
