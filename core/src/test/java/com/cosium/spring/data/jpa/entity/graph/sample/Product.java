@@ -1,13 +1,20 @@
 package com.cosium.spring.data.jpa.entity.graph.sample;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
@@ -53,6 +60,12 @@ public class Product {
   // https://github.com/Cosium/spring-data-jpa-entity-graph/issues/68 correction
   // Should not be removed
   private byte[] image;
+
+  @ElementCollection
+  @MapKeyColumn(name = "name")
+  @Column(name = "value")
+  @CollectionTable(name = "properties", joinColumns = @JoinColumn(name = "product_id"))
+  private Map<String, String> properties = new HashMap<>();
 
   public long getId() {
     return id;
@@ -100,5 +113,9 @@ public class Product {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public Map<String, String> getProperties() {
+    return properties;
   }
 }

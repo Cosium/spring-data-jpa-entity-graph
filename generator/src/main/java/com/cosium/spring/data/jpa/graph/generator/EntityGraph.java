@@ -79,7 +79,7 @@ public class EntityGraph {
             .addStatement("return delegate.buildQueryHint(entityManager, entityType)")
             .build();
 
-    typeSpec =
+    TypeSpec.Builder typeSpecBuilder =
         TypeSpec.classBuilder(entityGraphClassName)
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(Constants.ENTITY_GRAPH_CLASS_NAME)
@@ -89,8 +89,13 @@ public class EntityGraph {
             .addMethod(rootStaticMethodWithEntityGraphType)
             .addMethod(getEntityGraphTypeMethod)
             .addType(rootComposer.toTypeSpec())
-            .addType(nodeComposer.toTypeSpec())
-            .build();
+            .addType(nodeComposer.toTypeSpec());
+
+    if (rootComposer.referencesLeafComposer() || nodeComposer.referencesLeafComposer()) {
+      typeSpecBuilder.addType(new LeafComposer().toTypeSpec());
+    }
+
+    typeSpec = typeSpecBuilder.build();
   }
 
   public void writeTo(Filer filer) throws IOException {

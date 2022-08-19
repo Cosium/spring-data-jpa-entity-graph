@@ -8,4 +8,6 @@ import javax.lang.model.util.Elements;
 public interface Composer {
 
   void addPath(Elements elements, MetamodelAttributeTarget target);
+
+  boolean referencesLeafComposer();
 }

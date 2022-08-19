@@ -1,6 +1,9 @@
 package com.cosium.spring.data.jpa.graph.generator;
 
+import static java.util.Objects.requireNonNull;
+
 import javax.lang.model.element.TypeElement;
+import javax.persistence.Entity;
 
 /**
  * @author Réda Housni Alaoui
@@ -9,10 +12,12 @@ public class MetamodelAttributeTarget {
 
   private final String attributeName;
   private final TypeElement targetType;
+  private final Entity entityAnnotation;
 
   public MetamodelAttributeTarget(String attributeName, TypeElement targetType) {
-    this.attributeName = attributeName;
-    this.targetType = targetType;
+    this.attributeName = requireNonNull(attributeName);
+    this.targetType = requireNonNull(targetType);
+    this.entityAnnotation = targetType.getAnnotation(Entity.class);
   }
 
   public String attributeName() {
@@ -21,5 +26,9 @@ public class MetamodelAttributeTarget {
 
   public TypeElement targetType() {
     return targetType;
+  }
+
+  public boolean isEntity() {
+    return entityAnnotation != null;
   }
 }

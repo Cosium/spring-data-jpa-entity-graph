@@ -18,6 +18,7 @@ public class RootComposer implements Composer {
   private static final String SIMPLE_NAME = "RootComposer";
   private final ClassName entityGraphClassName;
   private final TypeSpec.Builder typeSpecBuilder;
+  private boolean referencesLeafComposer;
 
   public RootComposer(ClassName entityGraphClassName) {
     this.entityGraphClassName = entityGraphClassName;
@@ -79,6 +80,20 @@ public class RootComposer implements Composer {
 
   @Override
   public void addPath(Elements elements, MetamodelAttributeTarget target) {
+    if (target.isEntity()) {
+      addPathToEntity(elements, target);
+    } else {
+      referencesLeafComposer = true;
+      addPathToLeafComposer(target);
+    }
+  }
+
+  @Override
+  public boolean referencesLeafComposer() {
+    return referencesLeafComposer;
+  }
+
+  private void addPathToEntity(Elements elements, MetamodelAttributeTarget target) {
     ParameterizedTypeName targetNodeComposer =
         ParameterizedTypeName.get(
             new EntityGraphClassName(elements, target.targetType())
@@ -97,6 +112,25 @@ public class RootComposer implements Composer {
             .addStatement("path.add($S)", target.attributeName())
             .addStatement("entityGraphAttributePaths.add(path)")
             .addStatement("return new $T(this, path)", targetNodeComposer)
+            .build());
+  }
+
+  private void addPathToLeafComposer(MetamodelAttributeTarget target) {
+    ParameterizedTypeName leafComposer =
+        ParameterizedTypeName.get(
+            ClassName.get("", LeafComposer.SIMPLE_NAME), ClassName.get("", SIMPLE_NAME));
+
+    typeSpecBuilder.addMethod(
+        MethodSpec.methodBuilder(target.attributeName())
+            .addModifiers(Modifier.PUBLIC)
+            .returns(leafComposer)
+            .addStatement(
+                "$T path = new $T()",
+                ParameterizedTypeName.get(List.class, String.class),
+                ParameterizedTypeName.get(ArrayList.class, String.class))
+            .addStatement("path.add($S)", target.attributeName())
+            .addStatement("entityGraphAttributePaths.add(path)")
+            .addStatement("return new $T(this)", leafComposer)
             .build());
   }
 }

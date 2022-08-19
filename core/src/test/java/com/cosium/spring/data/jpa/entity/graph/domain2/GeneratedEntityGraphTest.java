@@ -69,6 +69,17 @@ class GeneratedEntityGraphTest extends BaseTest {
     assertThat(entityGraph).isEqualTo("products");
   }
 
+  @Test
+  @DisplayName("Path to collection table")
+  void test5() {
+    assertThat(new Product().getProperties()).isInstanceOf(Map.class);
+
+    String entityGraph =
+        buildJpaEntityGraph(
+            ProductEntityGraph.____().properties().____.brand().____.____(), Product.class);
+    assertThat(entityGraph).isEqualTo("brand,properties");
+  }
+
   private String buildJpaEntityGraph(EntityGraph entityGraph, Class<?> entityType) {
     return entityGraph
         .buildQueryHint(entityManager, entityType)

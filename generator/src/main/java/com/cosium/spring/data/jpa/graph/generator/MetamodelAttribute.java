@@ -13,6 +13,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.persistence.Entity;
 import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.PluralAttribute;
 
 /**
  * @author Réda Housni Alaoui
@@ -20,9 +21,11 @@ import javax.persistence.metamodel.Attribute;
 public class MetamodelAttribute {
 
   private final VariableElement variableElement;
+  private final boolean pluralAttribute;
 
-  private MetamodelAttribute(VariableElement variableElement) {
+  private MetamodelAttribute(VariableElement variableElement, boolean pluralAttribute) {
     this.variableElement = variableElement;
+    this.pluralAttribute = pluralAttribute;
   }
 
   public static Optional<MetamodelAttribute> parse(
@@ -42,10 +45,17 @@ public class MetamodelAttribute {
       return Optional.empty();
     }
 
-    return Optional.of(new MetamodelAttribute(variableElement));
+    TypeElement pluralAttributeTypeElement =
+        elements.getTypeElement(PluralAttribute.class.getCanonicalName());
+    boolean pluralAttribute =
+        types.isSubtype(
+            types.erasure(variableElement.asType()),
+            types.erasure(pluralAttributeTypeElement.asType()));
+
+    return Optional.of(new MetamodelAttribute(variableElement, pluralAttribute));
   }
 
-  public Optional<MetamodelAttributeTarget> jpaEntityTarget() {
+  public Optional<MetamodelAttributeTarget> jpaTarget() {
     TypeMirror rawAttributeType = variableElement.asType();
     if (!(rawAttributeType instanceof DeclaredType)) {
       return Optional.empty();
@@ -68,7 +78,7 @@ public class MetamodelAttribute {
     }
     TypeElement targetTypeElement = (TypeElement) rawTargetTypeElement;
 
-    if (targetTypeElement.getAnnotation(Entity.class) == null) {
+    if (targetTypeElement.getAnnotation(Entity.class) == null && !pluralAttribute) {
       return Optional.empty();
     }
 

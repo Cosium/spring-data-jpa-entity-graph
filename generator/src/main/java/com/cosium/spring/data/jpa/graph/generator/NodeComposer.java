@@ -1,5 +1,6 @@
 package com.cosium.spring.data.jpa.graph.generator;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -18,6 +19,7 @@ public class NodeComposer implements Composer {
 
   private final TypeVariableName rootType;
   private final TypeSpec.Builder typeSpecBuilder;
+  private boolean referencesLeafComposer;
 
   public NodeComposer() {
     rootType = TypeVariableName.get("R");
@@ -39,7 +41,7 @@ public class NodeComposer implements Composer {
             .addModifiers(Modifier.PUBLIC)
             .addParameter(rootType, "root")
             .addParameter(listOfString, "path")
-            .addStatement("this.____ = root")
+            .addStatement("this.$N = root", Constants.PATH_SEPARATOR)
             .addStatement("this.path = path")
             .build();
 
@@ -58,6 +60,20 @@ public class NodeComposer implements Composer {
 
   @Override
   public void addPath(Elements elements, MetamodelAttributeTarget target) {
+    if (target.isEntity()) {
+      addPathToEntity(elements, target);
+    } else {
+      referencesLeafComposer = true;
+      addPathToLeafComposer(target);
+    }
+  }
+
+  @Override
+  public boolean referencesLeafComposer() {
+    return referencesLeafComposer;
+  }
+
+  private void addPathToEntity(Elements elements, MetamodelAttributeTarget target) {
     ParameterizedTypeName targetNodeComposer =
         ParameterizedTypeName.get(
             new EntityGraphClassName(elements, target.targetType())
@@ -71,6 +87,19 @@ public class NodeComposer implements Composer {
             .returns(targetNodeComposer)
             .addStatement("path.add($S)", target.attributeName())
             .addStatement("return new $T($N, path)", targetNodeComposer, Constants.PATH_SEPARATOR)
+            .build());
+  }
+
+  private void addPathToLeafComposer(MetamodelAttributeTarget target) {
+    ParameterizedTypeName leafComposer =
+        ParameterizedTypeName.get(ClassName.get("", LeafComposer.SIMPLE_NAME), rootType);
+
+    typeSpecBuilder.addMethod(
+        MethodSpec.methodBuilder(target.attributeName())
+            .addModifiers(Modifier.PUBLIC)
+            .returns(leafComposer)
+            .addStatement("path.add($S)", target.attributeName())
+            .addStatement("return new $T($N)", leafComposer, Constants.PATH_SEPARATOR)
             .build());
   }
 }

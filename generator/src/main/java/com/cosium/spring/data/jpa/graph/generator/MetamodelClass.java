@@ -59,7 +59,7 @@ public class MetamodelClass {
         .map(member -> MetamodelAttribute.parse(elements, types, member))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .map(MetamodelAttribute::jpaEntityTarget)
+        .map(MetamodelAttribute::jpaTarget)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .forEach(attribute -> composers.forEach(composer -> composer.addPath(elements, attribute)));
