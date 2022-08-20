@@ -3,11 +3,9 @@ package com.cosium.spring.data.jpa.graph.generator;
 import static java.util.Objects.requireNonNull;
 
 import com.squareup.javapoet.ClassName;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.processing.Filer;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.util.Elements;
@@ -29,15 +27,7 @@ public class MetamodelClass {
     this.typeElement = requireNonNull(typeElement);
   }
 
-  public void writeEntityGraphTo(Filer filer) {
-    try {
-      doWriteEntityGraphTo(filer);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private void doWriteEntityGraphTo(Filer filer) throws IOException {
+  public EntityGraph createEntityGraph() {
     StaticMetamodel staticMetamodel = typeElement.getAnnotation(StaticMetamodel.class);
     TypeElement entityTypeElement;
     try {
@@ -64,6 +54,6 @@ public class MetamodelClass {
         .map(Optional::get)
         .forEach(attribute -> composers.forEach(composer -> composer.addPath(elements, attribute)));
 
-    new EntityGraph(entityGraphClassName, rootComposer, nodeComposer).writeTo(filer);
+    return new EntityGraph(entityGraphClassName, rootComposer, nodeComposer);
   }
 }

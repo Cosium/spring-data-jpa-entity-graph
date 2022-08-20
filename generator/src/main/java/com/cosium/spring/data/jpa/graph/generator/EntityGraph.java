@@ -9,6 +9,7 @@ import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Filer;
@@ -98,7 +99,28 @@ public class EntityGraph {
     typeSpec = typeSpecBuilder.build();
   }
 
-  public void writeTo(Filer filer) throws IOException {
-    JavaFile.builder(className.packageName(), typeSpec).build().writeTo(filer);
+  public void writeTo(Filer filer) {
+    try {
+      JavaFile.builder(className.packageName(), typeSpec).build().writeTo(filer);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    EntityGraph that = (EntityGraph) o;
+    return className.equals(that.className);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(className);
   }
 }

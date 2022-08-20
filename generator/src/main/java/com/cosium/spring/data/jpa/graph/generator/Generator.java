@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.graph.generator;
 
 import com.google.auto.service.AutoService;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -21,6 +22,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 public class Generator extends AbstractProcessor {
 
   private static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
+
+  private final Set<EntityGraph> writtenEntityGraphs = new HashSet<>();
 
   private Types types;
   private Elements elements;
@@ -43,7 +46,14 @@ public class Generator extends AbstractProcessor {
     roundEnv.getElementsAnnotatedWith(StaticMetamodel.class).stream()
         .map(TypeElement.class::cast)
         .map(typeElement -> new MetamodelClass(elements, types, typeElement))
-        .forEach(metamodelClass -> metamodelClass.writeEntityGraphTo(filer));
+        .map(MetamodelClass::createEntityGraph)
+        .forEach(
+            entityGraph -> {
+              if (!writtenEntityGraphs.add(entityGraph)) {
+                return;
+              }
+              entityGraph.writeTo(filer);
+            });
 
     return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
   }
