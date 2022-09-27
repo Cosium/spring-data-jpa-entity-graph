@@ -8,7 +8,6 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +26,12 @@ public class EntityGraph {
       ClassName entityGraphClassName, RootComposer rootComposer, NodeComposer nodeComposer) {
     this.className = entityGraphClassName;
 
+    FieldSpec noopField =
+        FieldSpec.builder(entityGraphClassName, "NOOP")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+            .initializer("new $T(EntityGraph.NOOP)", entityGraphClassName)
+            .build();
+
     FieldSpec delegateField =
         FieldSpec.builder(Constants.ENTITY_GRAPH_CLASS_NAME, "delegate")
             .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
@@ -39,15 +44,17 @@ public class EntityGraph {
             .addModifiers(Modifier.PRIVATE)
             .addParameter(rootComposerClassName, "rootComposer")
             .addStatement(
-                "$T type = rootComposer.entityGraphType", Constants.ENTITY_GRAPH_TYPE_CLASS_NAME)
-            .addStatement(
-                "$T attributePaths = rootComposer.entityGraphAttributePaths.stream()"
-                    + ".map(pathParts -> String.join(\".\", pathParts)).collect($T.toList())",
-                ParameterizedTypeName.get(List.class, String.class),
+                "this(new $T(rootComposer.entityGraphType, rootComposer.entityGraphAttributePaths.stream()"
+                    + ".map(pathParts -> String.join(\".\", pathParts)).collect($T.toList())))",
+                Constants.DYNAMIC_ENTITY_GRAPH_CLASS_NAME,
                 Collectors.class)
-            .addStatement(
-                "this.delegate = new $T(type, attributePaths)",
-                Constants.DYNAMIC_ENTITY_GRAPH_CLASS_NAME)
+            .build();
+
+    MethodSpec emptyConstructor =
+        MethodSpec.constructorBuilder()
+            .addModifiers(Modifier.PRIVATE)
+            .addParameter(Constants.ENTITY_GRAPH_CLASS_NAME, "delegate")
+            .addStatement("this.delegate = delegate")
             .build();
 
     MethodSpec rootStaticMethod =
@@ -84,7 +91,9 @@ public class EntityGraph {
         TypeSpec.classBuilder(entityGraphClassName)
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(Constants.ENTITY_GRAPH_CLASS_NAME)
+            .addField(noopField)
             .addField(delegateField)
+            .addMethod(emptyConstructor)
             .addMethod(constructor)
             .addMethod(rootStaticMethod)
             .addMethod(rootStaticMethodWithEntityGraphType)

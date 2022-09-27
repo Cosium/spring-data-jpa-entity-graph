@@ -6,6 +6,7 @@ import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Maker;
+import com.cosium.spring.data.jpa.entity.graph.sample.MakerEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,6 +47,18 @@ class RepositoryTest extends BaseTest {
     assertThat(makers).isNotEmpty();
     for (Maker maker : makers) {
       assertThat(Hibernate.isInitialized(maker.getCountry())).isTrue();
+    }
+  }
+
+  @Transactional
+  @Test
+  @DisplayName(
+      "Given noop eg from generated eg when finding makers then country should not be initialized")
+  void test3() {
+    List<Maker> makers = makerRepository.findByName("Maker 1", MakerEntityGraph.NOOP);
+    assertThat(makers).isNotEmpty();
+    for (Maker maker : makers) {
+      assertThat(Hibernate.isInitialized(maker.getCountry())).isFalse();
     }
   }
 
