@@ -15,9 +15,9 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
 
     ```xml
     <dependency>
-        <groupId>com.cosium.spring.data</groupId>
-        <artifactId>spring-data-jpa-entity-graph</artifactId>
-        <version>${spring-data-jpa-entity-graph.version}</version>
+      <groupId>com.cosium.spring.data</groupId>
+      <artifactId>spring-data-jpa-entity-graph</artifactId>
+      <version>${spring-data-jpa-entity-graph.version}</version>
     </dependency>
     ```
 3. In your Spring configuration, set the repository factory bean class to `EntityGraphJpaRepositoryFactoryBean` :
@@ -33,18 +33,18 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
 
     ```xml
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-jpamodelgen</artifactId>
-        <version>${hibernate.version}</version>
-        <scope>provided</scope>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <version>${hibernate.version}</version>
+      <scope>provided</scope>
     </dependency>
    ```
    ```xml
    <dependency>
-      <groupId>com.cosium.spring.data</groupId>
-      <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
-      <version>${spring-data-jpa-entity-graph.version}</version>
-      <scope>provided</scope>
+     <groupId>com.cosium.spring.data</groupId>
+     <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
+     <version>${spring-data-jpa-entity-graph.version}</version>
+     <scope>provided</scope>
    </dependency>
    ```
 # Usage
@@ -180,10 +180,10 @@ This annotation processor makes use of the JPA metamodel information (part of JP
 You first need to add a JPA metamodel information generator. `hibernate-jpamodelgen` is great and should be compatible with any JPA ORM:
 ```xml
 <dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-jpamodelgen</artifactId>
-    <version>${hibernate.version}</version>
-    <scope>provided</scope>
+  <groupId>org.hibernate</groupId>
+  <artifactId>hibernate-jpamodelgen</artifactId>
+  <version>${hibernate.version}</version>
+  <scope>provided</scope>
 </dependency>
 ```
 
