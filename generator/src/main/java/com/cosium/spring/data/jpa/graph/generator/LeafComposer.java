@@ -13,11 +13,10 @@ public class LeafComposer {
 
   public static final String SIMPLE_NAME = "LeafComposer";
 
-  private final TypeVariableName rootType;
   private final TypeSpec.Builder typeSpecBuilder;
 
   public LeafComposer() {
-    rootType = TypeVariableName.get("R");
+    TypeVariableName rootType = TypeVariableName.get("R");
 
     FieldSpec rootField =
         FieldSpec.builder(rootType, Constants.PATH_SEPARATOR)

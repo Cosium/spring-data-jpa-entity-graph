@@ -2,9 +2,9 @@ package com.cosium.spring.data.jpa.entity.graph.domain2;
 
 import static java.util.Objects.requireNonNull;
 
+import jakarta.persistence.EntityManager;
 import java.util.Objects;
 import java.util.Optional;
-import javax.persistence.EntityManager;
 
 /**
  * Refers to a registered {@link EntityGraph} by its name.
@@ -26,7 +26,7 @@ public class NamedEntityGraph implements EntityGraph {
   }
 
   /**
-   * When the javax.persistence.loadgraph property is used to specify an entity graph, attributes
+   * When the jakarta.persistence.loadgraph property is used to specify an entity graph, attributes
    * that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and
    * attributes that are not specified are treated according to their specified or default
    * FetchType.
@@ -40,7 +40,7 @@ public class NamedEntityGraph implements EntityGraph {
   }
 
   /**
-   * When the javax.persistence.fetchgraph property is used to specify an entity graph, attributes
+   * When the jakarta.persistence.fetchgraph property is used to specify an entity graph, attributes
    * that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and
    * attributes that are not specified are treated as FetchType.LAZY
    *

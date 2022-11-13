@@ -1,23 +1,23 @@
 package com.cosium.spring.data.jpa.entity.graph.sample;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedEntityGraphs;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
 
 /**
  * Created on 22/11/16.
@@ -65,7 +65,7 @@ public class Product {
   @MapKeyColumn(name = "name")
   @Column(name = "value")
   @CollectionTable(name = "properties", joinColumns = @JoinColumn(name = "product_id"))
-  private Map<String, String> properties = new HashMap<>();
+  private final Map<String, String> properties = new HashMap<>();
 
   public long getId() {
     return id;

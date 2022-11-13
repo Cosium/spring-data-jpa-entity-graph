@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.domain2;
 
 import static java.util.Objects.requireNonNull;
 
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 
 /**
  * Allows to create on-the-fly generated {@link EntityGraph} by defining its attribute paths.
@@ -36,7 +36,7 @@ public class DynamicEntityGraph implements EntityGraph {
   }
 
   /**
-   * When the javax.persistence.loadgraph property is used to specify an entity graph, attributes
+   * When the jakarta.persistence.loadgraph property is used to specify an entity graph, attributes
    * that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and
    * attributes that are not specified are treated according to their specified or default
    * FetchType.
@@ -50,7 +50,7 @@ public class DynamicEntityGraph implements EntityGraph {
   }
 
   /**
-   * When the javax.persistence.loadgraph property is used to specify an entity graph, attributes
+   * When the jakarta.persistence.loadgraph property is used to specify an entity graph, attributes
    * that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and
    * attributes that are not specified are treated according to their specified or default
    * FetchType.
@@ -67,7 +67,7 @@ public class DynamicEntityGraph implements EntityGraph {
   }
 
   /**
-   * When the javax.persistence.fetchgraph property is used to specify an entity graph, attributes
+   * When the jakarta.persistence.fetchgraph property is used to specify an entity graph, attributes
    * that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and
    * attributes that are not specified are treated as FetchType.LAZY
    *
@@ -80,7 +80,7 @@ public class DynamicEntityGraph implements EntityGraph {
   }
 
   /**
-   * When the javax.persistence.fetchgraph property is used to specify an entity graph, attributes
+   * When the jakarta.persistence.fetchgraph property is used to specify an entity graph, attributes
    * that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and
    * attributes that are not specified are treated as FetchType.LAZY
    *

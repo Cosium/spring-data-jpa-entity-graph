@@ -1,7 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.DynamicEntityGraph;
@@ -14,15 +13,15 @@ import com.cosium.spring.data.jpa.entity.graph.sample.Brand;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -218,7 +217,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
   void test13() {
     Page<Product> productPage =
         productRepository.findAll(
-            new EntityGraphSpecification<Product>(Product.BRAND_EG) {
+            new EntityGraphSpecification<>(Product.BRAND_EG) {
               @Override
               public Predicate toPredicate(
                   Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

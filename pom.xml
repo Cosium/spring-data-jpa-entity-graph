@@ -8,7 +8,7 @@
 
   <groupId>com.cosium.spring.data</groupId>
   <artifactId>spring-data-jpa-entity-graph-parent</artifactId>
-  <version>2.7.11-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -17,10 +17,114 @@
   </modules>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <git-code-format-maven-plugin.version>3.4</git-code-format-maven-plugin.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+
+    <spring.data.jpa>3.0.0</spring.data.jpa>
+    <querydsl>5.0.0</querydsl>
+
+    <dbunit>2.7.3</dbunit>
+    <spring-test-dbunit>1.3.0</spring-test-dbunit>
+    <spring.framework.version>5.3.22</spring.framework.version>
+    <hibernate.version>6.1.5.Final</hibernate.version>
+    <hsqldb.version>2.6.1</hsqldb.version>
+    <assertj>3.23.1</assertj>
+    <logback>1.2.11</logback>
+    <junit.version>5.9.0</junit.version>
+    <auto-service.version>1.0-rc7</auto-service.version>
+    <git-code-format-maven-plugin.version>3.5</git-code-format-maven-plugin.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+        <version>3.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-jpa</artifactId>
+        <version>${spring.data.jpa}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.querydsl</groupId>
+        <artifactId>querydsl-apt</artifactId>
+        <version>${querydsl}</version>
+        <classifier>jakarta</classifier>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-jpamodelgen</artifactId>
+        <version>${hibernate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${hibernate.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.querydsl</groupId>
+        <artifactId>querydsl-jpa</artifactId>
+        <version>${querydsl}</version>
+        <classifier>jakarta</classifier>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>${hsqldb.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.github.springtestdbunit</groupId>
+        <artifactId>spring-test-dbunit</artifactId>
+        <version>${spring-test-dbunit}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.framework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.dbunit</groupId>
+        <artifactId>dbunit</artifactId>
+        <version>${dbunit}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.auto.service</groupId>
+        <artifactId>auto-service</artifactId>
+        <version>${auto-service.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.squareup</groupId>
+        <artifactId>javapoet</artifactId>
+        <version>1.13.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
@@ -201,7 +305,7 @@
     <developer>
       <id>reda-alaoui</id>
       <name>Réda Housni Alaoui</name>
-      <email>reda.housnialaoui@cosium.com</email>
+      <email>reda-alaoui@hey.com</email>
       <url>https://github.com/reda-alaoui</url>
     </developer>
   </developers>

@@ -3,8 +3,8 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
+import jakarta.persistence.EntityManager;
 import java.util.Optional;
-import javax.persistence.EntityManager;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -37,10 +37,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
       EntityManager entityManager, RepositoryInformation repositoryInformation) {
     this.domainClass = repositoryInformation.getDomainType();
     this.entityManager = entityManager;
-    this.defaultEntityGraphs =
-        new CompositeDefaultEntityGraphs(
-            new MethodProvidedDefaultEntityGraphs(),
-            new LegacyDefaultEntityGraphs(entityManager, repositoryInformation.getDomainType()));
+    this.defaultEntityGraphs = new MethodProvidedDefaultEntityGraphs();
   }
 
   public static RepositoryProxyPostProcessor createPostProcessor(EntityManager entityManager) {
@@ -146,13 +143,8 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
     return false;
   }
 
-  private static class PostProcessor implements RepositoryProxyPostProcessor {
-
-    private final EntityManager entityManager;
-
-    public PostProcessor(EntityManager entityManager) {
-      this.entityManager = entityManager;
-    }
+  private record PostProcessor(EntityManager entityManager)
+      implements RepositoryProxyPostProcessor {
 
     @Override
     public void postProcess(ProxyFactory factory, RepositoryInformation repositoryInformation) {

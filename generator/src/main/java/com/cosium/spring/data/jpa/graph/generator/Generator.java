@@ -1,6 +1,7 @@
 package com.cosium.spring.data.jpa.graph.generator;
 
 import com.google.auto.service.AutoService;
+import jakarta.persistence.metamodel.StaticMetamodel;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.persistence.metamodel.StaticMetamodel;
 
 /**
  * @author Réda Housni Alaoui

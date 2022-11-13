@@ -3,10 +3,9 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import static java.util.Objects.requireNonNull;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
+import jakarta.persistence.Query;
 import java.util.Arrays;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -26,23 +25,15 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
   private static final List<String> EXECUTE_QUERY_METHODS =
       Arrays.asList("getResultList", "getSingleResult", "scroll");
   private static final String UNWRAP_METHOD = "unwrap";
-
-  private final EntityManager entityManager;
   private final EntityGraphQueryHintCandidate entityGraphCandidate;
 
-  private RepositoryQueryEntityGraphInjector(
-      EntityManager entityManager, EntityGraphQueryHintCandidate entityGraphCandidate) {
-    this.entityManager = requireNonNull(entityManager);
+  private RepositoryQueryEntityGraphInjector(EntityGraphQueryHintCandidate entityGraphCandidate) {
     this.entityGraphCandidate = requireNonNull(entityGraphCandidate);
   }
 
-  static Query proxy(
-      Query query,
-      EntityManager entityManager,
-      EntityGraphQueryHintCandidate entityGraphCandidate) {
+  static Query proxy(Query query, EntityGraphQueryHintCandidate entityGraphCandidate) {
     ProxyFactory proxyFactory = new ProxyFactory(query);
-    proxyFactory.addAdvice(
-        new RepositoryQueryEntityGraphInjector(entityManager, entityGraphCandidate));
+    proxyFactory.addAdvice(new RepositoryQueryEntityGraphInjector(entityGraphCandidate));
     return (Query) proxyFactory.getProxy();
   }
 
@@ -55,7 +46,7 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
         && invokedMethodArguments[0] == null) {
       // Since
       // https://github.com/spring-projects/spring-data-jpa/commit/74ff5b3a65b4a6d8df391be656c2bbb3373e3fae#diff-3f3f77fedc45cbd28380d53c7d7e481cR301, when Spring
-      // Data JPA finds a proxied Query it calls javax.persistence.Query.unwrap(null). Because of
+      // Data JPA finds a proxied Query it calls jakarta.persistence.Query.unwrap(null). Because of
       // the
       // passed null argument, Hibernate target fails with a NullPointerException.
       //

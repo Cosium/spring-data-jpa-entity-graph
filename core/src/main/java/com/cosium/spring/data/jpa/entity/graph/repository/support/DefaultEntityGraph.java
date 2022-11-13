@@ -2,8 +2,8 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
+import jakarta.persistence.EntityManager;
 import java.util.Optional;
-import javax.persistence.EntityManager;
 
 /**
  * @author Réda Housni Alaoui

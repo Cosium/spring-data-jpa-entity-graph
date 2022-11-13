@@ -15,13 +15,13 @@
  */
 package com.cosium.spring.data.jpa.entity.graph.domain2;
 
+import jakarta.persistence.AttributeNode;
+import jakarta.persistence.EntityGraph;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Subgraph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.AttributeNode;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.Subgraph;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -42,7 +42,7 @@ class DynamicJpaEntityGraphs {
 
   public static EntityGraph<?> create(
       EntityManager entityManager, Class<?> entityType, List<String> attributePaths) {
-    javax.persistence.EntityGraph<?> jpaEntityGraph = entityManager.createEntityGraph(entityType);
+    jakarta.persistence.EntityGraph<?> jpaEntityGraph = entityManager.createEntityGraph(entityType);
     List<String> modifiableAttributePaths = new ArrayList<>(attributePaths);
 
     // Sort to ensure that the intermediate entity subgraphs are created accordingly.
@@ -59,7 +59,7 @@ class DynamicJpaEntityGraphs {
   private static void createGraph(
       String[] pathComponents,
       int offset,
-      javax.persistence.EntityGraph<?> root,
+      jakarta.persistence.EntityGraph<?> root,
       Subgraph<?> parent) {
 
     String attributeName = pathComponents[offset];
@@ -109,13 +109,15 @@ class DynamicJpaEntityGraphs {
 
   /**
    * Find the {@link AttributeNode} matching the given {@literal attributeNodeName} in given {@link
-   * Subgraph} or {@link javax.persistence.EntityGraph} favoring matches {@link Subgraph} over
-   * {@link javax.persistence.EntityGraph}.
+   * Subgraph} or {@link jakarta.persistence.EntityGraph} favoring matches {@link Subgraph} over
+   * {@link jakarta.persistence.EntityGraph}.
    *
    * @return {@literal null} if not found.
    */
   private static AttributeNode<?> findAttributeNode(
-      String attributeNodeName, javax.persistence.EntityGraph<?> entityGraph, Subgraph<?> parent) {
+      String attributeNodeName,
+      jakarta.persistence.EntityGraph<?> entityGraph,
+      Subgraph<?> parent) {
     return findAttributeNode(
         attributeNodeName,
         parent != null ? parent.getAttributeNodes() : entityGraph.getAttributeNodes());

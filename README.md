@@ -47,6 +47,14 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
      <scope>provided</scope>
    </dependency>
    ```
+
+# 2.x to 3.x breaking changes
+
+- Moved from Java 8 to 17 as the source language
+- `javax.persistence` replaced by `jakarta.persistence`
+- `com.cosium.spring.data.jpa.entity.graph.domain` classes (deprecated in 2.7.x) have been removed in favor of `com.cosium.spring.data.jpa.entity.graph.domain2`
+- `Default EntityGraph by name pattern` feature (deprecated in 2.7.x) has been removed. `*.default` named EntityGraph are not considered as default EntityGraph anymore. Please read [default EntityGraph](#repository-default-entitygraph) to use the new `Default EntityGraph` feature instead.
+
 # Usage
 
 ## On custom repository methods
@@ -305,6 +313,7 @@ You can play with https://github.com/Cosium/spring-data-jpa-entity-graph-sample 
 
 | [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) version | [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) version                                                                                                                                                                |
 |-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 3.0.x                                                                         | [![Maven Central 3.0.x](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph/3.0.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22)   |
 | 2.7.x                                                                         | [![Maven Central 2.7.x](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph/2.7.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22)   |
 | 2.6.x                                                                         | [![Maven Central 2.6.x](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph/2.6.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22)   |
 | 2.5.x                                                                         | [![Maven Central 2.5.x](https://img.shields.io/maven-central/v/com.cosium.spring.data/spring-data-jpa-entity-graph/2.5.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cosium.spring.data%22%20AND%20a%3A%22spring-data-jpa-entity-graph%22)   |

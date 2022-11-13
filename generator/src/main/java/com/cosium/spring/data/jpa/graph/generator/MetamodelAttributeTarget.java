@@ -2,8 +2,8 @@ package com.cosium.spring.data.jpa.graph.generator;
 
 import static java.util.Objects.requireNonNull;
 
+import jakarta.persistence.Entity;
 import javax.lang.model.element.TypeElement;
-import javax.persistence.Entity;
 
 /**
  * @author Réda Housni Alaoui

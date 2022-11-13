@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.sample;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Created on 17/03/17.

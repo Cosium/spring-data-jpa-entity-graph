@@ -1,18 +1,18 @@
 package com.cosium.spring.data.jpa.entity.graph.sample;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MapKey;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedEntityGraphs;
+import jakarta.persistence.OneToMany;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MapKey;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
-import javax.persistence.OneToMany;
 
 /**
  * Created on 22/11/16.

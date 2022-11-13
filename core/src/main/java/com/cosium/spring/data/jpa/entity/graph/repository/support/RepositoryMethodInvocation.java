@@ -43,10 +43,9 @@ class RepositoryMethodInvocation {
   public EntityGraph findEntityGraphArgument() {
     EntityGraph providedEntityGraph = null;
     for (Object argument : invocation.getArguments()) {
-      if (!(argument instanceof EntityGraph)) {
+      if (!(argument instanceof EntityGraph newEntityGraph)) {
         continue;
       }
-      EntityGraph newEntityGraph = (EntityGraph) argument;
       if (providedEntityGraph != null) {
         throw new MultipleEntityGraphException(
             "Duplicate EntityGraphs detected. '"

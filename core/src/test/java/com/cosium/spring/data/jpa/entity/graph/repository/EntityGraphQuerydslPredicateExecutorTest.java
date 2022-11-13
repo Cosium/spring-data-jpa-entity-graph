@@ -1,7 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.*;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
@@ -34,7 +33,7 @@ class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
   void test1() {
     Optional<Product> product =
         productRepository.findOne(QProduct.product.name.eq("Product 1"), null);
-    if (!product.isPresent()) {
+    if (product.isEmpty()) {
       fail("Product must be present");
       return;
     }
@@ -48,7 +47,7 @@ class EntityGraphQuerydslPredicateExecutorTest extends BaseTest {
     Optional<Product> product =
         productRepository.findOne(
             QProduct.product.name.eq("Product 1"), NamedEntityGraph.loading(Product.BRAND_EG));
-    if (!product.isPresent()) {
+    if (product.isEmpty()) {
       fail("Product must be present");
       return;
     }

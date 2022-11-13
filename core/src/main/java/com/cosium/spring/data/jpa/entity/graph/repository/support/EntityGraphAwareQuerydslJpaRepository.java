@@ -2,7 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.JPQLQuery;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QuerydslJpaPredicateExecutor;

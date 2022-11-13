@@ -1,8 +1,8 @@
 package com.cosium.spring.data.jpa.entity.graph.domain2;
 
+import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import java.util.function.Function;
-import javax.persistence.EntityManager;
 
 /**
  * @author Réda Housni Alaoui

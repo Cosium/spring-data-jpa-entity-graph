@@ -1,7 +1,10 @@
 package com.cosium.spring.data.jpa.graph.generator;
 
-import static javax.lang.model.element.ElementKind.FIELD;
+import static javax.lang.model.element.ElementKind.*;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.PluralAttribute;
 import java.util.List;
 import java.util.Optional;
 import javax.lang.model.element.Element;
@@ -11,9 +14,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.persistence.Entity;
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.PluralAttribute;
 
 /**
  * @author Réda Housni Alaoui
@@ -30,11 +30,10 @@ public class MetamodelAttribute {
 
   public static Optional<MetamodelAttribute> parse(
       Elements elements, Types types, Element element) {
-    if (!(element instanceof VariableElement)) {
+    if (!(element instanceof VariableElement variableElement)) {
       return Optional.empty();
     }
 
-    VariableElement variableElement = (VariableElement) element;
     if (variableElement.getKind() != FIELD) {
       return Optional.empty();
     }
@@ -57,26 +56,23 @@ public class MetamodelAttribute {
 
   public Optional<MetamodelAttributeTarget> jpaTarget() {
     TypeMirror rawAttributeType = variableElement.asType();
-    if (!(rawAttributeType instanceof DeclaredType)) {
+    if (!(rawAttributeType instanceof DeclaredType attributeType)) {
       return Optional.empty();
     }
-    DeclaredType attributeType = (DeclaredType) rawAttributeType;
     List<? extends TypeMirror> typeArguments = attributeType.getTypeArguments();
     // This is the lazy way of doing this. We consider that any sub interfaces of
-    // javax.persistence.metamodel.Attribute
+    // jakarta.persistence.metamodel.Attribute
     // will declare the target type as the last type arguments.
     // e.g. MapAttribute<Brand, Long, Product> where Product is the target
     // TODO do this cleanly by browsing the class hierarchy
     TypeMirror rawTargetType = typeArguments.get(typeArguments.size() - 1);
-    if (!(rawTargetType instanceof DeclaredType)) {
+    if (!(rawTargetType instanceof DeclaredType targetType)) {
       return Optional.empty();
     }
-    DeclaredType targetType = (DeclaredType) rawTargetType;
     Element rawTargetTypeElement = targetType.asElement();
-    if (!(rawTargetTypeElement instanceof TypeElement)) {
+    if (!(rawTargetTypeElement instanceof TypeElement targetTypeElement)) {
       return Optional.empty();
     }
-    TypeElement targetTypeElement = (TypeElement) rawTargetTypeElement;
 
     if (targetTypeElement.getAnnotation(Entity.class) == null && !pluralAttribute) {
       return Optional.empty();

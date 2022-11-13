@@ -1,15 +1,15 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Selection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Selection;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -67,9 +67,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
     if (hasEntityGraphCandidate
         && CREATE_QUERY_METHODS.contains(methodName)
         && isQueryCreationEligible(entityGraphCandidate, invocation)) {
-      result =
-          RepositoryQueryEntityGraphInjector.proxy(
-              (Query) result, (EntityManager) invocation.getThis(), entityGraphCandidate);
+      result = RepositoryQueryEntityGraphInjector.proxy((Query) result, entityGraphCandidate);
     }
     return result;
   }
@@ -82,10 +80,9 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
         resultType = (Class<?>) argument;
         break;
       }
-      if (!(argument instanceof CriteriaQuery<?>)) {
+      if (!(argument instanceof CriteriaQuery<?> criteriaQuery)) {
         continue;
       }
-      CriteriaQuery<?> criteriaQuery = (CriteriaQuery<?>) argument;
       Selection<?> selection = criteriaQuery.getSelection();
       if (selection == null) {
         continue;
@@ -109,8 +106,8 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
     Map<String, Object> queryProperties = null;
     int index = 0;
     for (Object argument : invocation.getArguments()) {
-      if (argument instanceof Map) {
-        queryProperties = (Map) argument;
+      if (argument instanceof Map<?, ?>) {
+        queryProperties = (Map<String, Object>) argument;
         break;
       }
       index++;

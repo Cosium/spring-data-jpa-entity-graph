@@ -10,15 +10,15 @@ import com.cosium.spring.data.jpa.entity.graph.sample.MakerEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import jakarta.persistence.AttributeNode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Subgraph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.persistence.AttributeNode;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Subgraph;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -88,7 +88,7 @@ class GeneratedEntityGraphTest extends BaseTest {
         .orElseThrow(RuntimeException::new);
   }
 
-  private String toString(javax.persistence.EntityGraph<?> entityGraph) {
+  private String toString(jakarta.persistence.EntityGraph<?> entityGraph) {
     // This algorithm is probably incorrect for more complex cases but good enough
     // since the tests pass and I have to go swim !
     List<String> paths = new ArrayList<>();

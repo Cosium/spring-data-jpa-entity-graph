@@ -2,7 +2,7 @@ package com.cosium.spring.data.jpa.entity.graph.domain2;
 
 import static java.util.Objects.requireNonNull;
 
-import javax.persistence.EntityGraph;
+import jakarta.persistence.EntityGraph;
 
 /**
  * @author Réda Housni Alaoui
@@ -10,7 +10,7 @@ import javax.persistence.EntityGraph;
 public class EntityGraphQueryHint {
 
   private final EntityGraphType type;
-  private final javax.persistence.EntityGraph<?> entityGraph;
+  private final jakarta.persistence.EntityGraph<?> entityGraph;
   private final boolean failIfInapplicable;
 
   public EntityGraphQueryHint(EntityGraphType type, EntityGraph<?> entityGraph) {

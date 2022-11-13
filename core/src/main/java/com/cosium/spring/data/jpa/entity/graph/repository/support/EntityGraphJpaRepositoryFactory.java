@@ -4,7 +4,7 @@ import static org.springframework.data.querydsl.QuerydslUtils.QUERY_DSL_PRESENT;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.query.EntityGraphAwareJpaQueryMethodFactory;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;

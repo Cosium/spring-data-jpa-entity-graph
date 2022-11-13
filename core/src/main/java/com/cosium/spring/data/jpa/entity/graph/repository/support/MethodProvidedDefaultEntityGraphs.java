@@ -11,11 +11,10 @@ class MethodProvidedDefaultEntityGraphs implements DefaultEntityGraphs {
   @Override
   public Optional<DefaultEntityGraph> findOne(Object repository) {
 
-    if (!(repository instanceof EntityGraphRepository<?, ?>)) {
+    if (!(repository instanceof EntityGraphRepository<?, ?> entityGraphRepository)) {
       return Optional.empty();
     }
 
-    EntityGraphRepository<?, ?> entityGraphRepository = (EntityGraphRepository<?, ?>) repository;
     return entityGraphRepository.defaultEntityGraph().map(DefaultEntityGraph::new);
   }
 }

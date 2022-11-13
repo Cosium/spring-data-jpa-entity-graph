@@ -19,7 +19,7 @@ public class Constants {
       ClassName.get("com.cosium.spring.data.jpa.entity.graph.domain2", "DynamicEntityGraph");
 
   public static final ClassName ENTITY_MANAGER_CLASS_NAME =
-      ClassName.get("javax.persistence", "EntityManager");
+      ClassName.get("jakarta.persistence", "EntityManager");
   public static final ClassName ENTITY_GRAPH_QUERY_HINT_CLASS_NAME =
       ClassName.get("com.cosium.spring.data.jpa.entity.graph.domain2", "EntityGraphQueryHint");
 
