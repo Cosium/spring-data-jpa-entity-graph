@@ -20,12 +20,12 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
       <version>${spring-data-jpa-entity-graph.version}</version>
     </dependency>
     ```
-3. In your Spring configuration, set the repository factory bean class to `EntityGraphJpaRepositoryFactoryBean` :
+3. Set the repository factory bean class to `EntityGraphJpaRepositoryFactoryBean` :
 
     ```java
-    @Configuration
+    @SpringBootApplication
     @EnableJpaRepositories(repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
-    public class DataRepositoryConfiguration {
+    public class App {
         //...
     }
     ```
