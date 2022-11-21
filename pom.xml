@@ -289,6 +289,24 @@
     </repository>
   </distributionManagement>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>central</name>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>spring-snapshot-local</id>
+      <name>spring-snapshot-local</name>
+      <url>https://repo.spring.io/libs-snapshot-local</url>
+    </repository>
+    <repository>
+      <id>spring-milestone-local</id>
+      <name>spring-milestone-local</name>
+      <url>https://repo.spring.io/libs-milestone-local</url>
+    </repository>
+  </repositories>
+
   <scm>
     <connection>scm:git:https://github.com/Cosium/spring-data-jpa-entity-graph</connection>
     <developerConnection>scm:git:https://github.com/Cosium/spring-data-jpa-entity-graph</developerConnection>
