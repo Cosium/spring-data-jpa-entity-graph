@@ -32,7 +32,7 @@
     <logback>1.2.11</logback>
     <junit.version>5.9.0</junit.version>
     <auto-service.version>1.0-rc7</auto-service.version>
-    <git-code-format-maven-plugin.version>3.5</git-code-format-maven-plugin.version>
+    <git-code-format-maven-plugin.version>4.2</git-code-format-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -149,6 +149,14 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <!-- Enable https://github.com/google/google-java-format -->
+          <dependency>
+            <groupId>com.cosium.code</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>${git-code-format-maven-plugin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
