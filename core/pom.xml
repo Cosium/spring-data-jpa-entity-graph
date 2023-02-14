@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.cosium.spring.data</groupId>
     <artifactId>spring-data-jpa-entity-graph-parent</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.1</version>
   </parent>
 
   <name>Spring Data JPA EntityGraph</name>
