@@ -32,6 +32,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
   /** The list of methods that can take a map of query hints as an argument */
   private static final List<String> FIND_METHODS = Collections.singletonList("find");
+
   /**
    * The list of methods that can return a {@link Query} object. {@link Query} can then be populated
    * with query hints.
