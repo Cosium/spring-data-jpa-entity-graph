@@ -2,6 +2,7 @@ package com.cosium.spring.data.jpa.graph.generator;
 
 import static javax.lang.model.element.ElementKind.*;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.metamodel.Attribute;
 import jakarta.persistence.metamodel.PluralAttribute;
@@ -74,7 +75,9 @@ public class MetamodelAttribute {
       return Optional.empty();
     }
 
-    if (targetTypeElement.getAnnotation(Entity.class) == null && !pluralAttribute) {
+    if ((targetTypeElement.getAnnotation(Entity.class) == null
+            && targetTypeElement.getAnnotation(Embeddable.class) == null)
+        && !pluralAttribute) {
       return Optional.empty();
     }
 
