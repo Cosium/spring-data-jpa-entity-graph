@@ -60,7 +60,7 @@ public class NodeComposer implements Composer {
 
   @Override
   public void addPath(Elements elements, MetamodelAttributeTarget target) {
-    if (target.isEntity()) {
+    if (target.isEntity() || target.isEmbeddable()) {
       addPathToEntity(elements, target);
     } else {
       referencesLeafComposer = true;

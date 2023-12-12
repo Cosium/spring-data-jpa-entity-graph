@@ -5,6 +5,7 @@ import jakarta.persistence.AccessType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +44,8 @@ public class Product {
   @Access(value = AccessType.PROPERTY)
   private long id = 0;
 
+  @Embedded private Tracking tracking;
+
   private String name;
 
   private String barcode;
@@ -73,6 +76,14 @@ public class Product {
 
   public void setId(long id) {
     this.id = id;
+  }
+
+  public Tracking getTracking() {
+    return tracking;
+  }
+
+  public void setTracking(Tracking tracking) {
+    this.tracking = tracking;
   }
 
   public String getName() {

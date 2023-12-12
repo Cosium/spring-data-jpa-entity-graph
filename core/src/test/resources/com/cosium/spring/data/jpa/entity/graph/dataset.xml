@@ -9,20 +9,22 @@
 
     <category id="1" name="Category 1" />
 
-    <product id="1" name="Product 1" brand_id="1" maker_id="1" category_id="1" barcode="1111"/>
-    <product id="2" name="Product 2" brand_id="1" maker_id="1" category_id="1" barcode="2222"/>
-    <product id="3" name="Product 3" brand_id="2" maker_id="1" category_id="1" barcode="3333"/>
-    <product id="4" name="Product 4" brand_id="2" maker_id="1" category_id="1" barcode="4444"/>
+    <user id="1" login="toto"/>
 
-    <product id="5" name="Product 5" brand_id="1" maker_id="1" category_id="1" barcode="5555"/>
-    <product id="6" name="Product 6" brand_id="1" maker_id="1" category_id="1" barcode="6666"/>
-    <product id="7" name="Product 7" brand_id="2" maker_id="1" category_id="1" barcode="7777"/>
-    <product id="8" name="Product 8" brand_id="2" maker_id="1" category_id="1" barcode="8888"/>
+    <product id="1" name="Product 1" brand_id="1" maker_id="1" category_id="1" barcode="1111" creator_id="1" modifier_id="1"/>
+    <product id="2" name="Product 2" brand_id="1" maker_id="1" category_id="1" barcode="2222" creator_id="1" modifier_id="1"/>
+    <product id="3" name="Product 3" brand_id="2" maker_id="1" category_id="1" barcode="3333" creator_id="1" modifier_id="1"/>
+    <product id="4" name="Product 4" brand_id="2" maker_id="1" category_id="1" barcode="4444" creator_id="1" modifier_id="1"/>
 
-    <product id="9" name="Product 9" brand_id="1" maker_id="1" category_id="1" barcode="9999"/>
-    <product id="10" name="Product 10" brand_id="1" maker_id="1" category_id="1" barcode="10101010"/>
-    <product id="11" name="Product 11" brand_id="2" maker_id="1" category_id="1" barcode="11111111"/>
-    <product id="12" name="Product 12" brand_id="2" maker_id="1" category_id="1" barcode="12121212"/>
+    <product id="5" name="Product 5" brand_id="1" maker_id="1" category_id="1" barcode="5555" creator_id="1" modifier_id="1"/>
+    <product id="6" name="Product 6" brand_id="1" maker_id="1" category_id="1" barcode="6666" creator_id="1" modifier_id="1"/>
+    <product id="7" name="Product 7" brand_id="2" maker_id="1" category_id="1" barcode="7777" creator_id="1" modifier_id="1"/>
+    <product id="8" name="Product 8" brand_id="2" maker_id="1" category_id="1" barcode="8888" creator_id="1" modifier_id="1"/>
+
+    <product id="9" name="Product 9" brand_id="1" maker_id="1" category_id="1" barcode="9999" creator_id="1" modifier_id="1"/>
+    <product id="10" name="Product 10" brand_id="1" maker_id="1" category_id="1" barcode="10101010" creator_id="1" modifier_id="1"/>
+    <product id="11" name="Product 11" brand_id="2" maker_id="1" category_id="1" barcode="11111111" creator_id="1" modifier_id="1"/>
+    <product id="12" name="Product 12" brand_id="2" maker_id="1" category_id="1" barcode="12121212" creator_id="1" modifier_id="1"/>
 
     <defaultentitygraphtest_entity id="1" maker_id="1"/>
 </dataset>
