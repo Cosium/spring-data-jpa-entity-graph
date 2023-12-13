@@ -12,7 +12,7 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Access(value = AccessType.PROPERTY)
-  private long id = 0;
+  private long id;
 
   private String login;
 
