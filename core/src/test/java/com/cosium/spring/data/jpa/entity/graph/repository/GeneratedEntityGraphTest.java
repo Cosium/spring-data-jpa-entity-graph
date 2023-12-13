@@ -46,9 +46,8 @@ class GeneratedEntityGraphTest extends BaseTest {
 
   @Test
   @DisplayName("EntityGraph with embedded part is well generated")
-  @Transactional
   void test2() {
-    ProductEntityGraph.____().tracking().creator().____.tracking().modifier().____.____();
+    ProductEntityGraph.____().tracking().modifier().____.____();
   }
 
   public interface ProductRepository extends EntityGraphCrudRepository<Product, Long> {}

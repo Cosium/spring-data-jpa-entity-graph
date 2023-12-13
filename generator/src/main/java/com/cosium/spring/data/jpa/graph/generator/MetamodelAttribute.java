@@ -75,7 +75,7 @@ public class MetamodelAttribute {
       return Optional.empty();
     }
 
-    if (!isRelatedToEntityConcept(targetTypeElement) && !pluralAttribute) {
+    if (!canCarryEntityGraphAttribute(targetTypeElement) && !pluralAttribute) {
       return Optional.empty();
     }
 
@@ -84,7 +84,7 @@ public class MetamodelAttribute {
             variableElement.getSimpleName().toString(), targetTypeElement));
   }
 
-  private boolean isRelatedToEntityConcept(TypeElement targetTypeElement) {
+  private boolean canCarryEntityGraphAttribute(TypeElement targetTypeElement) {
     return targetTypeElement.getAnnotation(Entity.class) != null
         || targetTypeElement.getAnnotation(Embeddable.class) != null;
   }

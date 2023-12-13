@@ -8,23 +8,4 @@ import jakarta.persistence.ManyToOne;
 public class Tracking {
   @ManyToOne(fetch = FetchType.LAZY)
   private User modifier;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  private User creator;
-
-  public User getModifier() {
-    return modifier;
-  }
-
-  public void setModifier(User modifier) {
-    this.modifier = modifier;
-  }
-
-  public User getCreator() {
-    return creator;
-  }
-
-  public void setCreator(User creator) {
-    this.creator = creator;
-  }
 }
