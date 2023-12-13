@@ -8,6 +8,7 @@ import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import javax.inject.Inject;
 import org.hibernate.Hibernate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,13 @@ class GeneratedEntityGraphTest extends BaseTest {
     assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();
     assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
     assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isTrue();
+  }
+
+  @Test
+  @DisplayName("EntityGraph with embedded part is well generated")
+  @Transactional
+  void test2() {
+    ProductEntityGraph.____().tracking().creator().____.tracking().modifier().____.____();
   }
 
   public interface ProductRepository extends EntityGraphCrudRepository<Product, Long> {}

@@ -75,14 +75,17 @@ public class MetamodelAttribute {
       return Optional.empty();
     }
 
-    if ((targetTypeElement.getAnnotation(Entity.class) == null
-            && targetTypeElement.getAnnotation(Embeddable.class) == null)
-        && !pluralAttribute) {
+    if (!isRelatedToEntityConcept(targetTypeElement) && !pluralAttribute) {
       return Optional.empty();
     }
 
     return Optional.of(
         new MetamodelAttributeTarget(
             variableElement.getSimpleName().toString(), targetTypeElement));
+  }
+
+  private boolean isRelatedToEntityConcept(TypeElement targetTypeElement) {
+    return targetTypeElement.getAnnotation(Entity.class) != null
+        || targetTypeElement.getAnnotation(Embeddable.class) != null;
   }
 }
