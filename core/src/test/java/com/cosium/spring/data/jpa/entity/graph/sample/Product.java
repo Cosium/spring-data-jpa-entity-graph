@@ -78,14 +78,6 @@ public class Product {
     this.id = id;
   }
 
-  public Tracking getTracking() {
-    return tracking;
-  }
-
-  public void setTracking(Tracking tracking) {
-    this.tracking = tracking;
-  }
-
   public String getName() {
     return name;
   }
