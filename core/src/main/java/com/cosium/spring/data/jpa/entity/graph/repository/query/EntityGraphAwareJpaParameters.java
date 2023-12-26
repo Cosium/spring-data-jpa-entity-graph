@@ -11,29 +11,31 @@ import org.springframework.data.util.TypeInformation;
  */
 class EntityGraphAwareJpaParameters extends JpaParameters {
 
-    public EntityGraphAwareJpaParameters(ParametersSource parametersSource) {
-        super(parametersSource, methodParameter ->
-                new EntityGraphAwareJpaParameter(methodParameter, parametersSource.getDomainTypeInformation())
-        );
+  public EntityGraphAwareJpaParameters(ParametersSource parametersSource) {
+    super(
+        parametersSource,
+        methodParameter ->
+            new EntityGraphAwareJpaParameter(
+                methodParameter, parametersSource.getDomainTypeInformation()));
+  }
+
+  private static class EntityGraphAwareJpaParameter extends JpaParameters.JpaParameter {
+
+    private final boolean entityGraph;
+
+    private EntityGraphAwareJpaParameter(MethodParameter parameter, TypeInformation<?> domainType) {
+      super(parameter, domainType);
+      this.entityGraph = EntityGraph.class.isAssignableFrom(parameter.getParameterType());
     }
 
-    private static class EntityGraphAwareJpaParameter extends JpaParameters.JpaParameter {
-
-        private final boolean entityGraph;
-
-        private EntityGraphAwareJpaParameter(MethodParameter parameter, TypeInformation<?> domainType) {
-            super(parameter, domainType);
-            this.entityGraph = EntityGraph.class.isAssignableFrom(parameter.getParameterType());
-        }
-
-        @Override
-        public boolean isBindable() {
-            return !entityGraph && super.isBindable();
-        }
-
-        @Override
-        public boolean isSpecialParameter() {
-            return entityGraph || super.isSpecialParameter();
-        }
+    @Override
+    public boolean isBindable() {
+      return !entityGraph && super.isBindable();
     }
+
+    @Override
+    public boolean isSpecialParameter() {
+      return entityGraph || super.isSpecialParameter();
+    }
+  }
 }
