@@ -136,7 +136,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
       return true;
     }
     for (Class<?> genericType : repositoryMethodReturnType.resolveGenerics()) {
-      if (domainClass.isAssignableFrom(genericType)) {
+      if (genericType != null && domainClass.isAssignableFrom(genericType)) {
         return true;
       }
     }
