@@ -29,24 +29,6 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
         //...
     }
     ```
-4. If you want to use [type safe EntityGraphs](#type-safe-entitygraph) , add those dependencies:
-
-    ```xml
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-jpamodelgen</artifactId>
-      <version>${hibernate.version}</version>
-      <scope>provided</scope>
-    </dependency>
-   ```
-   ```xml
-   <dependency>
-     <groupId>com.cosium.spring.data</groupId>
-     <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
-     <version>${spring-data-jpa-entity-graph.version}</version>
-     <scope>provided</scope>
-   </dependency>
-   ```
 
 # 2.x to 3.x breaking changes
 
