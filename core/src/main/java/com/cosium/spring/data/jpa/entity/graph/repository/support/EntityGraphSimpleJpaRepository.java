@@ -35,67 +35,67 @@ public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T
 
   @Override
   public Optional<T> findOne(Specification<T> spec, EntityGraph entityGraph) {
-    return findOne(spec);
+    return super.findOne(spec);
   }
 
   @Override
   public List<T> findAll(Specification<T> spec, EntityGraph entityGraph) {
-    return findAll(spec);
+    return super.findAll(spec);
   }
 
   @Override
   public Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraph entityGraph) {
-    return findAll(spec, pageable);
+    return super.findAll(spec, pageable);
   }
 
   @Override
   public List<T> findAll(Specification<T> spec, Sort sort, EntityGraph entityGraph) {
-    return findAll(spec, sort);
+    return super.findAll(spec, sort);
   }
 
   @Override
   public <S extends T> Page<S> findAll(
-      Example<S> example, Pageable pageable, EntityGraph entityGraph) {
-    return findAll(example, pageable);
+          Example<S> example, Pageable pageable, EntityGraph entityGraph) {
+    return super.findAll(example, pageable);
   }
 
   @Override
   public <S extends T> Optional<S> findOne(Example<S> example, EntityGraph entityGraph) {
-    return findOne(example);
+    return super.findOne(example);
   }
 
   @Override
   public Optional<T> findById(ID id, EntityGraph entityGraph) {
-    return findById(id);
+    return super.findById(id);
   }
 
   @Override
   public Page<T> findAll(Pageable pageable, EntityGraph entityGraph) {
-    return findAll(pageable);
+    return super.findAll(pageable);
   }
 
   @Override
   public <S extends T> List<S> findAll(Example<S> example, Sort sort, EntityGraph entityGraph) {
-    return findAll(example, sort);
+    return super.findAll(example, sort);
   }
 
   @Override
   public <S extends T> List<S> findAll(Example<S> example, EntityGraph entityGraph) {
-    return findAll(example);
+    return super.findAll(example);
   }
 
   @Override
   public List<T> findAllById(Iterable<ID> ids, EntityGraph entityGraph) {
-    return findAllById(ids);
+    return super.findAllById(ids);
   }
 
   @Override
   public Iterable<T> findAll(Sort sort, EntityGraph entityGraph) {
-    return findAll(sort);
+    return super.findAll(sort);
   }
 
   @Override
   public Iterable<T> findAll(EntityGraph entityGraph) {
-    return findAll();
+    return super.findAll();
   }
 }
