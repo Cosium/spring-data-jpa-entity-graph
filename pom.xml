@@ -27,7 +27,7 @@
     <spring.framework.version>6.1.8</spring.framework.version>
     <hibernate.version>6.3.1.Final</hibernate.version>
     <hsqldb.version>2.7.2</hsqldb.version>
-    <assertj>3.25.3</assertj>
+    <assertj>3.26.0</assertj>
     <logback>1.5.6</logback>
     <junit.version>5.10.2</junit.version>
     <auto-service.version>1.1.1</auto-service.version>
