@@ -10,6 +10,7 @@ import com.squareup.javapoet.WildcardTypeName;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
@@ -64,6 +65,20 @@ public class EntityGraph {
             .addStatement("return new $N()", rootComposer.simpleName())
             .build();
 
+    MethodSpec inicMethod =
+        MethodSpec.methodBuilder("inic_")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+            .returns(Constants.ENTITY_GRAPH_CLASS_NAME)
+            .addParameter(
+                ParameterizedTypeName.get(
+                    ClassName.get(Function.class), rootComposerClassName, rootComposerClassName),
+                "initializer")
+            .addStatement(
+                "return initializer.apply($N()).$N()",
+                Constants.PATH_SEPARATOR,
+                Constants.PATH_SEPARATOR)
+            .build();
+
     MethodSpec rootStaticMethodWithEntityGraphType =
         MethodSpec.methodBuilder(Constants.PATH_SEPARATOR)
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -96,6 +111,7 @@ public class EntityGraph {
             .addMethod(emptyConstructor)
             .addMethod(constructor)
             .addMethod(rootStaticMethod)
+            .addMethod(inicMethod)
             .addMethod(rootStaticMethodWithEntityGraphType)
             .addMethod(getEntityGraphTypeMethod)
             .addType(rootComposer.toTypeSpec())

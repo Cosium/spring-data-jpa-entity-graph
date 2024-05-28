@@ -7,6 +7,7 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 
@@ -112,6 +113,26 @@ public class RootComposer implements Composer {
             .addStatement("path.add($S)", target.attributeName())
             .addStatement("entityGraphAttributePaths.add(path)")
             .addStatement("return new $T(this, path)", targetNodeComposer)
+            .build());
+
+    typeSpecBuilder.addMethod(
+        MethodSpec.methodBuilder(target.attributeName() + "_")
+            .addModifiers(Modifier.PUBLIC)
+            .returns(entityGraphClassName.nestedClass(SIMPLE_NAME))
+            .addStatement("return this.$N().$N", target.attributeName(), Constants.PATH_SEPARATOR)
+            .build());
+
+    typeSpecBuilder.addMethod(
+        MethodSpec.methodBuilder(target.attributeName() + "_")
+            .addModifiers(Modifier.PUBLIC)
+            .returns(entityGraphClassName.nestedClass(SIMPLE_NAME))
+            .addParameter(
+                ParameterizedTypeName.get(
+                    ClassName.get(Function.class),
+                    targetNodeComposer,
+                    entityGraphClassName.nestedClass(SIMPLE_NAME)),
+                "initializer")
+            .addStatement("return initializer.apply(this.$N())", target.attributeName())
             .build());
   }
 

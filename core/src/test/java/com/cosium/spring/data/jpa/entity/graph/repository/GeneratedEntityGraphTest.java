@@ -44,6 +44,24 @@ class GeneratedEntityGraphTest extends BaseTest {
     assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isTrue();
   }
 
+  @Transactional
+  @Test
+  void test_() {
+    Product product =
+        productRepository
+            .findById(
+                1L,
+                ProductEntityGraph.inic_(
+                    productEG ->
+                        productEG.brand_().category_().maker_(makerEG -> makerEG.country_())))
+            .orElseThrow(RuntimeException::new);
+
+    assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isTrue();
+  }
+
   @Test
   @DisplayName("EntityGraph with embedded part is well generated")
   void test2() {

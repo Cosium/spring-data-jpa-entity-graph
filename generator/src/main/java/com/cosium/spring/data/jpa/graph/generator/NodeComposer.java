@@ -7,6 +7,7 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeVariableName;
 import java.util.List;
+import java.util.function.Function;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 
@@ -87,6 +88,24 @@ public class NodeComposer implements Composer {
             .returns(targetNodeComposer)
             .addStatement("path.add($S)", target.attributeName())
             .addStatement("return new $T($N, path)", targetNodeComposer, Constants.PATH_SEPARATOR)
+            .build());
+
+    typeSpecBuilder.addMethod(
+        MethodSpec.methodBuilder(target.attributeName() + "_")
+            .addModifiers(Modifier.PUBLIC)
+            .returns(rootType)
+            .addStatement("return this.$N().$N", target.attributeName(), Constants.PATH_SEPARATOR)
+            .build());
+
+    typeSpecBuilder.addMethod(
+        MethodSpec.methodBuilder(target.attributeName() + "_")
+            .addModifiers(Modifier.PUBLIC)
+            .returns(rootType)
+            .addParameter(
+                ParameterizedTypeName.get(
+                    ClassName.get(Function.class), targetNodeComposer, rootType),
+                "initializer")
+            .addStatement("return initializer.apply(this.$N())", target.attributeName())
             .build());
   }
 
