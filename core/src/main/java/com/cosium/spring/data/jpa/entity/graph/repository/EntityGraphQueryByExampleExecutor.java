@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
+import org.springframework.data.repository.query.ListQueryByExampleExecutor;
 
 /**
  * Created on 18/03/17.
@@ -16,25 +16,25 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
  * @author Reda.Housni-Alaoui
  */
 @NoRepositoryBean
-public interface EntityGraphQueryByExampleExecutor<T> extends QueryByExampleExecutor<T> {
+public interface EntityGraphQueryByExampleExecutor<T> extends ListQueryByExampleExecutor<T> {
 
   /**
-   * @see QueryByExampleExecutor#findAll(Example, Pageable)
+   * @see ListQueryByExampleExecutor#findAll(Example, Pageable)
    */
   <S extends T> Page<S> findAll(Example<S> example, Pageable pageable, EntityGraph entityGraph);
 
   /**
-   * @see QueryByExampleExecutor#findOne(Example)
+   * @see ListQueryByExampleExecutor#findOne(Example)
    */
   <S extends T> Optional<S> findOne(Example<S> example, EntityGraph entityGraph);
 
   /**
-   * @see QueryByExampleExecutor#findAll(Example, Sort)
+   * @see ListQueryByExampleExecutor#findAll(Example, Sort)
    */
   <S extends T> List<S> findAll(Example<S> example, Sort sort, EntityGraph entityGraph);
 
   /**
-   * @see QueryByExampleExecutor#findAll(Example)
+   * @see ListQueryByExampleExecutor#findAll(Example)
    */
   <S extends T> List<S> findAll(Example<S> example, EntityGraph entityGraph);
 }

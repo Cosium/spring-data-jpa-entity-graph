@@ -1,11 +1,12 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Created on 18/03/17.
@@ -14,15 +15,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 @NoRepositoryBean
 public interface EntityGraphPagingAndSortingRepository<T, ID>
-    extends PagingAndSortingRepository<T, ID>, EntityGraphCrudRepository<T, ID> {
+    extends ListPagingAndSortingRepository<T, ID>, EntityGraphRepository<T, ID> {
 
   /**
-   * @see PagingAndSortingRepository#findAll(Pageable)
+   * @see ListPagingAndSortingRepository#findAll(Pageable)
    */
   Page<T> findAll(Pageable pageable, EntityGraph entityGraph);
 
   /**
-   * @see PagingAndSortingRepository#findAll(Sort)
+   * @see ListPagingAndSortingRepository#findAll(Sort)
    */
-  Iterable<T> findAll(Sort sort, EntityGraph entityGraph);
+  List<T> findAll(Sort sort, EntityGraph entityGraph);
 }
