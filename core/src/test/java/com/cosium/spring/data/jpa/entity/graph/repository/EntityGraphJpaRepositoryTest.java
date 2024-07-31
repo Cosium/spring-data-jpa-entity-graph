@@ -10,6 +10,7 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphType;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.sample.Brand;
+import com.cosium.spring.data.jpa.entity.graph.sample.BrandEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -331,6 +332,22 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
     assertThat(productName).isNotNull();
   }
 
+  @Transactional
+  @Test
+  @DisplayName(
+      "Given an EntityGraphJpaRepository when calling a standard findAll method then a List should be returned (no matter whether an entitygraph is provided or not)")
+  void test24() {
+    long brandId = 1;
+
+    List<Brand> brandsWithoutEntityGraph = brandRepository.findAllById(List.of(brandId));
+    assertThat(brandsWithoutEntityGraph).hasSize(1);
+
+    List<Brand> brandsWithEntityGraph =
+        brandRepository.findAllById(
+            List.of(brandId), BrandEntityGraph.____().products().____.____());
+    assertThat(brandsWithEntityGraph).hasSize(1);
+  }
+
   private abstract static class EntityGraphSpecification<T>
       implements Specification<T>, EntityGraph {
 
@@ -355,7 +372,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
     @Override
-    Iterable<Product> findAll(EntityGraph entityGraph);
+    List<Product> findAll(EntityGraph entityGraph);
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
     List<Product> findByName(String name, EntityGraph entityGraph);

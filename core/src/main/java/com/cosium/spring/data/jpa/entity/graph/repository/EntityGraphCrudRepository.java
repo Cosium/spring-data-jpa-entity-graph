@@ -1,8 +1,9 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 /**
@@ -12,20 +13,20 @@ import org.springframework.data.repository.NoRepositoryBean;
  */
 @NoRepositoryBean
 public interface EntityGraphCrudRepository<T, ID>
-    extends CrudRepository<T, ID>, EntityGraphRepository<T, ID> {
+    extends ListCrudRepository<T, ID>, EntityGraphRepository<T, ID> {
 
   /**
-   * @see CrudRepository#findById(Object)
+   * @see ListCrudRepository#findById(Object)
    */
   Optional<T> findById(ID id, EntityGraph entityGraph);
 
   /**
-   * @see CrudRepository#findAllById(Iterable)
+   * @see ListCrudRepository#findAllById(Iterable)
    */
-  Iterable<T> findAllById(Iterable<ID> ids, EntityGraph entityGraph);
+  List<T> findAllById(Iterable<ID> ids, EntityGraph entityGraph);
 
   /**
-   * @see CrudRepository#findAll()
+   * @see ListCrudRepository#findAll()
    */
-  Iterable<T> findAll(EntityGraph entityGraph);
+  List<T> findAll(EntityGraph entityGraph);
 }
