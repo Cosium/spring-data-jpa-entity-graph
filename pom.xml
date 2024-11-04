@@ -26,7 +26,7 @@
     <spring-test-dbunit>1.3.0</spring-test-dbunit>
     <spring.framework.version>6.1.14</spring.framework.version>
     <hibernate.version>6.3.1.Final</hibernate.version>
-    <hsqldb.version>2.7.3</hsqldb.version>
+    <hsqldb.version>2.7.4</hsqldb.version>
     <assertj>3.26.3</assertj>
     <logback>1.5.12</logback>
     <junit.version>5.11.3</junit.version>
