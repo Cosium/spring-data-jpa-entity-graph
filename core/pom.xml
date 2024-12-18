@@ -102,6 +102,12 @@
       <artifactId>logback-classic</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-envers</artifactId>
+      <version>${spring.data.jpa}</version>
+      <scope>test</scope>
+     </dependency>
   </dependencies>
 
   <build>
