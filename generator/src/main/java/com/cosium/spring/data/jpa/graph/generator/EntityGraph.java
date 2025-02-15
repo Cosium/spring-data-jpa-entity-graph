@@ -57,6 +57,24 @@ public class EntityGraph {
             .addStatement("this.delegate = delegate")
             .build();
 
+    MethodSpec emptyStaticMethod =
+        MethodSpec.methodBuilder("empty")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+            .returns(entityGraphClassName)
+            .addStatement("return $N().$N()", Constants.PATH_SEPARATOR, Constants.PATH_SEPARATOR)
+            .build();
+
+    MethodSpec emptyStaticMethodWithEntityGraphType =
+        MethodSpec.methodBuilder("empty")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+            .addParameter(Constants.ENTITY_GRAPH_TYPE_CLASS_NAME, "entityGraphType")
+            .returns(entityGraphClassName)
+            .addStatement(
+                "return $N(entityGraphType).$N()",
+                Constants.PATH_SEPARATOR,
+                Constants.PATH_SEPARATOR)
+            .build();
+
     MethodSpec rootStaticMethod =
         MethodSpec.methodBuilder(Constants.PATH_SEPARATOR)
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -95,6 +113,8 @@ public class EntityGraph {
             .addField(delegateField)
             .addMethod(emptyConstructor)
             .addMethod(constructor)
+            .addMethod(emptyStaticMethod)
+            .addMethod(emptyStaticMethodWithEntityGraphType)
             .addMethod(rootStaticMethod)
             .addMethod(rootStaticMethodWithEntityGraphType)
             .addMethod(getEntityGraphTypeMethod)
