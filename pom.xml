@@ -19,7 +19,7 @@
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
 
-    <spring.data.jpa>3.2.1</spring.data.jpa>
+    <spring.data.jpa>3.5.0</spring.data.jpa>
     <querydsl>5.1.0</querydsl>
 
     <dbunit>3.0.0</dbunit>

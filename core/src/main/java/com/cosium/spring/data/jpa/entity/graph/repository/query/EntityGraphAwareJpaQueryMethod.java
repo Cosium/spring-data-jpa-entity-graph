@@ -18,11 +18,6 @@ class EntityGraphAwareJpaQueryMethod extends JpaQueryMethod {
       RepositoryMetadata metadata,
       ProjectionFactory factory,
       QueryExtractor extractor) {
-    super(method, metadata, factory, extractor);
-  }
-
-  @Override
-  protected Parameters<?, ?> createParameters(ParametersSource parametersSource) {
-    return new EntityGraphAwareJpaParameters(parametersSource);
+    super(method, metadata, factory, extractor, EntityGraphAwareJpaParameters::new);
   }
 }
