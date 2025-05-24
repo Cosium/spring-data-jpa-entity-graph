@@ -5,8 +5,6 @@ import org.springframework.data.jpa.provider.QueryExtractor;
 import org.springframework.data.jpa.repository.query.JpaQueryMethod;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
-import org.springframework.data.repository.query.Parameters;
-import org.springframework.data.repository.query.ParametersSource;
 
 /**
  * @author Réda Housni Alaoui
