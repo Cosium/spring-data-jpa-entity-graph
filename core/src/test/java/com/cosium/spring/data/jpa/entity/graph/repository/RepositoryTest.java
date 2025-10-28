@@ -10,10 +10,10 @@ import com.cosium.spring.data.jpa.entity.graph.sample.MakerEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class RepositoryTest extends BaseTest {
 
-  @Inject private MakerRepository makerRepository;
+  @Autowired private MakerRepository makerRepository;
 
   @Transactional
   @Test

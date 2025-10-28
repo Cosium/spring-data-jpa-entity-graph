@@ -17,10 +17,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Optional;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class DefaultEntityGraphTest extends BaseTest {
 
-  @Inject private MyEntityRepository repository;
+  @Autowired private MyEntityRepository repository;
 
   @Transactional
   @Test
@@ -86,7 +86,7 @@ class DefaultEntityGraphTest extends BaseTest {
     }
   }
 
-  interface MyEntityRepository extends EntityGraphCrudRepository<MyEntity, Long> {
+  interface MyEntityRepository extends EntityGraphListCrudRepository<MyEntity, Long> {
 
     @Override
     default Optional<EntityGraph> defaultEntityGraph() {

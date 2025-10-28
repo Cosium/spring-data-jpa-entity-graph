@@ -5,6 +5,7 @@ import static org.springframework.data.querydsl.QuerydslUtils.QUERY_DSL_PRESENT;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.query.EntityGraphAwareJpaQueryMethodFactory;
 import jakarta.persistence.EntityManager;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -34,8 +35,17 @@ public class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
   }
 
   @Override
+  public void setRepositoryBaseClass(@Nullable Class<?> repositoryBaseClass) {
+    // ignore
+  }
+
+  @Override
   protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-    if (isQueryDslExecutor(metadata.getRepositoryInterface())) {
+    return getRepositoryBaseClass(metadata.getRepositoryInterface());
+  }
+
+  protected Class<?> getRepositoryBaseClass(Class<?> repositoryInterface) {
+    if (isQueryDslExecutor(repositoryInterface)) {
       return EntityGraphQuerydslRepository.class;
     } else {
       return EntityGraphSimpleJpaRepository.class;

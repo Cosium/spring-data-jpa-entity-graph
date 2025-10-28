@@ -23,7 +23,8 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
       LoggerFactory.getLogger(RepositoryQueryEntityGraphInjector.class);
 
   private static final List<String> EXECUTE_QUERY_METHODS =
-      Arrays.asList("getResultList", "getSingleResult", "getResultStream", "scroll");
+      Arrays.asList(
+          "getResultList", "getSingleResult", "getSingleResultOrNull", "getResultStream", "scroll");
   private static final String UNWRAP_METHOD = "unwrap";
   private final EntityGraphQueryHintCandidate entityGraphCandidate;
 

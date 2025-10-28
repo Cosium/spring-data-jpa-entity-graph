@@ -11,5 +11,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface EntityGraphJpaRepository<T, ID>
     extends JpaRepository<T, ID>,
-        EntityGraphPagingAndSortingRepository<T, ID>,
+        EntityGraphListCrudRepository<T, ID>,
+        EntityGraphListPagingAndSortingRepository<T, ID>,
         EntityGraphQueryByExampleExecutor<T> {}
