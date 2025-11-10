@@ -2,9 +2,9 @@ package com.cosium.spring.data.jpa.entity.graph.repository.query;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.core.TypeInformation;
 import org.springframework.data.jpa.repository.query.JpaParameters;
 import org.springframework.data.repository.query.ParametersSource;
-import org.springframework.data.util.TypeInformation;
 
 /**
  * @author Réda Housni Alaoui
