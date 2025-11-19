@@ -12,20 +12,20 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>core</module>
     <module>generator</module>
+    <module>core</module>
   </modules>
 
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
 
-    <spring.data.jpa>4.0.0-RC2</spring.data.jpa>
+    <spring.data.jpa>4.0.0</spring.data.jpa>
     <querydsl>5.1.0</querydsl>
 
     <dbunit>3.0.0</dbunit>
     <spring-test-dbunit>1.3.0</spring-test-dbunit>
-    <spring.framework.version>7.0.0-RC3</spring.framework.version>
-    <hibernate.version>7.1.6.Final</hibernate.version>
+    <spring.framework.version>7.0.0</spring.framework.version>
+    <hibernate.version>7.1.7.Final</hibernate.version>
     <hsqldb.version>2.7.4</hsqldb.version>
     <assertj>3.27.6</assertj>
     <logback>1.5.20</logback>
@@ -39,7 +39,7 @@
       <dependency>
         <groupId>jakarta.persistence</groupId>
         <artifactId>jakarta.persistence-api</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.data</groupId>
@@ -132,12 +132,15 @@
         <artifactId>git-code-format-maven-plugin</artifactId>
         <version>${git-code-format-maven-plugin.version}</version>
         <executions>
+          <!-- On commit, format the modified java files -->
           <execution>
             <id>install-formatter-hook</id>
             <goals>
               <goal>install-hooks</goal>
             </goals>
           </execution>
+          <!-- On Maven verify phase, fail if any file
+          (including unmodified) is badly formatted -->
           <execution>
             <id>validate-code-format</id>
             <goals>
@@ -146,6 +149,7 @@
           </execution>
         </executions>
         <dependencies>
+          <!-- Enable https://github.com/google/google-java-format -->
           <dependency>
             <groupId>com.cosium.code</groupId>
             <artifactId>google-java-format</artifactId>

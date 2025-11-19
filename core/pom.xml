@@ -12,16 +12,6 @@
   <artifactId>spring-data-jpa-entity-graph</artifactId>
 
   <dependencies>
-
-    <!--Needed by SpringHibernateJpaPersistenceProvider for spring-data-jpa while building with JDK 11
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.4.0-b180830.0359</version>
-      <scope>provided</scope>
-    </dependency>
-    -->
-
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
@@ -31,7 +21,6 @@
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
-      <version>3.2.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -42,29 +31,6 @@
       <version>1.3.2</version>
       <scope>provided</scope>
     </dependency>
-    
-    <!--
-    <dependency>
-      <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <classifier>jakarta</classifier>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hibernate.orm</groupId>
-      <artifactId>hibernate-processor</artifactId>
-      <version>${hibernate.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
-      <version>${project.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    -->
 
     <dependency>
       <groupId>com.querydsl</groupId>
@@ -135,27 +101,25 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <annotationProcessorPaths>
-            <annotationProcessorPath>
-              <groupId>com.querydsl</groupId>
-              <artifactId>querydsl-apt</artifactId>
-              <version>${querydsl}</version>
-              <classifier>jakarta</classifier>
-            </annotationProcessorPath>
-            <annotationProcessorPath>
-              <groupId>jakarta.persistence</groupId>
-              <artifactId>jakarta.persistence-api</artifactId>
-            </annotationProcessorPath>
             <path>
               <groupId>org.hibernate.orm</groupId>
               <artifactId>hibernate-processor</artifactId>
               <version>${hibernate.version}</version>
             </path>
             <path>
-              <groupId>com.cosium.spring.data</groupId>
+              <groupId>com.querydsl</groupId>
+              <artifactId>querydsl-apt</artifactId>
+              <version>${querydsl}</version>
+              <classifier>jakarta</classifier>
+            </path>
+            <path>
+              <groupId>${project.groupId}</groupId>
               <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
-              <version>3.5.0</version>
+              <version>${project.version}</version>
             </path>
           </annotationProcessorPaths>
+          <generatedTestSourcesDirectory>target/generated-test-sources</generatedTestSourcesDirectory>
+          <generatedSourcesDirectory>target/generated-sources</generatedSourcesDirectory>
         </configuration>
       </plugin>
     </plugins>

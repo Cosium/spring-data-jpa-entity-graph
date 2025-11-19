@@ -44,6 +44,20 @@
           </archive>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.auto.service</groupId>
+              <artifactId>auto-service</artifactId>
+            </path>
+          </annotationProcessorPaths>
+          <generatedTestSourcesDirectory>target/generated-test-sources</generatedTestSourcesDirectory>
+          <generatedSourcesDirectory>target/generated-sources</generatedSourcesDirectory>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
