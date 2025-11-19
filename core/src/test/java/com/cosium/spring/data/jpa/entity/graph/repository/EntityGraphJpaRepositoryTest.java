@@ -21,10 +21,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,8 +42,9 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @PersistenceContext private EntityManager entityManager;
 
-  @Inject private ProductRepository productRepository;
-  @Inject private BrandRepository brandRepository;
+  @Autowired private ProductRepository productRepository;
+
+  @Autowired private BrandRepository brandRepository;
 
   @Transactional
   @Test
@@ -355,7 +356,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
     @Override
-    Iterable<Product> findAll(EntityGraph entityGraph);
+    List<Product> findAll(EntityGraph entityGraph);
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
     List<Product> findByName(String name, EntityGraph entityGraph);

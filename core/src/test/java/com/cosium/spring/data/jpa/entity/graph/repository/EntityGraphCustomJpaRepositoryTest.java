@@ -12,10 +12,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.Repository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class EntityGraphCustomJpaRepositoryTest extends BaseTest {
 
-  @Inject private EntityGraphCustomJpaRepositoryTestProductRepository productRepository;
+  @Autowired private EntityGraphCustomJpaRepositoryTestProductRepository productRepository;
 
   @Test
   @Transactional
@@ -68,8 +68,10 @@ class EntityGraphCustomJpaRepositoryTest extends BaseTest {
   public static class EntityGraphCustomJpaRepositoryTestProductRepositoryImpl
       implements ProductRepositoryCustom {
 
-    @Inject private BrandRepository brandRepository;
-    @Inject private EntityGraphCustomJpaRepositoryTestProductRepository productRepository;
+    @Autowired private BrandRepository brandRepository;
+
+    @Autowired private EntityGraphCustomJpaRepositoryTestProductRepository productRepository;
+
     @PersistenceContext private EntityManager entityManager;
 
     @Override
