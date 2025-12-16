@@ -27,6 +27,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>6.2.11</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <!--Needed by querydsl for @Generated annotation-->
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
