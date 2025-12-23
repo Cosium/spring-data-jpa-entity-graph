@@ -14,7 +14,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 @NoRepositoryBean
 public interface EntityGraphPagingAndSortingRepository<T, ID>
-    extends PagingAndSortingRepository<T, ID>, EntityGraphCrudRepository<T, ID> {
+    extends PagingAndSortingRepository<T, ID>, EntityGraphRepository<T, ID> {
 
   /**
    * @see PagingAndSortingRepository#findAll(Pageable)

@@ -90,12 +90,12 @@ public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T
   }
 
   @Override
-  public Iterable<T> findAll(Sort sort, EntityGraph entityGraph) {
+  public List<T> findAll(Sort sort, EntityGraph entityGraph) {
     return findAll(sort);
   }
 
   @Override
-  public Iterable<T> findAll(EntityGraph entityGraph) {
+  public List<T> findAll(EntityGraph entityGraph) {
     return findAll();
   }
 }
