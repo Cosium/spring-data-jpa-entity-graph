@@ -33,7 +33,8 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
 # 3.x to 4.x
 
 - EntityGraph repositories were rearranged to exactly mirror Spring Data JPA repositories. You may have to fix your imports.
-- Null safety added everywhere via [JSpecify](https://jspecify.dev/)
+- `ListCrudRepository` and `ListPagingAndSortingRepository` repositories have now their EntityGraph counterpart.
+- Null safety added everywhere via [JSpecify](https://jspecify.dev/).
 
 # 2.x to 3.x
 
