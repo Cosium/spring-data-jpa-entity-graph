@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * @author Réda Housni Alaoui
@@ -109,6 +110,7 @@ public class EntityGraph {
         TypeSpec.classBuilder(entityGraphClassName)
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(Constants.ENTITY_GRAPH_CLASS_NAME)
+            .addAnnotation(NullMarked.class)
             .addField(noopField)
             .addField(delegateField)
             .addMethod(emptyConstructor)

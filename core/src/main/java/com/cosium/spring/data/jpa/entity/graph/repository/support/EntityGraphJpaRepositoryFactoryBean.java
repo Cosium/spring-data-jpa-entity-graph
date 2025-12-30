@@ -9,9 +9,7 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
  * Forces the use of {@link RepositoryEntityManagerEntityGraphInjector} while targeting {@link
  * EntityGraphJpaRepositoryFactory}.
  *
- * <p>Created on 18/03/17.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 public class EntityGraphJpaRepositoryFactoryBean<R extends Repository<T, I>, T, I>
     extends JpaRepositoryFactoryBean<R, T, I> {

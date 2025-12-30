@@ -1,11 +1,11 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
 import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.Nullable;
 import org.springframework.aop.ProxyMethodInvocation;
 
 /**
@@ -19,7 +19,7 @@ class RepositoryMethodInvocation {
     this.invocation = invocation;
   }
 
-  public Object proceed() throws Throwable {
+  public @Nullable Object proceed() throws Throwable {
     return invocation.proceed();
   }
 
@@ -40,7 +40,7 @@ class RepositoryMethodInvocation {
     return invocation.getArguments();
   }
 
-  public EntityGraph findEntityGraphArgument() {
+  public @Nullable EntityGraph findEntityGraphArgument() {
     EntityGraph providedEntityGraph = null;
     for (Object argument : invocation.getArguments()) {
       if (!(argument instanceof EntityGraph newEntityGraph)) {

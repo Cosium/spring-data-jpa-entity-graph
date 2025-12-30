@@ -1,5 +1,7 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
+import static java.util.Objects.*;
+
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
@@ -19,15 +22,14 @@ import org.springframework.aop.framework.ProxyFactory;
 /**
  * Injects captured {@link org.springframework.data.jpa.repository.query.JpaEntityGraph} into query
  * hints. <br>
- * Intercepts {@link EntityManager} method calls in order to manipulate query hints map. <br>
- * One interceptor instance is built and used by one unique repository instance. <br>
- * Created on 23/11/16.
+ * Intercepts {@link EntityManager} method calls to manipulate query hints map. <br>
+ * One interceptor instance is built and used by one unique repository instance.
  *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
 
-  private static final Logger LOG =
+  private static final Logger LOGGER =
       LoggerFactory.getLogger(RepositoryEntityManagerEntityGraphInjector.class);
 
   /** The list of methods that can take a map of query hints as an argument */
@@ -55,7 +57,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
   }
 
   @Override
-  public Object invoke(MethodInvocation invocation) throws Throwable {
+  public @Nullable Object invoke(MethodInvocation invocation) throws Throwable {
     EntityGraphQueryHintCandidate entityGraphCandidate = EntityGraphQueryHintCandidates.current();
     String methodName = invocation.getMethod().getName();
     boolean hasEntityGraphCandidate = entityGraphCandidate != null;
@@ -68,7 +70,9 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
     if (hasEntityGraphCandidate
         && CREATE_QUERY_METHODS.contains(methodName)
         && isQueryCreationEligible(entityGraphCandidate, invocation)) {
-      result = RepositoryQueryEntityGraphInjector.proxy((Query) result, entityGraphCandidate);
+      result =
+          RepositoryQueryEntityGraphInjector.proxy(
+              (Query) requireNonNull(result), entityGraphCandidate);
     }
     return result;
   }
@@ -102,7 +106,7 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
    */
   private void addEntityGraphToFindMethodQueryHints(
       EntityGraphQueryHintCandidate entityGraphCandidate, MethodInvocation invocation) {
-    LOG.trace("Trying to push the EntityGraph candidate to the query hints find method");
+    LOGGER.trace("Trying to push the EntityGraph candidate to the query hints find method");
 
     Map<String, Object> queryProperties = null;
     int index = 0;
@@ -114,11 +118,11 @@ class RepositoryEntityManagerEntityGraphInjector implements MethodInterceptor {
       index++;
     }
     if (queryProperties == null) {
-      LOG.trace("No query hints passed to the find method.");
+      LOGGER.trace("No query hints passed to the find method.");
       return;
     }
     if (!entityGraphCandidate.primary() && QueryHintsUtils.containsEntityGraph(queryProperties)) {
-      LOG.trace(
+      LOGGER.trace(
           "The query hints passed with the find method already holds an entity graph. Overriding aborted because the candidate EntityGraph is not primary.");
       return;
     }

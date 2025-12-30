@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.domain2;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Allows to create on-the-fly generated {@link EntityGraph} by defining its attribute paths.
@@ -26,7 +27,7 @@ public class DynamicEntityGraph implements EntityGraph {
    *     properties of the entity or nested properties via a {@code property.nestedProperty}. e.g.
    *     for a product entity: {@code ["brand", "supplier.address"]}
    */
-  public DynamicEntityGraph(EntityGraphType type, List<String> attributePaths) {
+  public DynamicEntityGraph(EntityGraphType type, @Nullable List<String> attributePaths) {
     this.type = requireNonNull(type);
     this.attributePaths =
         Optional.ofNullable(attributePaths)

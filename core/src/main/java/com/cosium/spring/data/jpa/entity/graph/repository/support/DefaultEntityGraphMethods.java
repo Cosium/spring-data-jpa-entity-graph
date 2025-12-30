@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphRepository;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.Nullable;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AdvisedSupportListener;
 import org.springframework.aop.framework.ProxyFactory;
@@ -23,7 +24,7 @@ class DefaultEntityGraphMethods implements MethodInterceptor, RepositoryProxyPos
   private DefaultEntityGraphMethods() {}
 
   @Override
-  public Object invoke(MethodInvocation invocation) throws Throwable {
+  public @Nullable Object invoke(MethodInvocation invocation) throws Throwable {
     RepositoryMethodInvocation methodInvocation = new RepositoryMethodInvocation(invocation);
     if (!isDefaultEntityGraphMethod(methodInvocation)) {
       return invocation.proceed();

@@ -11,10 +11,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.core.RepositoryMetadata;
 
 /**
- * This repository factory allows to build {@link EntityGraph} aware repositories. Created on
- * 22/11/16.
+ * This repository factory allows to build {@link EntityGraph} aware repositories.
  *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 public class EntityGraphJpaRepositoryFactory extends JpaRepositoryFactory {
 

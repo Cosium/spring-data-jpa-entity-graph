@@ -2,11 +2,12 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
-import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
+import com.cosium.spring.data.jpa.entity.graph.domain2.InapplicableEntityGraphException;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
@@ -16,21 +17,22 @@ import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.support.RepositoryProxyPostProcessor;
 
 /**
- * Captures {@link EntityGraph} on repositories method calls. Created on 22/11/16.
+ * Captures {@link EntityGraph} on repositories method calls.
  *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 class EntityGraphQueryHintCandidates implements MethodInterceptor {
 
-  private static final Logger LOG = LoggerFactory.getLogger(EntityGraphQueryHintCandidates.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(EntityGraphQueryHintCandidates.class);
 
-  private static final ThreadLocal<EntityGraphQueryHintCandidates> CURRENT_CANDIDATES =
+  private static final ThreadLocal<@Nullable EntityGraphQueryHintCandidates> CURRENT_CANDIDATES =
       new NamedThreadLocal<>("Thread local holding the current candidates");
 
   private final Class<?> domainClass;
   private final EntityManager entityManager;
   private final DefaultEntityGraphs defaultEntityGraphs;
-  private final ThreadLocal<EntityGraphQueryHintCandidate> currentCandidate =
+  private final ThreadLocal<@Nullable EntityGraphQueryHintCandidate> currentCandidate =
       new NamedThreadLocal<>("Thread local holding the current entity graph query hint candidate");
 
   public EntityGraphQueryHintCandidates(
@@ -44,7 +46,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
     return new PostProcessor(entityManager);
   }
 
-  public static EntityGraphQueryHintCandidate current() {
+  public static @Nullable EntityGraphQueryHintCandidate current() {
     EntityGraphQueryHintCandidates currentRepository = CURRENT_CANDIDATES.get();
     if (currentRepository == null) {
       return null;
@@ -53,7 +55,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
   }
 
   @Override
-  public Object invoke(MethodInvocation invocation) throws Throwable {
+  public @Nullable Object invoke(MethodInvocation invocation) throws Throwable {
     EntityGraphQueryHintCandidates oldRepo = CURRENT_CANDIDATES.get();
     CURRENT_CANDIDATES.set(this);
     try {
@@ -67,7 +69,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
     }
   }
 
-  private Object doInvoke(MethodInvocation invocation) throws Throwable {
+  private @Nullable Object doInvoke(MethodInvocation invocation) throws Throwable {
     RepositoryMethodInvocation methodInvocation = new RepositoryMethodInvocation(invocation);
     EntityGraph providedEntityGraph = methodInvocation.findEntityGraphArgument();
     Object repository = methodInvocation.repository();
@@ -78,7 +80,7 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
 
     if (candidate != null && !canApplyEntityGraph(returnType)) {
       if (!candidate.queryHint().failIfInapplicable()) {
-        LOG.trace("Cannot apply EntityGraph {}", candidate);
+        LOGGER.trace("Cannot apply EntityGraph {}", candidate);
         candidate = null;
       } else {
         throw new InapplicableEntityGraphException(
@@ -105,8 +107,8 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
     }
   }
 
-  private EntityGraphQueryHintCandidate buildEntityGraphCandidate(
-      EntityGraph providedEntityGraph, Object repository) {
+  private @Nullable EntityGraphQueryHintCandidate buildEntityGraphCandidate(
+      @Nullable EntityGraph providedEntityGraph, Object repository) {
 
     EntityGraphQueryHint queryHint =
         Optional.ofNullable(providedEntityGraph)

@@ -7,8 +7,8 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.DynamicEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphType;
+import com.cosium.spring.data.jpa.entity.graph.domain2.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.sample.Brand;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
@@ -21,10 +21,11 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,8 +43,8 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
   @PersistenceContext private EntityManager entityManager;
 
-  @Inject private ProductRepository productRepository;
-  @Inject private BrandRepository brandRepository;
+  @Autowired private ProductRepository productRepository;
+  @Autowired private BrandRepository brandRepository;
 
   @Transactional
   @Test
@@ -80,7 +81,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
     Product product =
         NamedEntityGraph.loading(Product.BRAND_EG)
             .execute(entityGraph -> productRepository.findById(1L, entityGraph))
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow();
 
     assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
   }
@@ -113,9 +114,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
   @DisplayName("Querying with an empty fetch graph turn eager fetchtype into lazy")
   void test7() {
     Product product =
-        productRepository
-            .findById(1L, DynamicEntityGraph.fetching().build())
-            .orElseThrow(RuntimeException::new);
+        productRepository.findById(1L, DynamicEntityGraph.fetching().build()).orElseThrow();
     assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
     assertThat(Hibernate.isInitialized(product.getMaker())).isFalse();
     assertThat(Hibernate.isInitialized(product.getCategory())).isFalse();
@@ -128,7 +127,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
     Product product =
         productRepository
             .findById(1L, ProductEntityGraph.____(EntityGraphType.FETCH).____())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow();
     assertThat(Hibernate.isInitialized(product.getBrand())).isFalse();
     assertThat(Hibernate.isInitialized(product.getMaker())).isFalse();
     assertThat(Hibernate.isInitialized(product.getCategory())).isFalse();
@@ -221,7 +220,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
               @Override
               public Predicate toPredicate(
                   Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return null;
+                return cb.and();
               }
             },
             PageRequest.of(0, 10));
@@ -236,7 +235,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test
   @DisplayName("Given brand eg when performing custom paged query then brand should be loaded")
   void test14() {
-    Brand brand = brandRepository.findById(1L).orElseThrow(RuntimeException::new);
+    Brand brand = brandRepository.findById(1L).orElseThrow();
     entityManager.flush();
     entityManager.clear();
 
@@ -253,7 +252,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
   @Test
   @DisplayName("Given brand eg when performing custom paged query then category should be loaded")
   void test15() {
-    Brand brand = brandRepository.findById(1L).orElseThrow(RuntimeException::new);
+    Brand brand = brandRepository.findById(1L).orElseThrow();
     entityManager.flush();
     entityManager.clear();
 
@@ -300,7 +299,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
     Product product =
         productRepository
             .findByIdUsingQueryAnnotation(1L, NamedEntityGraph.loading(Product.BRAND_EG))
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow();
     assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
   }
 
@@ -355,7 +354,7 @@ class EntityGraphJpaRepositoryTest extends BaseTest {
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
     @Override
-    Iterable<Product> findAll(EntityGraph entityGraph);
+    List<Product> findAll(@Nullable EntityGraph entityGraph);
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "brand")
     List<Product> findByName(String name, EntityGraph entityGraph);

@@ -18,9 +18,8 @@ public class EntityGraphQueryHint {
   }
 
   /**
-   * @param failIfInapplicable true if an {@link
-   *     com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException}
-   *     must be thrown if this entity graph cannot be applied.
+   * @param failIfInapplicable true if an {@link InapplicableEntityGraphException} must be thrown if
+   *     this entity graph cannot be applied.
    */
   public EntityGraphQueryHint(
       EntityGraphType type, EntityGraph<?> entityGraph, boolean failIfInapplicable) {
@@ -38,9 +37,8 @@ public class EntityGraphQueryHint {
   }
 
   /**
-   * @return true if an {@link
-   *     com.cosium.spring.data.jpa.entity.graph.repository.exception.InapplicableEntityGraphException}
-   *     must be thrown if this entity graph cannot be applied.
+   * @return true if an {@link InapplicableEntityGraphException} must be thrown if this entity graph
+   *     cannot be applied.
    */
   public boolean failIfInapplicable() {
     return failIfInapplicable;
