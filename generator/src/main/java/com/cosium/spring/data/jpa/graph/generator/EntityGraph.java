@@ -1,5 +1,6 @@
 package com.cosium.spring.data.jpa.graph.generator;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Filer;
+import javax.annotation.processing.Generated;
 import javax.lang.model.element.Modifier;
 import org.jspecify.annotations.NullMarked;
 
@@ -110,6 +112,10 @@ public class EntityGraph {
         TypeSpec.classBuilder(entityGraphClassName)
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(Constants.ENTITY_GRAPH_CLASS_NAME)
+            .addAnnotation(
+                AnnotationSpec.builder(Generated.class)
+                    .addMember("value", "$S", Generator.class.getName())
+                    .build())
             .addAnnotation(NullMarked.class)
             .addField(noopField)
             .addField(delegateField)
