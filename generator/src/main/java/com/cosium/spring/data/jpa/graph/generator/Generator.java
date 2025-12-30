@@ -1,5 +1,7 @@
 package com.cosium.spring.data.jpa.graph.generator;
 
+import static java.util.Objects.*;
+
 import com.google.auto.service.AutoService;
 import jakarta.persistence.metamodel.StaticMetamodel;
 import java.util.Collections;
@@ -14,6 +16,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Réda Housni Alaoui
@@ -25,9 +28,9 @@ public class Generator extends AbstractProcessor {
 
   private final Set<EntityGraph> writtenEntityGraphs = new HashSet<>();
 
-  private Types types;
-  private Elements elements;
-  private Filer filer;
+  @Nullable private Types types;
+  @Nullable private Elements elements;
+  @Nullable private Filer filer;
 
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -45,14 +48,16 @@ public class Generator extends AbstractProcessor {
 
     roundEnv.getElementsAnnotatedWith(StaticMetamodel.class).stream()
         .map(TypeElement.class::cast)
-        .map(typeElement -> new MetamodelClass(elements, types, typeElement))
+        .map(
+            typeElement ->
+                new MetamodelClass(requireNonNull(elements), requireNonNull(types), typeElement))
         .map(MetamodelClass::createEntityGraph)
         .forEach(
             entityGraph -> {
               if (!writtenEntityGraphs.add(entityGraph)) {
                 return;
               }
-              entityGraph.writeTo(filer);
+              entityGraph.writeTo(requireNonNull(filer));
             });
 
     return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;

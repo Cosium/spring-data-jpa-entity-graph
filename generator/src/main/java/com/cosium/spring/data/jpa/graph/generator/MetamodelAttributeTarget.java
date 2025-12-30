@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import javax.lang.model.element.TypeElement;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Réda Housni Alaoui
@@ -13,8 +14,8 @@ public class MetamodelAttributeTarget {
 
   private final String attributeName;
   private final TypeElement targetType;
-  private final Entity entityAnnotation;
-  private final Embeddable embeddableAnnotation;
+  private final @Nullable Entity entityAnnotation;
+  private final @Nullable Embeddable embeddableAnnotation;
 
   public MetamodelAttributeTarget(String attributeName, TypeElement targetType) {
     this.attributeName = requireNonNull(attributeName);

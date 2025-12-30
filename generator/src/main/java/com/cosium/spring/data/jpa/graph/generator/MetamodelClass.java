@@ -31,7 +31,7 @@ public class MetamodelClass {
     StaticMetamodel staticMetamodel = typeElement.getAnnotation(StaticMetamodel.class);
     TypeElement entityTypeElement;
     try {
-      staticMetamodel.value();
+      requireNonNull(staticMetamodel).value();
       throw new RuntimeException("entityTypeElement.value() didn't throw !");
     } catch (MirroredTypeException e) {
       entityTypeElement = (TypeElement) types.asElement(e.getTypeMirror());
