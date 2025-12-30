@@ -36,7 +36,7 @@ class RepositoryMethodInvocation {
     return invocation.getMethod();
   }
 
-  public Object[] arguments() {
+  public @Nullable Object[] arguments() {
     return invocation.getArguments();
   }
 

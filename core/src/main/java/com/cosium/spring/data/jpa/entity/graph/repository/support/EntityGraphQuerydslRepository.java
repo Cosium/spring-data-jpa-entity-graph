@@ -7,6 +7,7 @@ import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import java.util.function.Function;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,6 @@ import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.lang.Nullable;
 
 /**
  * A {@link org.springframework.data.querydsl.QuerydslPredicateExecutor} that supports {@link
@@ -46,33 +46,34 @@ public class EntityGraphQuerydslRepository<T, ID> extends EntityGraphSimpleJpaRe
   }
 
   @Override
-  public Optional<T> findOne(Predicate predicate, EntityGraph entityGraph) {
+  public Optional<T> findOne(Predicate predicate, @Nullable EntityGraph entityGraph) {
     return querydslJpaRepositoryDelegate.findOne(predicate);
   }
 
   @Override
-  public Iterable<T> findAll(Predicate predicate, EntityGraph entityGraph) {
+  public Iterable<T> findAll(Predicate predicate, @Nullable EntityGraph entityGraph) {
     return querydslJpaRepositoryDelegate.findAll(predicate);
   }
 
   @Override
-  public Iterable<T> findAll(Predicate predicate, Sort sort, EntityGraph entityGraph) {
+  public Iterable<T> findAll(Predicate predicate, Sort sort, @Nullable EntityGraph entityGraph) {
     return querydslJpaRepositoryDelegate.findAll(predicate, sort);
   }
 
   @Override
   public Iterable<T> findAll(
-      Predicate predicate, EntityGraph entityGraph, OrderSpecifier<?>... orders) {
+      Predicate predicate, @Nullable EntityGraph entityGraph, OrderSpecifier<?>... orders) {
     return querydslJpaRepositoryDelegate.findAll(predicate, orders);
   }
 
   @Override
-  public Iterable<T> findAll(EntityGraph entityGraph, OrderSpecifier<?>... orders) {
+  public Iterable<T> findAll(@Nullable EntityGraph entityGraph, OrderSpecifier<?>... orders) {
     return querydslJpaRepositoryDelegate.findAll(orders);
   }
 
   @Override
-  public Page<T> findAll(Predicate predicate, Pageable pageable, EntityGraph entityGraph) {
+  public Page<T> findAll(
+      Predicate predicate, Pageable pageable, @Nullable EntityGraph entityGraph) {
     return querydslJpaRepositoryDelegate.findAll(predicate, pageable);
   }
 
