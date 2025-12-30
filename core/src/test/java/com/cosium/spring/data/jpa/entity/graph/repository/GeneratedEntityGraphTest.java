@@ -6,10 +6,10 @@ import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.cosium.spring.data.jpa.entity.graph.sample.ProductEntityGraph;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class GeneratedEntityGraphTest extends BaseTest {
 
-  @Inject private ProductRepository productRepository;
+  @Autowired private ProductRepository productRepository;
 
   @Transactional
   @Test
@@ -36,7 +36,7 @@ class GeneratedEntityGraphTest extends BaseTest {
                     .country()
                     .____
                     .____())
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow();
 
     assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
     assertThat(Hibernate.isInitialized(product.getCategory())).isTrue();

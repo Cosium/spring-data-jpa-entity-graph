@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
@@ -10,10 +10,10 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class StreamingRepositoryTest extends BaseTest {
 
-  @Inject private MyService myService;
+  @Autowired private MyService myService;
 
   @Test
   void test1() {

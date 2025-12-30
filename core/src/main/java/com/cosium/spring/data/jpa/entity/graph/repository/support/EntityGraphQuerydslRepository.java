@@ -22,7 +22,7 @@ import org.springframework.lang.Nullable;
  * A {@link org.springframework.data.querydsl.QuerydslPredicateExecutor} that supports {@link
  * EntityGraph} passed through method arguments.
  *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 public class EntityGraphQuerydslRepository<T, ID> extends EntityGraphSimpleJpaRepository<T, ID>
     implements EntityGraphQuerydslPredicateExecutor<T> {

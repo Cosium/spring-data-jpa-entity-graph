@@ -17,9 +17,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 /**
  * A {@link SimpleJpaRepository} that supports {@link EntityGraph} passed through method arguments.
  *
- * <p>Created on 22/11/16.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T, ID>
     implements EntityGraphJpaRepository<T, ID>, EntityGraphJpaSpecificationExecutor<T> {
@@ -46,6 +44,15 @@ public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T
   @Override
   public Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraph entityGraph) {
     return findAll(spec, pageable);
+  }
+
+  @Override
+  public Page<T> findAll(
+      Specification<T> spec,
+      Specification<T> countSpec,
+      Pageable pageable,
+      EntityGraph entityGraph) {
+    return findAll(spec, countSpec, pageable);
   }
 
   @Override
@@ -90,12 +97,12 @@ public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T
   }
 
   @Override
-  public Iterable<T> findAll(Sort sort, EntityGraph entityGraph) {
+  public List<T> findAll(Sort sort, EntityGraph entityGraph) {
     return findAll(sort);
   }
 
   @Override
-  public Iterable<T> findAll(EntityGraph entityGraph) {
+  public List<T> findAll(EntityGraph entityGraph) {
     return findAll();
   }
 }

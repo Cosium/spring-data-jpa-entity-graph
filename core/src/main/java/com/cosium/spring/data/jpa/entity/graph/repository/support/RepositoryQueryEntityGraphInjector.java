@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import jakarta.persistence.Query;
@@ -8,22 +8,23 @@ import java.util.Arrays;
 import java.util.List;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
 
 /**
- * Created on 24/11/16.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
+ * @author Andreas Austing
  */
 class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
 
-  private static final Logger LOG =
+  private static final Logger LOGGER =
       LoggerFactory.getLogger(RepositoryQueryEntityGraphInjector.class);
 
   private static final List<String> EXECUTE_QUERY_METHODS =
-      Arrays.asList("getResultList", "getSingleResult", "getResultStream", "scroll");
+      Arrays.asList(
+          "getResultList", "getSingleResultOrNull", "getSingleResult", "getResultStream", "scroll");
   private static final String UNWRAP_METHOD = "unwrap";
   private final EntityGraphQueryHintCandidate entityGraphCandidate;
 
@@ -38,9 +39,9 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
   }
 
   @Override
-  public Object invoke(MethodInvocation invocation) throws Throwable {
+  public @Nullable Object invoke(MethodInvocation invocation) throws Throwable {
     String invokedMethodName = invocation.getMethod().getName();
-    Object[] invokedMethodArguments = invocation.getArguments();
+    @Nullable Object[] invokedMethodArguments = invocation.getArguments();
     if (UNWRAP_METHOD.equals(invocation.getMethod().getName())
         && invokedMethodArguments.length == 1
         && invokedMethodArguments[0] == null) {
@@ -56,22 +57,22 @@ class RepositoryQueryEntityGraphInjector implements MethodInterceptor {
       // existing automated tests, Spring Data JPA does not execute query from the unwrapped query,
       // so there should be no missing EntityGraph. If the future proves we were wrong, the
       // alternative is to return a proxied
-      // query eliminating compatibility between this library and EclipseLink :(
+      // query removing compatibility between this library and EclipseLink :(
       return invocation.getThis();
     }
     if (EXECUTE_QUERY_METHODS.contains(invokedMethodName)) {
-      addEntityGraphToQuery((Query) invocation.getThis());
+      addEntityGraphToQuery((Query) requireNonNull(invocation.getThis()));
     }
     return invocation.proceed();
   }
 
   private void addEntityGraphToQuery(Query query) {
     if (CountQueryDetector.isCountQuery()) {
-      LOG.trace("CountQuery detected.");
+      LOGGER.trace("CountQuery detected.");
       return;
     }
     if (!entityGraphCandidate.primary() && QueryHintsUtils.containsEntityGraph(query.getHints())) {
-      LOG.trace(
+      LOGGER.trace(
           "The query hints passed with the find method already hold an entity graph. Overriding aborted because the candidate EntityGraph is optional.");
       return;
     }

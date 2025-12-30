@@ -22,6 +22,7 @@ import jakarta.persistence.Subgraph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -60,7 +61,7 @@ class DynamicJpaEntityGraphs {
       String[] pathComponents,
       int offset,
       jakarta.persistence.EntityGraph<?> root,
-      Subgraph<?> parent) {
+      @Nullable Subgraph<?> parent) {
 
     String attributeName = pathComponents[offset];
 
@@ -114,10 +115,10 @@ class DynamicJpaEntityGraphs {
    *
    * @return {@literal null} if not found.
    */
-  private static AttributeNode<?> findAttributeNode(
+  private static @Nullable AttributeNode<?> findAttributeNode(
       String attributeNodeName,
       jakarta.persistence.EntityGraph<?> entityGraph,
-      Subgraph<?> parent) {
+      @Nullable Subgraph<?> parent) {
     return findAttributeNode(
         attributeNodeName,
         parent != null ? parent.getAttributeNodes() : entityGraph.getAttributeNodes());
@@ -129,7 +130,7 @@ class DynamicJpaEntityGraphs {
    *
    * @return {@literal null} if not found.
    */
-  private static AttributeNode<?> findAttributeNode(
+  private static @Nullable AttributeNode<?> findAttributeNode(
       String attributeNodeName, List<AttributeNode<?>> nodes) {
 
     for (AttributeNode<?> node : nodes) {
@@ -146,7 +147,7 @@ class DynamicJpaEntityGraphs {
    * different {@link Subgraph}s registered for more concrete {@link Class}es as the dynamically
    * created graph does not distinguish between those.
    */
-  private static Subgraph<?> getSubgraph(AttributeNode<?> node) {
+  private static @Nullable Subgraph<?> getSubgraph(AttributeNode<?> node) {
     return node.getSubgraphs().isEmpty() ? null : node.getSubgraphs().values().iterator().next();
   }
 }

@@ -1,9 +1,7 @@
-package com.cosium.spring.data.jpa.entity.graph.repository.exception;
+package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 /**
- * Created on 27/11/16.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 public class MultipleEntityGraphException extends RuntimeException {
 

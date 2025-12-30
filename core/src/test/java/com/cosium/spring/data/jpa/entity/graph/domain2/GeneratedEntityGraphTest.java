@@ -85,7 +85,7 @@ class GeneratedEntityGraphTest extends BaseTest {
         .buildQueryHint(entityManager, entityType)
         .map(EntityGraphQueryHint::entityGraph)
         .map(this::toString)
-        .orElseThrow(RuntimeException::new);
+        .orElseThrow();
   }
 
   private String toString(jakarta.persistence.EntityGraph<?> entityGraph) {

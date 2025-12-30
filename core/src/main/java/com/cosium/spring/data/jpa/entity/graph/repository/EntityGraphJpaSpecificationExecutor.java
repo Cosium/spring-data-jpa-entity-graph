@@ -3,6 +3,7 @@ package com.cosium.spring.data.jpa.entity.graph.repository;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import java.util.List;
 import java.util.Optional;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,9 +12,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 /**
- * Created on 23/11/16.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 @NoRepositoryBean
 public interface EntityGraphJpaSpecificationExecutor<T> extends JpaSpecificationExecutor<T> {
@@ -21,20 +20,30 @@ public interface EntityGraphJpaSpecificationExecutor<T> extends JpaSpecification
   /**
    * @see JpaSpecificationExecutor#findOne(Specification)
    */
-  Optional<T> findOne(Specification<T> spec, EntityGraph entityGraph);
+  Optional<T> findOne(Specification<T> spec, @Nullable EntityGraph entityGraph);
 
   /**
    * @see JpaSpecificationExecutor#findAll(Specification)
    */
-  List<T> findAll(Specification<T> spec, EntityGraph entityGraph);
+  List<T> findAll(@Nullable Specification<T> spec, @Nullable EntityGraph entityGraph);
 
   /**
    * @see JpaSpecificationExecutor#findAll(Specification, Pageable)
    */
-  Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraph entityGraph);
+  Page<T> findAll(
+      @Nullable Specification<T> spec, Pageable pageable, @Nullable EntityGraph entityGraph);
+
+  /**
+   * @see JpaSpecificationExecutor#findAll(Specification, Specification, Pageable)
+   */
+  Page<T> findAll(
+      @Nullable Specification<T> spec,
+      @Nullable Specification<T> countSpec,
+      Pageable pageable,
+      @Nullable EntityGraph entityGraph);
 
   /**
    * @see JpaSpecificationExecutor#findAll(Specification, Sort)
    */
-  List<T> findAll(Specification<T> spec, Sort sort, EntityGraph entityGraph);
+  List<T> findAll(@Nullable Specification<T> spec, Sort sort, @Nullable EntityGraph entityGraph);
 }

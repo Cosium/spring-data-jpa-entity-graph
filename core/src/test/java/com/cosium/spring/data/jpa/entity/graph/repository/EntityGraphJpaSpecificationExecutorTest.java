@@ -1,13 +1,12 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphQueryHint;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.repository.exception.MultipleEntityGraphException;
+import com.cosium.spring.data.jpa.entity.graph.repository.support.MultipleEntityGraphException;
 import com.cosium.spring.data.jpa.entity.graph.sample.Product;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import jakarta.persistence.EntityManager;
@@ -17,10 +16,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
 
-  @Inject private ProductRepository productRepository;
+  @Autowired private ProductRepository productRepository;
 
   @Transactional
   @Test
@@ -64,7 +63,7 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
           @Override
           public Predicate toPredicate(
               Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-            return null;
+            return cb.and();
           }
         };
     NamedEntityGraph entityGraph2 = NamedEntityGraph.loading(Product.BRAND_EG);
@@ -82,7 +81,7 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
           @Override
           public Predicate toPredicate(
               Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-            return null;
+            return cb.and();
           }
         };
 
@@ -99,7 +98,7 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
           @Override
           public Predicate toPredicate(
               Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-            return null;
+            return cb.and();
           }
         };
 
@@ -117,7 +116,7 @@ class EntityGraphJpaSpecificationExecutorTest extends BaseTest {
           @Override
           public Predicate toPredicate(
               Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-            return null;
+            return cb.and();
           }
         };
 

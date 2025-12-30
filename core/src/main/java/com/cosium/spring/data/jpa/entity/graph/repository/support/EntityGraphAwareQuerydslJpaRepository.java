@@ -3,15 +3,14 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.JPQLQuery;
 import jakarta.persistence.EntityManager;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QuerydslJpaPredicateExecutor;
 import org.springframework.data.querydsl.EntityPathResolver;
 
 /**
- * Created on 05/12/16.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 class EntityGraphAwareQuerydslJpaRepository<T> extends QuerydslJpaPredicateExecutor<T> {
 
@@ -19,12 +18,12 @@ class EntityGraphAwareQuerydslJpaRepository<T> extends QuerydslJpaPredicateExecu
       JpaEntityInformation<T, ?> entityInformation,
       EntityManager entityManager,
       EntityPathResolver resolver,
-      CrudMethodMetadata metadata) {
+      @Nullable CrudMethodMetadata metadata) {
     super(entityInformation, entityManager, resolver, metadata);
   }
 
   @Override
-  protected JPQLQuery<?> createCountQuery(Predicate... predicate) {
+  protected JPQLQuery<?> createCountQuery(@Nullable Predicate... predicate) {
     return CountQueryDetector.proxy(super.createCountQuery(predicate));
   }
 }

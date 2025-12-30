@@ -2,11 +2,10 @@ package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraphType;
 import java.util.Map;
+import org.jspecify.annotations.Nullable;
 
 /**
- * Created on 24/11/16.
- *
- * @author Reda.Housni-Alaoui
+ * @author Réda Housni Alaoui
  */
 class QueryHintsUtils {
 
@@ -15,14 +14,14 @@ class QueryHintsUtils {
   /**
    * @return True if the QueryHints already hold an EntityGraph
    */
-  public static boolean containsEntityGraph(Map<String, Object> queryHints) {
+  public static boolean containsEntityGraph(@Nullable Map<String, Object> queryHints) {
     return queryHints != null
         && (queryHints.containsKey(EntityGraphType.FETCH.key())
             || queryHints.containsKey(EntityGraphType.LOAD.key()));
   }
 
   /** Remove all EntityGraph pre-existing in the QueryHints */
-  public static void removeEntityGraphs(Map<String, Object> queryHints) {
+  public static void removeEntityGraphs(@Nullable Map<String, Object> queryHints) {
     if (queryHints == null) {
       return;
     }

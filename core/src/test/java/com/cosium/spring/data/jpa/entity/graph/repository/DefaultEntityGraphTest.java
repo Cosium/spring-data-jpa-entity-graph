@@ -1,6 +1,6 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.DynamicEntityGraph;
@@ -17,10 +17,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Optional;
-import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -29,13 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 @DatabaseSetup(BaseTest.DATASET)
 class DefaultEntityGraphTest extends BaseTest {
 
-  @Inject private MyEntityRepository repository;
+  @Autowired private MyEntityRepository repository;
 
   @Transactional
   @Test
   @DisplayName("Querying without EntityGraph leads to the default EntityGraph usage")
   void test1() {
-    MyEntity entity = repository.findById(1L).orElseThrow(RuntimeException::new);
+    MyEntity entity = repository.findById(1L).orElseThrow();
     assertThat(Hibernate.isInitialized(entity.getMaker())).isTrue();
   }
 
@@ -43,7 +43,7 @@ class DefaultEntityGraphTest extends BaseTest {
   @Test
   @DisplayName("Querying with EntityGraph#NOOP leads to the default EntityGraph usage")
   void test2() {
-    MyEntity entity = repository.findById(1L, EntityGraph.NOOP).orElseThrow(RuntimeException::new);
+    MyEntity entity = repository.findById(1L, EntityGraph.NOOP).orElseThrow();
     assertThat(Hibernate.isInitialized(entity.getMaker())).isTrue();
   }
 
@@ -51,10 +51,7 @@ class DefaultEntityGraphTest extends BaseTest {
   @Test
   @DisplayName("Querying with EntityGraph skips default EntityGraph usage")
   void test3() {
-    MyEntity entity =
-        repository
-            .findById(1L, DynamicEntityGraph.loading().build())
-            .orElseThrow(RuntimeException::new);
+    MyEntity entity = repository.findById(1L, DynamicEntityGraph.loading().build()).orElseThrow();
     assertThat(Hibernate.isInitialized(entity.getMaker())).isFalse();
   }
 
