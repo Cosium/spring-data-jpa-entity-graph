@@ -72,12 +72,15 @@ The following matrix describes the mapping between [Spring Data JPA](https://git
 
 | [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa) | [Spring Data JPA EntityGraph](https://github.com/Cosium/spring-data-jpa-entity-graph) |
 |-----------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| CrudRepository                                                        | EntityGraphCrudRepository                                                             |
 | JpaRepository                                                         | EntityGraphJpaRepository                                                              |
 | JpaSpecificationExecutor                                              | EntityGraphJpaSpecificationExecutor                                                   |
-| QuerydslPredicateExecutor                                             | EntityGraphQuerydslPredicateExecutor                                                  |
-| CrudRepository                                                        | EntityGraphCrudRepository                                                             |
+| ListCrudRepository                                                    | EntityGraphListCrudRepository                                                         |
+| ListPagingAndSortingRepository                                        | EntityGraphListPagingAndSortingRepository                                             |
 | PagingAndSortingRepository                                            | EntityGraphPagingAndSortingRepository                                                 |
 | QueryByExampleExecutor                                                | EntityGraphQueryByExampleExecutor                                                     |
+| QuerydslPredicateExecutor                                             | EntityGraphQuerydslPredicateExecutor                                                  |
+| Repository                                                            | EntityGraphRepository                                                                 |
 
 For example, if you wanted to use `Optional<T> findById(ID id, EntityGraph entityGraph)`, you could declare and use your repository like this:
 
