@@ -29,8 +29,13 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
         //...
     }
     ```
+   
+# 3.x to 4.x
 
-# 2.x to 3.x breaking changes
+- EntityGraph repositories were rearranged to exactly mirror Spring Data JPA repositories. You may have to fix your imports.
+- Null safety added everywhere via [JSpecify](https://jspecify.dev/)
+
+# 2.x to 3.x
 
 - Moved from Java 8 to 17 as the source language
 - `javax.persistence` replaced by `jakarta.persistence`
