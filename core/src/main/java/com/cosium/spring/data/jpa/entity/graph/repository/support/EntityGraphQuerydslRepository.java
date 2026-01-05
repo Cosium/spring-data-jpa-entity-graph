@@ -78,6 +78,14 @@ public class EntityGraphQuerydslRepository<T, ID> extends EntityGraphSimpleJpaRe
   }
 
   @Override
+  public <S extends T, R> R findBy(
+      Predicate predicate,
+      @Nullable EntityGraph entityGraph,
+      Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    return findBy(predicate, queryFunction);
+  }
+
+  @Override
   public Optional<T> findOne(Predicate predicate) {
     return querydslJpaRepositoryDelegate.findOne(predicate);
   }

@@ -6,6 +6,7 @@ import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecific
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.repository.query.FluentQuery;
 
 /**
  * A {@link SimpleJpaRepository} that supports {@link EntityGraph} passed through method arguments.
@@ -38,13 +40,13 @@ public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T
   }
 
   @Override
-  public List<T> findAll(@Nullable Specification<T> spec, @Nullable EntityGraph entityGraph) {
+  public List<T> findAll(Specification<T> spec, @Nullable EntityGraph entityGraph) {
     return findAll(spec);
   }
 
   @Override
   public Page<T> findAll(
-      @Nullable Specification<T> spec, Pageable pageable, @Nullable EntityGraph entityGraph) {
+      Specification<T> spec, Pageable pageable, @Nullable EntityGraph entityGraph) {
     return findAll(spec, pageable);
   }
 
@@ -58,15 +60,30 @@ public class EntityGraphSimpleJpaRepository<T, ID> extends SimpleJpaRepository<T
   }
 
   @Override
-  public List<T> findAll(
-      @Nullable Specification<T> spec, Sort sort, @Nullable EntityGraph entityGraph) {
+  public List<T> findAll(Specification<T> spec, Sort sort, @Nullable EntityGraph entityGraph) {
     return findAll(spec, sort);
+  }
+
+  @Override
+  public <S extends T, R> R findBy(
+      Specification<T> spec,
+      @Nullable EntityGraph entityGraph,
+      Function<? super SpecificationFluentQuery<S>, R> queryFunction) {
+    return findBy(spec, queryFunction);
   }
 
   @Override
   public <S extends T> Page<S> findAll(
       Example<S> example, Pageable pageable, @Nullable EntityGraph entityGraph) {
     return findAll(example, pageable);
+  }
+
+  @Override
+  public <S extends T, R> R findBy(
+      Example<S> example,
+      @Nullable EntityGraph entityGraph,
+      Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    return findBy(example, queryFunction);
   }
 
   @Override
