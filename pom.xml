@@ -34,7 +34,7 @@
     <hsqldb.version>2.7.4</hsqldb.version>
     <assertj>3.27.6</assertj>
     <logback>1.5.23</logback>
-    <junit.version>6.0.1</junit.version>
+    <junit.version>6.0.2</junit.version>
     <auto-service.version>1.1.1</auto-service.version>
     <git-code-format-maven-plugin.version>5.4</git-code-format-maven-plugin.version>
   </properties>
