@@ -29,19 +29,6 @@ This prevents you from choosing the best `EntityGraph` considering the runtime c
         //...
     }
     ```
-   
-# 3.x to 4.x
-
-- EntityGraph repositories were rearranged to exactly mirror Spring Data JPA repositories. You may have to fix your imports.
-- `ListCrudRepository` and `ListPagingAndSortingRepository` repositories have now their EntityGraph counterpart.
-- Null safety added everywhere via [JSpecify](https://jspecify.dev/).
-
-# 2.x to 3.x
-
-- Moved from Java 8 to 17 as the source language
-- `javax.persistence` replaced by `jakarta.persistence`
-- `com.cosium.spring.data.jpa.entity.graph.domain` classes (deprecated in 2.7.x) have been removed in favor of `com.cosium.spring.data.jpa.entity.graph.domain2`
-- `Default EntityGraph by name pattern` feature (deprecated in 2.7.x) has been removed. `*.default` named EntityGraph are not considered as default EntityGraph anymore. Please read [default EntityGraph](#repository-default-entitygraph) to use the new `Default EntityGraph` feature instead.
 
 # Usage
 
