@@ -1,12 +1,13 @@
 package com.cosium.spring.data.jpa.entity.graph.repository.support;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jspecify.annotations.Nullable;
 import org.springframework.aop.ProxyMethodInvocation;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * @author Réda Housni Alaoui
@@ -58,5 +59,16 @@ class RepositoryMethodInvocation {
       providedEntityGraph = newEntityGraph;
     }
     return providedEntityGraph;
+  }
+
+  public boolean isSpecificationExecutorFindByMethod() {
+    if (!(repository() instanceof JpaSpecificationExecutor<?>)) {
+      return false;
+    }
+    if (!"findBy".equals(method().getName())) {
+      return false;
+    }
+    @Nullable Object[] arguments = arguments();
+    return arguments.length == 2 || arguments.length == 3;
   }
 }

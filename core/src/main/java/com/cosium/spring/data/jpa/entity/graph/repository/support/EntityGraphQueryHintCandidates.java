@@ -71,6 +71,10 @@ class EntityGraphQueryHintCandidates implements MethodInterceptor {
 
   private @Nullable Object doInvoke(MethodInvocation invocation) throws Throwable {
     RepositoryMethodInvocation methodInvocation = new RepositoryMethodInvocation(invocation);
+    if (methodInvocation.isSpecificationExecutorFindByMethod()) {
+      return methodInvocation.proceed();
+    }
+
     EntityGraph providedEntityGraph = methodInvocation.findEntityGraphArgument();
     Object repository = methodInvocation.repository();
     ResolvableType returnType =
