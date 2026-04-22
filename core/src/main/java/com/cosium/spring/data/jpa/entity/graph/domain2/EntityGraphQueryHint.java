@@ -2,7 +2,14 @@ package com.cosium.spring.data.jpa.entity.graph.domain2;
 
 import static java.util.Objects.requireNonNull;
 
+import jakarta.persistence.AttributeNode;
 import jakarta.persistence.EntityGraph;
+import jakarta.persistence.Subgraph;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor.SpecificationFluentQuery;
 
 /**
  * @author Réda Housni Alaoui
@@ -19,7 +26,8 @@ public class EntityGraphQueryHint {
 
   /**
    * @param failIfInapplicable true if an {@link InapplicableEntityGraphException} must be thrown if
-   *     this entity graph cannot be applied.
+   *     this entity graph cannot be applied. This parameter is ignored in the context of a {@link
+   *     org.springframework.data.repository.query.FluentQuery}.
    */
   public EntityGraphQueryHint(
       EntityGraphType type, EntityGraph<?> entityGraph, boolean failIfInapplicable) {
@@ -36,11 +44,31 @@ public class EntityGraphQueryHint {
     return entityGraph;
   }
 
-  /**
-   * @return true if an {@link InapplicableEntityGraphException} must be thrown if this entity graph
-   *     cannot be applied.
-   */
   public boolean failIfInapplicable() {
     return failIfInapplicable;
+  }
+
+  public final <T> SpecificationFluentQuery<T> applyTo(SpecificationFluentQuery<T> query) {
+    return query.project(toProperties());
+  }
+
+  private Collection<String> toProperties() {
+    List<String> paths = new ArrayList<>();
+    for (AttributeNode<?> node : entityGraph.getAttributeNodes()) {
+      List<String> nodePath = new ArrayList<>();
+      addPath(node, nodePath);
+      paths.add(String.join(".", nodePath));
+    }
+    Collections.sort(paths);
+    return paths;
+  }
+
+  private void addPath(AttributeNode<?> node, List<String> path) {
+    path.add(node.getAttributeName());
+    for (Subgraph<?> subgraph : node.getSubgraphs().values()) {
+      for (AttributeNode<?> attributeNode : subgraph.getAttributeNodes()) {
+        addPath(attributeNode, path);
+      }
+    }
   }
 }
