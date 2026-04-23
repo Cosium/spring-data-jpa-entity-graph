@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor.SpecificationFluentQuery;
@@ -70,12 +71,13 @@ public class EntityGraphQueryHint {
             .map(path -> path + "." + node.getAttributeName())
             .orElseGet(node::getAttributeName);
 
-    if (node.getSubgraphs().isEmpty()) {
+    Map<Class, Subgraph> subgraphs = node.getSubgraphs();
+    if (subgraphs.isEmpty()) {
       collectedPaths.add(visitedPath);
       return;
     }
 
-    for (Subgraph<?> subgraph : node.getSubgraphs().values()) {
+    for (Subgraph<?> subgraph : subgraphs.values()) {
       for (AttributeNode<?> childNode : subgraph.getAttributeNodes()) {
         visitNode(childNode, visitedPath, collectedPaths);
       }
