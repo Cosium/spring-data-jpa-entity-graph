@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor.SpecificationFluentQuery;
 
 /**
@@ -55,19 +57,27 @@ public class EntityGraphQueryHint {
   private Collection<String> toProperties() {
     List<String> paths = new ArrayList<>();
     for (AttributeNode<?> node : entityGraph.getAttributeNodes()) {
-      List<String> nodePath = new ArrayList<>();
-      addPath(node, nodePath);
-      paths.add(String.join(".", nodePath));
+      visitNode(node, null, paths);
     }
     Collections.sort(paths);
     return paths;
   }
 
-  private void addPath(AttributeNode<?> node, List<String> path) {
-    path.add(node.getAttributeName());
+  private void visitNode(
+      AttributeNode<?> node, @Nullable String parentPath, List<String> collectedPaths) {
+    String visitedPath =
+        Optional.ofNullable(parentPath)
+            .map(path -> path + "." + node.getAttributeName())
+            .orElseGet(node::getAttributeName);
+
+    if (node.getSubgraphs().isEmpty()) {
+      collectedPaths.add(visitedPath);
+      return;
+    }
+
     for (Subgraph<?> subgraph : node.getSubgraphs().values()) {
-      for (AttributeNode<?> attributeNode : subgraph.getAttributeNodes()) {
-        addPath(attributeNode, path);
+      for (AttributeNode<?> childNode : subgraph.getAttributeNodes()) {
+        visitNode(childNode, visitedPath, collectedPaths);
       }
     }
   }
