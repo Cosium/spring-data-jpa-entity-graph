@@ -155,6 +155,27 @@ class FluentQueryTest extends BaseTest {
     assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isFalse();
   }
 
+  @Transactional
+  @Test
+  @DisplayName("It supports entity graph having a child node with at least 2 children itself")
+  void test9() {
+    Slice<Product> products =
+        productRepository.findBy(
+            idEquals(1L),
+            ProductEntityGraph.____().brand().____.maker().country().____.maker().ceo().____.____(),
+            query -> query.slice(Pageable.ofSize(1)));
+
+    assertThat(products).hasSize(1);
+
+    Product product = products.stream().findFirst().orElseThrow();
+    assertThat(Hibernate.isInitialized(product.getBrand())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker().getCountry())).isTrue();
+    assertThat(Hibernate.isInitialized(product.getMaker().getCeo())).isTrue();
+
+    assertThat(Hibernate.isInitialized(product.getCategory())).isFalse();
+  }
+
   private static Specification<Product> idEquals(long id) {
     return (root, query, cb) -> cb.equal(root.get(Product_.id), id);
   }

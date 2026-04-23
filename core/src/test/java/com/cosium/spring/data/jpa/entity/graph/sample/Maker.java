@@ -45,6 +45,9 @@ public class Maker {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "maker")
   private final Set<Product> products = new LinkedHashSet<>();
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private User ceo;
+
   public long getId() {
     return id;
   }
@@ -71,5 +74,13 @@ public class Maker {
 
   public Set<Product> getProducts() {
     return products;
+  }
+
+  public User getCeo() {
+    return ceo;
+  }
+
+  public void setCeo(User owner) {
+    this.ceo = owner;
   }
 }
