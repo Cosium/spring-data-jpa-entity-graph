@@ -1,14 +1,12 @@
 package com.cosium.spring.data.jpa.entity.graph.repository;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cosium.spring.data.jpa.entity.graph.BaseTest;
 import com.cosium.spring.data.jpa.entity.graph.domain2.DynamicEntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.sample.Maker;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -60,7 +58,6 @@ class DefaultEntityGraphTest extends BaseTest {
   public static class MyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Access(value = AccessType.PROPERTY)
     private long id = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,10 +65,6 @@ class DefaultEntityGraphTest extends BaseTest {
 
     public long getId() {
       return id;
-    }
-
-    public void setId(long id) {
-      this.id = id;
     }
 
     public Maker getMaker() {

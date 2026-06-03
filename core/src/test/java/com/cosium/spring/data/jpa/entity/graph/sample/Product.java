@@ -1,7 +1,5 @@
 package com.cosium.spring.data.jpa.entity.graph.sample;
 
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -41,7 +39,6 @@ public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Access(value = AccessType.PROPERTY)
   private long id = 0;
 
   @Embedded private Tracking tracking;
@@ -72,10 +69,6 @@ public class Product {
 
   public long getId() {
     return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getName() {
