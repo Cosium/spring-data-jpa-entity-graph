@@ -33,7 +33,7 @@
     <hibernate.version>7.4.0.Final</hibernate.version>
     <hsqldb.version>2.7.4</hsqldb.version>
     <assertj>3.27.7</assertj>
-    <logback>1.5.33</logback>
+    <logback>1.5.34</logback>
     <junit.version>6.1.0</junit.version>
     <auto-service.version>1.1.1</auto-service.version>
     <git-code-format-maven-plugin.version>6.0</git-code-format-maven-plugin.version>
