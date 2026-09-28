@@ -19,6 +19,20 @@ public interface EntityGraph {
     return function.apply(this);
   }
 
+  default EntityGraph merge(EntityGraph other) {
+    if (other == null || other == NOOP) {
+      return this;
+    }
+    if (this == NOOP) {
+      return other;
+    }
+    return new CompositeEntityGraph(java.util.List.of(this, other));
+  }
+
+  default EntityGraph and(EntityGraph other) {
+    return merge(other);
+  }
+
   /** An {@link EntityGraph} that will have zero effect on queries. */
   EntityGraph NOOP = (entityManager, entityType) -> Optional.empty();
 }

@@ -55,7 +55,7 @@ public class EntityGraphQueryHint {
     return query.project(toProperties());
   }
 
-  private Collection<String> toProperties() {
+  public Collection<String> toProperties() {
     List<String> paths = new ArrayList<>();
     for (AttributeNode<?> node : entityGraph.getAttributeNodes()) {
       visitNode(node, null, paths);

@@ -5,7 +5,9 @@ import static java.util.Objects.*;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -100,6 +102,14 @@ public class DynamicEntityGraph implements EntityGraph {
     return new Builder(type);
   }
 
+  public List<String> attributePaths() {
+    return attributePaths;
+  }
+
+  public EntityGraphType type() {
+    return type;
+  }
+
   @Override
   public Optional<EntityGraphQueryHint> buildQueryHint(
       EntityManager entityManager, Class<?> entityType) {
@@ -145,8 +155,24 @@ public class DynamicEntityGraph implements EntityGraph {
       return this;
     }
 
+    public Builder addPaths(String... paths) {
+      Collections.addAll(attributePaths, paths);
+      return this;
+    }
+
+    public Builder addPaths(Collection<String> paths) {
+      attributePaths.addAll(paths);
+      return this;
+    }
+
+    public Builder include(EntityGraphPart part) {
+      attributePaths.addAll(part.attributePaths());
+      return this;
+    }
+
     public DynamicEntityGraph build() {
-      return new DynamicEntityGraph(type, attributePaths);
+      List<String> deduped = new ArrayList<>(new LinkedHashSet<>(attributePaths));
+      return new DynamicEntityGraph(type, deduped);
     }
   }
 }
