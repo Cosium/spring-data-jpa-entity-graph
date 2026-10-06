@@ -60,6 +60,20 @@ public class RootComposer implements Composer {
             .addStatement("return new $T(this)", entityGraphClassName)
             .build();
 
+    ClassName entityGraphPartClassName =
+        ClassName.get("com.cosium.spring.data.jpa.entity.graph.domain2", "EntityGraphPart");
+    MethodSpec includeMethod =
+        MethodSpec.methodBuilder("include")
+            .addModifiers(Modifier.PUBLIC)
+            .returns(ClassName.get("", SIMPLE_NAME))
+            .addParameter(entityGraphPartClassName, "part")
+            .addStatement(
+                "entityGraphAttributePaths.addAll(part.attributePaths().stream().map(p -> $T.of(p.split($S))).toList())",
+                List.class,
+                "\\.")
+            .addStatement("return this")
+            .build();
+
     typeSpecBuilder =
         TypeSpec.classBuilder(SIMPLE_NAME)
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -67,6 +81,7 @@ public class RootComposer implements Composer {
             .addField(entityGraphAttributePathsField)
             .addMethod(constructor)
             .addMethod(constructorWithEntityGraphType)
+            .addMethod(includeMethod)
             .addMethod(buildMethod);
   }
 

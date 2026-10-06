@@ -282,6 +282,30 @@ List<Product> products = ProductEntityGraph
                           .execute(entityGraph -> myRepository.findByLabel("foo", entityGraph));
 ```
 
+## Composing EntityGraphs
+
+You can compose reusable fragments and merge entity graphs at runtime:
+
+```java
+// Reusable fragment
+EntityGraphPart brandPart = EntityGraphPart.of("brand", "brand.country").build();
+
+// Compose via include and merge (union, deduplication, LOAD/FETCH must match)
+EntityGraph brandGraph = DynamicEntityGraph.loading().include(brandPart).build();
+EntityGraph otherGraph = NamedEntityGraph.loading("productMaker");
+EntityGraph graph = brandGraph.merge(otherGraph); // or brandGraph.and(otherGraph)
+
+productRepository.findById(1L, graph);
+
+// With generated type-safe graph
+EntityGraph typedGraph = ProductEntityGraph.____().include(brandPart).maker().country().____.____();
+productRepository.findById(1L, typedGraph.merge(otherGraph));
+```
+
+* `EntityGraphPart` is an immutable value object holding deduplicated attribute paths.
+* `DynamicEntityGraph.Builder#include(EntityGraphPart)` and `RootComposer#include(EntityGraphPart)` add fragment paths to the graph.
+* `EntityGraph#merge(EntityGraph)` / `and(EntityGraph)` returns a composite graph whose `buildQueryHint` unions the attribute paths, checks that all merged graphs share the same `EntityGraphType` (throws `IllegalArgumentException` on mismatch), and uses `org.hibernate.graph.EntityGraphs.merge` when available with fallback to path union.
+
 ## EntityGraph Semantics
 
 JPA 2.1 defines 2 semantics:

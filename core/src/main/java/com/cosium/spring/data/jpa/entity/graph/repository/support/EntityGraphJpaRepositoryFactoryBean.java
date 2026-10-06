@@ -29,6 +29,18 @@ public class EntityGraphJpaRepositoryFactoryBean<R extends Repository<T, I>, T, 
     super.setEntityManager(RepositoryEntityManagerEntityGraphInjector.proxy(entityManager));
   }
 
+  /**
+   * Force EntityGraphSimpleJpaRepository as repository base class to ensure EntityGraph-aware
+   * methods are available. Spring Boot 4 auto-config injects SimpleJpaRepository.class via property
+   * binding.
+   *
+   * @param repositoryBaseClass the repositoryBaseClass to set, can be {@literal null}.
+   */
+  @Override
+  public void setRepositoryBaseClass(Class<?> repositoryBaseClass) {
+    super.setRepositoryBaseClass(EntityGraphSimpleJpaRepository.class);
+  }
+
   @Override
   protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
     return new EntityGraphJpaRepositoryFactory(entityManager);
