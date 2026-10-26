@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.cosium.maven_oss</groupId>
     <artifactId>maven-oss</artifactId>
-    <version>1.6</version>
+    <version>1.7</version>
   </parent>
 
   <name>Spring Data JPA EntityGraph Parent</name>
